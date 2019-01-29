@@ -1,0 +1,25 @@
+{
+	"name" : "dscheinah/pwsafe",
+	"description" : "Password Safe",
+	"minimum-stability" : "dev",
+	"authors" : [{
+			"name" : "Johannes Bachmann"
+		}
+	],
+	"support" : {
+		"source" : "https://github.com/dscheinah/pwsafe"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"sx\\" : "lib/sx",
+			"app\\" : "app"
+		}
+	},
+	"require" : {
+		"psr/http-message" : "~1.0",
+		"psr/http-server-middleware" : "~1.0",
+		"psr/http-factory" : "~1.0",
+		"psr/http-server-handler" : "~1.0",
+		"psr/container" : "~1.0"
+	}
+}
