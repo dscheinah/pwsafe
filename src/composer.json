@@ -11,8 +11,8 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"sx\\" : "lib/sx",
-			"app\\" : "app"
+			"Sx\\" : "lib/sx",
+			"App\\" : "app"
 		}
 	},
 	"require" : {
