@@ -1,10 +1,9 @@
 <?php
 namespace App\Middleware;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
-use Sx\Message\ResponseFactory;
-use Psr\Http\Message\ResponseFactoryInterface;
 
 class ErrorHandlerFactory implements FactoryInterface
 {
