@@ -18,6 +18,11 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     protected $attributes = [];
 
+    public function __construct(array $serverParams = [])
+    {
+        $this->serverParams = $serverParams;
+    }
+
     public function getServerParams()
     {
         return $this->serverParams;

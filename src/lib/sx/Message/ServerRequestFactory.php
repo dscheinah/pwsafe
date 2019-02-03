@@ -1,21 +1,28 @@
 <?php
 namespace Sx\Message;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Sx\Container\FactoryInterface;
-use Sx\Container\Injector;
 use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
-class ServerRequestFactory implements FactoryInterface, ServerRequestFactoryInterface
+class ServerRequestFactory extends RequestFactory implements ServerRequestFactoryInterface
 {
-
-    public function create(Injector $injector, array $options = []): ServerRequestInterface
-    {
-        return $this->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
-    }
 
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        return new ServerRequest();
+        $request = new ServerRequest($serverParams);
+        $request = $this->populateRequest($request, $method, $uri);
+        foreach ($serverParams as $key => $value) {
+            if ($value && strpos($key, 'HTTP_') === 0) {
+                $name = strtr(strtolower(substr($key, 5)), '_', '-');
+                $request = $request->withAddedHeader($name, $value);
+            }
+        }
+        foreach ($_GET + $_POST as $name => $value) {
+            $request = $request->withAttribute($name, $value);
+        }
+        $request = $request->withCookieParams($_COOKIE);
+        $request = $request->withQueryParams($_GET);
+        $request = $request->withParsedBody($_POST);
+        return $request;
     }
 }

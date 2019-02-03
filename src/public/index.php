@@ -21,4 +21,4 @@ $injector->setup(new ApplicationProvider());
 
 /** @var ApplicationInterface $app */
 $app = $injector->get(ApplicationInterface::class);
-$app->run();
+$app->run($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);

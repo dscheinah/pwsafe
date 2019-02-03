@@ -1,8 +1,8 @@
 <?php
 namespace Sx\Server;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 
 class Application implements ApplicationInterface
 {
@@ -11,15 +11,15 @@ class Application implements ApplicationInterface
 
     private $handler;
 
-    public function __construct(ServerRequestInterface $request, MiddlewareHandler $handler)
+    public function __construct(ServerRequestFactoryInterface $request, MiddlewareHandler $handler)
     {
         $this->request = $request;
         $this->handler = $handler;
     }
 
-    public function run(): void
+    public function run(string $method, string $uri, array $server): void
     {
-        $response = $this->handler->handle($this->request);
+        $response = $this->handler->handle($this->request->createServerRequest($method, $uri, $server));
         http_response_code($response->getStatusCode());
         foreach ($response->getHeaders() as $key => $value) {
             header($key . ': ' . implode(',', $value));
