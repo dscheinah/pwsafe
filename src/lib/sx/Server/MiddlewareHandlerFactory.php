@@ -7,7 +7,7 @@ use Sx\Container\Injector;
 class MiddlewareHandlerFactory implements FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []): MiddlewareHandlerInterface
+    public function create(Injector $injector, array $options, string $class): MiddlewareHandlerInterface
     {
         return new MiddlewareHandler();
     }

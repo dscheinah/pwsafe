@@ -9,7 +9,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 class ErrorHandlerFactory implements FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []): ErrorHandler
+    public function create(Injector $injector, array $options, string $class): ErrorHandler
     {
         return new ErrorHandler($injector->get(ResponseFactoryInterface::class), $injector->get(StreamFactoryInterface::class));
     }

@@ -23,7 +23,7 @@ class Injector extends Container
             try {
                 $factory = new $class();
                 if ($factory instanceof FactoryInterface) {
-                    return $this->instances[$id] = $factory->create($this, $this->options);
+                    return $this->instances[$id] = $factory->create($this, $this->options, $id);
                 }
                 return $this->instances[$id] = $factory;
             } catch (\Exception $e) {

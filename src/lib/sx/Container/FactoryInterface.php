@@ -4,5 +4,5 @@ namespace Sx\Container;
 interface FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []);
+    public function create(Injector $injector, array $options, string $class);
 }

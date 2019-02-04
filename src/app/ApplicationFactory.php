@@ -13,7 +13,7 @@ use Sx\Server\RouterInterface;
 class ApplicationFactory implements FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []): ApplicationInterface
+    public function create(Injector $injector, array $options, string $class): ApplicationInterface
     {
         $app = new Application($injector->get(MiddlewareHandlerInterface::class));
         $app->add($injector->get(ErrorHandler::class));

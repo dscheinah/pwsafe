@@ -7,7 +7,7 @@ use Sx\Container\Injector;
 class NotFoundHandlerFactory implements FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []): NotFoundHandler
+    public function create(Injector $injector, array $options, string $class): NotFoundHandler
     {
         return new NotFoundHandler();
     }

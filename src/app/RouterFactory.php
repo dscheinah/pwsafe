@@ -9,7 +9,7 @@ use Sx\Server\RouterInterface;
 class RouterFactory implements FactoryInterface
 {
 
-    public function create(Injector $injector, array $options = []): RouterInterface
+    public function create(Injector $injector, array $options, string $class): RouterInterface
     {
         $router = new Router();
         return $router;
