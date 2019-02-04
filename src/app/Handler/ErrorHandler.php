@@ -1,20 +1,24 @@
 <?php
-namespace App\Middleware;
+namespace App\Handler;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 class ErrorHandler implements MiddlewareInterface
 {
 
     private $response;
 
-    public function __construct(ResponseFactoryInterface $response)
+    private $stream;
+
+    public function __construct(ResponseFactoryInterface $response, StreamFactoryInterface $stream)
     {
         $this->response = $response;
+        $this->stream = $stream;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -22,7 +26,8 @@ class ErrorHandler implements MiddlewareInterface
         try {
             return $handler->handle($request);
         } catch (\Exception $e) {
-            return $this->response->createResponse($e->getCode());
+            $response = $this->response->createResponse($e->getCode());
+            return $response->withBody($this->stream->createStream($e->getMessage()));
         }
     }
 }

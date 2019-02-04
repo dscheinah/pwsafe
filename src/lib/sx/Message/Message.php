@@ -7,7 +7,7 @@ use Psr\Http\Message\StreamInterface;
 class Message implements MessageInterface
 {
 
-    const HEADER_HOST = 'HOST';
+    const HEADER_HOST = 'host';
 
     protected $version = 0.0;
 

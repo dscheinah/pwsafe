@@ -1,7 +1,10 @@
 <?php
 use App\ApplicationProvider;
 use Sx\Container\Injector;
+use Sx\Message\RequestFactory;
+use Sx\Message\ServerRequestFactory;
 use Sx\Server\ApplicationInterface;
+use Sx\Message\UriFactory;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -19,6 +22,10 @@ if (($options['env'] ?? false) !== 'production') {
 $injector = new Injector($options);
 $injector->setup(new ApplicationProvider());
 
+$uriFactory = new UriFactory();
+$requestFactory = new ServerRequestFactory($uriFactory);
+$request = $requestFactory->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
+
 /** @var ApplicationInterface $app */
 $app = $injector->get(ApplicationInterface::class);
-$app->run($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
+$app->run($request);

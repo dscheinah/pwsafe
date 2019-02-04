@@ -6,30 +6,38 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
-class RequestFactory implements RequestFactoryInterface
+class RequestFactory extends Request implements RequestFactoryInterface
 {
 
-    protected $uri;
+    protected $uriFactory;
 
-    public function __construct(UriFactoryInterface $uri = null)
+    public function __construct(UriFactoryInterface $uriFactory)
     {
-        $this->uri = $uri ?: new UriFactory();
+        $this->uriFactory = $uriFactory;
     }
 
     public function createRequest(string $method, $uri): RequestInterface
     {
         $request = new Request();
-        return $this->populateRequest($request, $method, $uri);
-    }
 
-    protected function populateRequest(RequestInterface $request, string $method, $uri): RequestInterface
-    {
         if (! $uri instanceof UriInterface) {
-            $uri = $this->uri->createUri($uri);
+            $uri = $this->uriFactory->createUri($uri);
         }
-        $request = $request->withMethod(strtolower($method));
-        $request = $request->withUri($uri);
-        $request = $request->withRequestTarget($uri->getPath());
+        $request->method = strtolower($method);
+        $request->uri = $uri;
+        $request->target = $uri->getPath();
+
+        $headers = $mapper = [];
+        foreach ($serverParams as $key => $value) {
+            if ($value && strpos($key, 'HTTP_') === 0) {
+                $name = substr($key, 5);
+                $headers[$name] = $value;
+                $mapper[str_replace('_', '-', strtolower($name))] = $name;
+            }
+        }
+        $request->headers = $headers;
+        $request->mapper = $mapper;
+
         return $request;
     }
 }

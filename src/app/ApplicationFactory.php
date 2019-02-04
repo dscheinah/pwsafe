@@ -1,9 +1,8 @@
 <?php
 namespace App;
 
-use App\Middleware\ErrorHandler;
-use App\Middleware\NotFoundHandler;
-use Psr\Http\Message\ServerRequestFactoryInterface;
+use App\Handler\ErrorHandler;
+use App\Handler\NotFoundHandler;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
 use Sx\Server\Application;
@@ -16,7 +15,7 @@ class ApplicationFactory implements FactoryInterface
 
     public function create(Injector $injector, array $options = []): ApplicationInterface
     {
-        $app = new Application($injector->get(ServerRequestFactoryInterface::class), $injector->get(MiddlewareHandlerInterface::class));
+        $app = new Application($injector->get(MiddlewareHandlerInterface::class));
         $app->add($injector->get(ErrorHandler::class));
         $app->add($injector->get(RouterInterface::class));
         $app->add($injector->get(NotFoundHandler::class));

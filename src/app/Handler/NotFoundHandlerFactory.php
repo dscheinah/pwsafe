@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Handler;
 
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
