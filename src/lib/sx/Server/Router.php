@@ -4,7 +4,6 @@ namespace Sx\Server;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
 
 class Router implements RouterInterface
 {
@@ -30,37 +29,37 @@ class Router implements RouterInterface
         return $handler->handle($request);
     }
 
-    public function get(string $path, MiddlewareInterface $middleware): void
+    public function get(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function post(string $path, MiddlewareInterface $middleware): void
+    public function post(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function delete(string $path, MiddlewareInterface $middleware): void
+    public function delete(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function put(string $path, MiddlewareInterface $middleware): void
+    public function put(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function head(string $path, MiddlewareInterface $middleware): void
+    public function head(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function options(string $path, MiddlewareInterface $middleware): void
+    public function options(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }
 
-    public function patch(string $path, MiddlewareInterface $middleware): void
+    public function patch(string $path, string $middleware): void
     {
         $this->getHandler(__FUNCTION__, $path)->chain($middleware);
     }

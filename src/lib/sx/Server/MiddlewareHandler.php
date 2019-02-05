@@ -4,11 +4,19 @@ namespace Sx\Server;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Sx\Container\Injector;
 
 class MiddlewareHandler implements MiddlewareHandlerInterface
 {
 
+    private $injector;
+
     private $stack = [];
+
+    public function __construct(Injector $injector)
+    {
+        $this->injector = $injector;
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -19,7 +27,7 @@ class MiddlewareHandler implements MiddlewareHandlerInterface
         return $next->process($request, $this);
     }
 
-    public function chain(MiddlewareInterface $middleware): void
+    public function chain(string $middleware): void
     {
         $this->stack[] = $middleware;
     }
@@ -28,6 +36,6 @@ class MiddlewareHandler implements MiddlewareHandlerInterface
     {
         $middleware = current($this->stack);
         next($this->stack);
-        return $middleware ?: null;
+        return $middleware ? $this->injector->get($middleware) : null;
     }
 }

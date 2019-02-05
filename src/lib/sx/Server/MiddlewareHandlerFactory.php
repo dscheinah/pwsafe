@@ -9,6 +9,6 @@ class MiddlewareHandlerFactory implements FactoryInterface
 
     public function create(Injector $injector, array $options, string $class): MiddlewareHandlerInterface
     {
-        return new MiddlewareHandler();
+        return new MiddlewareHandler($injector);
     }
 }

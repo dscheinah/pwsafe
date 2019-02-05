@@ -2,7 +2,6 @@
 namespace Sx\Server;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 
 class Application implements ApplicationInterface
 {
@@ -24,7 +23,7 @@ class Application implements ApplicationInterface
         echo $response->getBody();
     }
 
-    public function add(MiddlewareInterface $middleware): void
+    public function add(string $middleware): void
     {
         $this->handler->chain($middleware);
     }

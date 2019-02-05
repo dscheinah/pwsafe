@@ -15,7 +15,7 @@ class RouterFactory implements FactoryInterface
     {
         $router = new Router($injector->get(MiddlewareHandlerInterface::class));
 
-        $router->get('/passwords', $injector->get(PasswordList::class));
+        $router->get('/passwords', PasswordList::class);
 
         return $router;
     }

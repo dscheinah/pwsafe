@@ -17,7 +17,7 @@ class Injector extends Container
 
     public function get($id)
     {
-        if (($this->multiple[$id] ?? false) && isset($this->instances[$id])) {
+        if (! ($this->multiple[$id] ?? false) && isset($this->instances[$id])) {
             return $this->instances[$id];
         }
         $class = parent::get($id);
