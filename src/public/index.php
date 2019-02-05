@@ -26,6 +26,6 @@ $uriFactory = new UriFactory();
 $requestFactory = new ServerRequestFactory($uriFactory);
 $request = $requestFactory->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
 
-/** @var ApplicationInterface $app */
+/** @var Sx\Server\ApplicationInterface $app */
 $app = $injector->get(ApplicationInterface::class);
 $app->run($request);
