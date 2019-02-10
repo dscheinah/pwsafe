@@ -1,32 +1,42 @@
+import Action from "./action.js";
 import State from "./state.js";
 
-var Actions = function(state, container) {
-    this.state = state;
-    this.container = container;
-    this.actions = {};
-}
-Actions.prototype.add = function(key, action) {
-    this.actions[key] = action;
-}
-Actions.prototype.listen = function(event) {
-    this.container.addEventListener(event, function(e) {
-	if (!e.target) {
-	    return;
+class Actions {
+	constructor(state, container) {
+		this.state = state;
+		this.container = container;
+		this.actions = {};
 	}
-	var id = e.target.id || e.target.dataset.id;
-	if (!this.actions[id]) {
-	    return;
+
+	add(key, action) {
+		if (!this.actions[key]) {
+			this.actions[key] = [];
+		}
+		this.actions[key].push(action);
 	}
-	e.preventDefault();
-	this.trigger(id, e.target);
-    }.bind(this));
-}
-Actions.prototype.trigger = function(key, target) {
-    if (this.actions[key]) {
-	var action = this.actions[key];
-	action.set(target);
-	this.state.dispatch(action);
-    }
+
+	listen(event) {
+		this.container.addEventListener(event, function(e) {
+			if (!e.target) {
+				return;
+			}
+			let id = e.target.id || e.target.dataset.id;
+			if (!this.actions[id]) {
+				return;
+			}
+			this.trigger(id, e.target);
+			e.preventDefault();
+		});
+	}
+
+	trigger(key, trigger) {
+		if (!this.actions[key]) {
+			return;
+		}
+		this.actions[key].forEach(action => {
+			 action.convert(trigger).then(payload => this.state.dispatch(action, payload));
+		});
+	}
 }
 
 export default Actions;
