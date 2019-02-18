@@ -8,6 +8,10 @@ class Part {
 	update(data) {
 		this.template.set(data);
 	}
+
+	render(container) {
+		this.template.render(container);
+	}
 }
 
 export default Part;

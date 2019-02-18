@@ -1,6 +1,16 @@
 import Action from "./action.js";
 import State from "./state.js";
 
+const actionFromTarget = function(target) {
+	do {
+		let action = target.dataset.action;
+		if (action) {
+			return action;
+		}
+	} while ((target = target.parentNode) && target instanceof Element);
+	return '';
+}
+
 class Actions {
 	constructor(state, container) {
 		this.state = state;
@@ -16,15 +26,15 @@ class Actions {
 	}
 
 	listen(event) {
-		this.container.addEventListener(event, function(e) {
+		this.container.addEventListener(event, e => {
 			if (!e.target) {
 				return;
 			}
-			let id = e.target.id || e.target.dataset.id;
-			if (!this.actions[id]) {
+			let action = actionFromTarget(e.target);
+			if (!action || !this.actions[action]) {
 				return;
 			}
-			this.trigger(id, e.target);
+			this.trigger(action, e.target);
 			e.preventDefault();
 		});
 	}
@@ -34,7 +44,10 @@ class Actions {
 			return;
 		}
 		this.actions[key].forEach(action => {
-			 action.convert(trigger).then(payload => this.state.dispatch(action, payload));
+			 action.convert(trigger).then(payload => {
+				 this.state.dispatch(action, payload);
+				 action.run();
+			 });
 		});
 	}
 }

@@ -13,22 +13,27 @@ const navigation = new Navigation(history);
 const backend = new Storage.Backend();
 
 const container = document.querySelector('#main');
-const pages = {};
+const pages = {}, loading = [];
 
 ['passwords', 'password'].forEach(function(key) {
-	pages[key] = new Component.Page(navigation, new Template(key, container));
+	let template = new Template(key, container);
+	loading.push(template.load());
+	pages[key] = new Component.Page(navigation, template);
 	state.register(key, pages[key]);
 });
 ['passwords'].forEach(function(key) {
-	pages[key].part('list', new Part.List(new Template(key + '-list')));
+	let template = new Template(key + '-list');
+	loading.push(template.load());
+	pages[key].part('list', new Part.List(template));
 })
 
 actions.add('passwords', new Action.Load('passwords', backend, pages.passwords));
 actions.add('password', new Action.Load('password', backend, pages.password));
-actions.add('close', new Action.Back(navigation));
 
 actions.listen('click');
 
-actions.trigger('passwords');
-
 navigation.start(window);
+
+Promise.all(loading).then(() => {
+	actions.trigger('passwords');
+});

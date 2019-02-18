@@ -6,19 +6,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PasswordList extends MiddlewareAbstract
+class Password extends MiddlewareAbstract
 {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $list = [];
-        for ($id = 1; $id <= 5; $id ++) {
-            $list[] = [
-                'id' => $id
-            ];
-        }
         return $this->helper->create(200, [
-            'list' => $list
+            'id' => $request->getAttribute('id')
         ]);
     }
 }

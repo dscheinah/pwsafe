@@ -1,7 +1,6 @@
 class Storage {
-
-	load(key) {
-		return Promise.resolve({});
+	async load(key, params) {
+		return {};
 	}
 }
 

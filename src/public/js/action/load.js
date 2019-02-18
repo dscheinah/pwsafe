@@ -10,18 +10,21 @@ class Load extends Action {
 		this.page = page;
 	}
 
-	convert(trigger) {
-		if (trigger) {
-			return this.backend.load(this.target, trigger.dataset.id);
+	async convert(trigger) {
+		if (trigger && trigger.dataset.id) {
+			return this.backend.load(this.target, {id: trigger.dataset.id});
 		}
 		return this.backend.load(this.target);
 	}
 
 	reduce(state, payload) {
-		var result = {};
+		let result = {};
 		result[this.target] = payload;
-		this.page.enable();
 		return result;
+	}
+
+	run() {
+		this.page.enable();
 	}
 }
 

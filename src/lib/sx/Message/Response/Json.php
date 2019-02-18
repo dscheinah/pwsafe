@@ -24,6 +24,8 @@ class Json implements HelperInterface
         if ($json === false) {
             throw new JsonException('error encoding json', 500);
         }
-        return $this->responseFactory->createResponse($code)->withBody($this->streamFactory->createStream($json));
+        return $this->responseFactory->createResponse($code)
+            ->withAddedHeader('Content-Type', 'application/json')
+            ->withBody($this->streamFactory->createStream($json));
     }
 }

@@ -7,6 +7,7 @@ use Sx\Server\Router;
 use Sx\Server\RouterInterface;
 use Sx\Server\MiddlewareHandlerInterface;
 use App\Action\PasswordList;
+use App\Action\Password;
 
 class RouterFactory implements FactoryInterface
 {
@@ -15,6 +16,7 @@ class RouterFactory implements FactoryInterface
     {
         $router = new Router($injector->get(MiddlewareHandlerInterface::class));
 
+        $router->get('/password', Password::class);
         $router->get('/passwords', PasswordList::class);
 
         return $router;

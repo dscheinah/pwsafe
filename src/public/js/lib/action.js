@@ -1,10 +1,13 @@
 class Action {
-	convert(trigger) {
-		return Promise.resolve({});
+	async convert(trigger) {
+		return {};
 	}
 
 	reduce(state, payload) {
 		return {};
+	}
+
+	run() {
 	}
 }
 

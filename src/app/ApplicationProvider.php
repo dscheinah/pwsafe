@@ -16,6 +16,7 @@ use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
 use Sx\Message\Response\HelperInterface;
 use Sx\Message\Response\JsonFactory;
+use App\Action\Password;
 
 class ApplicationProvider implements ProviderInterface
 {
@@ -23,14 +24,15 @@ class ApplicationProvider implements ProviderInterface
     public function provide(Injector $injector): void
     {
         $injector->set(ApplicationInterface::class, ApplicationFactory::class);
-        $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);
-        $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
-        $injector->set(StreamFactoryInterface::class, StreamFactory::class);
-        $injector->set(RouterInterface::class, RouterFactory::class);
-        $injector->set(HelperInterface::class, JsonFactory::class);
         $injector->set(ErrorHandler::class, MiddlewareFactory::class);
+        $injector->set(HelperInterface::class, JsonFactory::class);
+        $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);
         $injector->set(NotFoundHandler::class, MiddlewareFactory::class);
+        $injector->set(Password::class, MiddlewareFactory::class);
         $injector->set(PasswordList::class, MiddlewareFactory::class);
+        $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
+        $injector->set(RouterInterface::class, RouterFactory::class);
+        $injector->set(StreamFactoryInterface::class, StreamFactory::class);
 
         $injector->multiple(MiddlewareHandlerInterface::class);
     }

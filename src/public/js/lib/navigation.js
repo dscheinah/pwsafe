@@ -1,8 +1,7 @@
 import Page from "./component/page.js";
 
 class Navigation {
-
-	construct(history) {
+	constructor(history) {
 		this.history = history;
 		this.states = {};
 		this.id = 0;
