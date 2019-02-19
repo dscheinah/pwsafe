@@ -1,6 +1,6 @@
-import Component from "../component.js";
-import Navigation from "../navigation.js";
-import Template from "../template.js";
+import Component from "./component.js";
+import Navigation from "./navigation.js";
+import Template from "./template.js";
 
 class Page extends Component {
 	constructor(navigation, template) {
@@ -20,7 +20,7 @@ class Page extends Component {
 		this.navigation.open(this);
 	}
 
-	update(data) {
+	update(data, key) {
 		super.update(data);
 		this.template.set(data);
 	}

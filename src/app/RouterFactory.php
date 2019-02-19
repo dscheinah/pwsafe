@@ -1,13 +1,13 @@
 <?php
 namespace App;
 
+use App\Action\Password;
+use App\Action\PasswordList;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
+use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\Router;
 use Sx\Server\RouterInterface;
-use Sx\Server\MiddlewareHandlerInterface;
-use App\Action\PasswordList;
-use App\Action\Password;
 
 class RouterFactory implements FactoryInterface
 {

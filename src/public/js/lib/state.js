@@ -13,7 +13,7 @@ class State {
 		}
 		this.components[key].push(component);
 		if (this.state[key]) {
-			component.update(this.state[key]);
+			component.update(this.state[key], key);
 		}
 	}
 
@@ -22,7 +22,7 @@ class State {
 		for (var key in state) {
 			let data = this.state[key] = state[key];
 			if (this.components[key]) {
-				this.components[key].forEach(component => component.update(data));
+				this.components[key].forEach(component => component.update(data, key));
 			}
 		}
 	}

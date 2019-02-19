@@ -8,7 +8,6 @@ const evaluate = function(string, keys, values) {
 		}
 		return result;
 	} catch (e) {
-		console.error(e);
 		return '';
 	}
 }, nodeFromTemplate = function(template, type) {
@@ -44,7 +43,7 @@ class Template {
 			return;
 		}
 		let response = await fetch(`/templates/${this.key}.html`);
-		this.container = document.createElement('div');
+		this.container = document.createElement('section');
 		this.container.classList.add('page');
 		this.container.classList.add(this.key);
 		this.container.innerHTML = await response.text();

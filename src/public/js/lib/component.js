@@ -9,11 +9,11 @@ class Component {
 		this.parts[key] = part;
 	}
 
-	update(data) {
-		for (var key in this.parts) {
-			let scope = data[key];
+	update(data, key) {
+		for (var partKey in this.parts) {
+			let scope = data[partKey];
 			if (scope) {
-				this.parts[key].update(scope);
+				this.parts[partKey].update(scope);
 			}
 		}
 	}

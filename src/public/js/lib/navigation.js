@@ -1,4 +1,4 @@
-import Page from "./component/page.js";
+import Page from "./page.js";
 
 class Navigation {
 	constructor(history) {

@@ -14,7 +14,8 @@ class PasswordList extends MiddlewareAbstract
         $list = [];
         for ($id = 1; $id <= 5; $id ++) {
             $list[] = [
-                'id' => $id
+                'id' => $id,
+                'name' => uniqid('', false)
             ];
         }
         return $this->helper->create(200, [

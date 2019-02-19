@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Action\Password;
 use App\Action\PasswordList;
 use App\Handler\ErrorHandler;
 use App\Handler\NotFoundHandler;
@@ -8,15 +9,14 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Sx\Container\Injector;
 use Sx\Container\ProviderInterface;
+use Sx\Message\Response\HelperInterface;
+use Sx\Message\Response\JsonFactory;
 use Sx\Message\ResponseFactory;
 use Sx\Message\StreamFactory;
 use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
-use Sx\Message\Response\HelperInterface;
-use Sx\Message\Response\JsonFactory;
-use App\Action\Password;
 
 class ApplicationProvider implements ProviderInterface
 {

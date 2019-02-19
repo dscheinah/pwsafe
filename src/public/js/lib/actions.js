@@ -1,8 +1,11 @@
 import Action from "./action.js";
 import State from "./state.js";
 
-const actionFromTarget = function(target) {
+const actionFromTarget = function(target, tag) {
 	do {
+		if (tag && target.tagName.toLowerCase() !== tag) {
+			continue;
+		}
 		let action = target.dataset.action;
 		if (action) {
 			return action;
@@ -25,12 +28,15 @@ class Actions {
 		this.actions[key].push(action);
 	}
 
-	listen(event) {
+	listen(event, tag) {
+		if (tag) {
+			tag = tag.toLowerCase();
+		}
 		this.container.addEventListener(event, e => {
 			if (!e.target) {
 				return;
 			}
-			let action = actionFromTarget(e.target);
+			let action = actionFromTarget(e.target, tag);
 			if (!action || !this.actions[action]) {
 				return;
 			}
@@ -46,7 +52,7 @@ class Actions {
 		this.actions[key].forEach(action => {
 			 action.convert(trigger).then(payload => {
 				 this.state.dispatch(action, payload);
-				 action.run();
+				 action.run(payload);
 			 });
 		});
 	}

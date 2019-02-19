@@ -7,7 +7,7 @@ class Action {
 		return {};
 	}
 
-	run() {
+	run(payload) {
 	}
 }
 

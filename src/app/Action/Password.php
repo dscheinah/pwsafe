@@ -12,7 +12,9 @@ class Password extends MiddlewareAbstract
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return $this->helper->create(200, [
-            'id' => $request->getAttribute('id')
+            'id' => $request->getAttribute('id'),
+            'name' => uniqid('', false),
+            'password' => uniqid('', false)
         ]);
     }
 }

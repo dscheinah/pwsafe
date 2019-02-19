@@ -1,6 +1,6 @@
 import Action from "../lib/action.js";
 import Backend from "../lib/storage/backend.js";
-import Page from "../lib/component/page.js";
+import Page from "../lib/page.js";
 
 class Load extends Action {
 	constructor(target, backend, page) {
@@ -23,7 +23,7 @@ class Load extends Action {
 		return result;
 	}
 
-	run() {
+	run(payload) {
 		this.page.enable();
 	}
 }
