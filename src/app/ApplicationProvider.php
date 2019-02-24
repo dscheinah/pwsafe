@@ -4,8 +4,10 @@ namespace App;
 use App\Action\Generate;
 use App\Action\Login;
 use App\Action\Password;
+use App\Action\PasswordDelete;
 use App\Action\PasswordList;
 use App\Action\PasswordSave;
+use App\Action\ProfileSave;
 use App\Handler\ErrorHandler;
 use App\Handler\NotFoundHandler;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -20,7 +22,6 @@ use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
-use App\Action\PasswordDelete;
 
 class ApplicationProvider implements ProviderInterface
 {
@@ -39,6 +40,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(PasswordDelete::class, MiddlewareFactory::class);
         $injector->set(PasswordList::class, MiddlewareFactory::class);
         $injector->set(PasswordSave::class, MiddlewareFactory::class);
+        $injector->set(ProfileSave::class, MiddlewareFactory::class);
         $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
         $injector->set(RouterInterface::class, RouterFactory::class);
         $injector->set(StreamFactoryInterface::class, StreamFactory::class);

@@ -6,13 +6,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PasswordDelete extends MiddlewareAbstract
+class ProfileSave extends MiddlewareAbstract
 {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return $this->helper->create(200, [
-            'id' => (int) $request->getAttribute('id')
+            'user' => $request->getAttribute('user'),
+            'email' => $request->getAttribute('email')
         ]);
     }
 }

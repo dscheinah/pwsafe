@@ -13,6 +13,9 @@ class Save extends Apply {
 
 	reduce(state, payload) {
 		let data = super.reduce(state, payload), updated = false;
+		if (!this.list) {
+			return data;
+		}
 		state[this.list].list.forEach((entry, key) => {
 			if (entry.id === payload.id) {
 				state[this.list].list[key] = payload;

@@ -1,0 +1,22 @@
+<h1>Profil bearbeiten</h1>
+<form data-action="profile_save" action="/profile" method="post">
+	<template>
+		<label for="${ids('password')}">altes Passwort</label>
+		<input type="password" id="${ids('password')}" name="password" />
+	</template>
+	<template>
+		<label for="${ids('user')}">Benutzer</label>
+		<input type="text" id="${ids('user')}" name="user" value="${user}" />
+	</template>
+	<template>
+		<label for="${ids('new_password')}">neues Passwort</label>
+		<input type="password" id="${ids('new_password')}" name="new_password" /><br />
+		<label for="${ids('confirm_password')}">neues Passwort bestätigen</label>
+		<input type="password" id="${ids('confirm_password')}" name="confirm_password" />
+	</template>
+	<template>
+		<label for="${ids('email')}">E-Mail</label>
+		<input type="text" id="${ids('email')}" name="email" value="${email}" />
+	</template>
+	<button>speichern</button>
+</form>

@@ -4,6 +4,7 @@ import * as Part from "./namespace/part.js";
 import * as Storage from "./namespace/storage.js";
 import Actions from "./lib/actions.js";
 import Clipboard from "./component/clipboard.js";
+import Menu from "./component/menu.js";
 import Navigation from "./lib/navigation.js";
 import Page from "./lib/page.js";
 import State from "./lib/state.js";
@@ -19,7 +20,7 @@ state.register('clipboard', new Clipboard());
 state.register('login', local);
 state.register('user', backend);
 
-const container = document.querySelector('#main');
+const container = document.querySelector('#main'), nav = document.querySelector('#nav');
 const pages = {}, loading = [];
 
 [
@@ -27,7 +28,8 @@ const pages = {}, loading = [];
 	'login',
 	'password',
 	'password_edit',
-	'passwords'
+	'passwords',
+	'profile'
 ].forEach(function(key) {
 	let template = new Template(key, container);
 	loading.push(template.load());
@@ -37,6 +39,11 @@ const pages = {}, loading = [];
 let template = new Template('passwords_list');
 loading.push(template.load());
 pages.passwords.part('list', new Part.List(template));
+
+let menuTemplate = new Template('menu', nav);
+loading.push(menuTemplate.load());
+const menu = new Menu(menuTemplate);
+state.register('user', menu);
 
 for (var helper in Helper) {
 	Template.add(helper, Helper[helper]);
@@ -54,6 +61,8 @@ actions.add('password_delete', new Action.Delete('password', 'passwords', backen
 actions.add('password_edit', new Action.Edit(pages.password_edit, 'password', 'password_edit'));
 actions.add('password_save', new Action.Save('password', navigation, backend, 'passwords'));
 actions.add('passwords', new Action.Load(pages.passwords, 'passwords', backend));
+actions.add('profile', new Action.Edit(pages.profile, 'login', 'profile'));
+actions.add('profile_save', new Action.Save('profile', navigation, backend));
 actions.add('show', new Action.Show('password'));
 
 actions.listen('click', 'button');
