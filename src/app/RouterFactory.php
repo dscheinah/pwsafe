@@ -3,6 +3,7 @@ namespace App;
 
 use App\Action\Password;
 use App\Action\PasswordList;
+use App\Action\PasswordSave;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
 use Sx\Server\MiddlewareHandlerInterface;
@@ -18,6 +19,8 @@ class RouterFactory implements FactoryInterface
 
         $router->get('/password', Password::class);
         $router->get('/passwords', PasswordList::class);
+
+        $router->post('/password', PasswordSave::class);
 
         return $router;
     }

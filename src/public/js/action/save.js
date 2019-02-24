@@ -1,17 +1,29 @@
-import Action from "../lib/action.js";
+import Apply from "./apply.js";
 
-class Save extends Action {
-	constructor(form, card, list, backend, navigation) {
-		super();
-		this.form = form;
-		this.card = card;
-		this.list = list;
+class Save extends Apply {
+	constructor(target, navigation, backend, list) {
+		super(target, navigation);
 		this.backend = backend;
-		this.navigation = navigation;
+		this.list = list;
 	}
 
-	run(payload) {
-		this.navigation.close();
+	async convert(trigger) {
+		return this.backend.save(this.target, trigger);
+	}
+
+	reduce(state, payload) {
+		let data = super.reduce(state, payload), updated = false;
+		state[this.list].list.forEach((entry, key) => {
+			if (entry.id === payload.id) {
+				state[this.list].list[key] = payload;
+				updated = true;
+			}
+		})
+		if (!updated) {
+			state[this.list].list.push(payload);
+		}
+		data[this.list] = state[this.list];
+		return data;
 	}
 }
 

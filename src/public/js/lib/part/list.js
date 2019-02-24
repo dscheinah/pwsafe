@@ -16,7 +16,7 @@ class List extends Part {
 		data.forEach(entry => {
 			this.template.set(entry);
 			let templates = this.template.container.querySelectorAll('template[data-list=repeat]');
-			templates.forEach(template => template.dataset.rendered = '');
+			templates.forEach(template => delete template.dataset.rendered);
 		});
 	}
 }

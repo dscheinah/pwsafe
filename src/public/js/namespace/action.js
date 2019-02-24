@@ -1,5 +1,11 @@
+export {default as Add} from "../action/add.js";
+export {default as Apply} from "../action/apply.js";
+export {default as Copy} from "../action/copy.js";
 export {default as Edit} from "../action/edit.js";
+export {default as Generate} from "../action/generate.js";
 export {default as Init} from "../action/init.js";
 export {default as Load} from "../action/load.js";
 export {default as Login} from "../action/login.js";
+export {default as Open} from "../action/open.js";
 export {default as Save} from "../action/save.js";
+export {default as Show} from "../action/show.js";

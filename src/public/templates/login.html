@@ -1,12 +1,12 @@
 <h1>Login</h1>
-<form data-action="login" method="post">
+<form data-action="login" action="/login" method="post">
 	<template>
-		<label for="login-login">Login</label>
-		<input type="text" id="login-login" name="login" value="${login}" />
+		<label for="${ids('user')}">Benutzer</label>
+		<input type="text" id="${ids('user')}" name="user" value="${user}" />
 	</template>
-	<div>
-		<label for="login-password">Passwort</label>
-		<input type="password" id="login-password" name="password" />
-	</div>
+	<template>
+		<label for="${ids('password')}">Passwort</label>
+		<input type="password" id="${ids('password')}" name="password" />
+	</template>
 	<button>Login</button>
 </form>

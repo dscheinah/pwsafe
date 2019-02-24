@@ -30,12 +30,17 @@ const evaluate = function(string, keys, values) {
 		}
 	}
 	return false;
-}
+}, helper = {};
 
 class Template {
 	constructor(key, parent) {
 		this.key = key;
 		this.parent = parent;
+		this.helper = {};
+	}
+
+	static add(name, callback) {
+		helper[name] = callback;
 	}
 
 	async load() {
@@ -50,16 +55,23 @@ class Template {
 	}
 
 	set(data) {
+		for (var key in helper) {
+			if (!data[key]) {
+				data[key] = helper[key].bind(this);
+			}
+		}
 		let keys = Object.keys(data), values = Object.values(data);
 		this.container.querySelectorAll('template').forEach(template => {
 			if (isPart(template, this.parent)) {
 				return;
 			}
-			let condition = template.dataset.condition;
+			let condition = template.dataset.condition, node = nodeFromTemplate(template, 'template');
 			if (condition && !evaluate(condition, keys, values)) {
+				delete template.dataset.rendered;
+				node.parentNode.removeChild(node);
 				return;
 			}
-			let newHtml = evaluate(template.innerHTML, keys, values), node = nodeFromTemplate(template, 'template');
+			let newHtml = evaluate(template.innerHTML, keys, values);
 			if (node.innerHTML !== newHtml) {
 				node.innerHTML = newHtml;
 			}

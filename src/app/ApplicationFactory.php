@@ -18,6 +18,7 @@ class ApplicationFactory implements FactoryInterface
         $app = new Application($injector->get(MiddlewareHandlerInterface::class));
 
         $app->add(ErrorHandler::class);
+        $app->add(Auth::class);
         $app->add(RouterInterface::class);
         $app->add(NotFoundHandler::class);
 

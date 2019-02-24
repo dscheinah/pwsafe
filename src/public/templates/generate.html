@@ -1,0 +1,21 @@
+<h1>Passwort generieren</h1>
+<form data-action="generate_apply" action="/" method="get">
+	<template>
+		<label for="${ids('length')}">Länge</label>
+		<input type="number" id="${ids('length')}" name="length" value="20" />
+	</template>
+	<label>
+		<input type="checkbox" name="letters" checked /> Buchstaben<br />
+	</label>
+	<label>
+		<input type="checkbox" name="digits" checked /> Zahlen<br />
+	</label>
+	<label>
+		<input type="checkbox" name="symbols" checked /> Sonderzeichen<br />
+	</label>
+	<button type="button" data-action="generate">generieren</button>
+	<template data-condition="${password}">
+		<input type="text" name="password" value="${password}" />
+		<button>übernehmen</button>
+	</template>
+</form>

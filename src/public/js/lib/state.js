@@ -1,6 +1,10 @@
 import Action from "./action.js";
 import Component from "./component.js";
 
+const clone = function(data) {
+	return JSON.parse(JSON.stringify(data));
+}
+
 class State {
 	constructor() {
 		this.state = {};
@@ -13,16 +17,16 @@ class State {
 		}
 		this.components[key].push(component);
 		if (this.state[key]) {
-			component.update(this.state[key], key);
+			component.update(clone(this.state[key]), key);
 		}
 	}
 
 	dispatch(action, payload) {
-		var state = action.reduce(this.state, payload);
+		var state = action.reduce(clone(this.state), payload);
 		for (var key in state) {
-			let data = this.state[key] = state[key];
+			this.state[key] = state[key];
 			if (this.components[key]) {
-				this.components[key].forEach(component => component.update(data, key));
+				this.components[key].forEach(component => component.update(clone(state[key]), key));
 			}
 		}
 	}

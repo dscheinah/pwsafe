@@ -2,6 +2,7 @@ import Storage from "../storage.js";
 
 const request = async function(path, query, body) {
 	let response = await fetch(`/${path}${query}`, {
+		method: body ? 'post' : 'get',
 		body: body
 	});
 	return response.json();

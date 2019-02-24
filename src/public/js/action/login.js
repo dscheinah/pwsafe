@@ -8,18 +8,21 @@ class Login extends Action {
 	}
 
 	async convert(trigger) {
-		trigger.elements[1].value = '';
-		return {
-			login: trigger.elements[0].value,
-		}
+		var data = await this.backend.save('login', trigger);
+		trigger.elements.password.value = '';
+		return data;
 	}
 
 	reduce(state, payload) {
-		return {
-			login: {
-				login: payload.login,
-			}
+		if (!state.user) {
+			state.user = {};
 		}
+		state.user.key = payload.key;
+		delete payload.key;
+		return {
+			login: payload,
+			user: state.user
+		};
 	}
 
 	run(payload) {

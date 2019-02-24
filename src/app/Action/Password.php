@@ -14,7 +14,11 @@ class Password extends MiddlewareAbstract
         return $this->helper->create(200, [
             'id' => $request->getAttribute('id'),
             'name' => uniqid('', false),
-            'password' => uniqid('', false)
+            'url' => uniqid('', false),
+            'user' => uniqid('', false),
+            'email' => uniqid('', false),
+            'password' => uniqid('', false),
+            'notice' => uniqid('', false)
         ]);
     }
 }

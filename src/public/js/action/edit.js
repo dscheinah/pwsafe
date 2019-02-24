@@ -1,20 +1,17 @@
-import Action from "../lib/action.js";
+import Open from "./open.js";
 
-class Edit extends Action {
-	constructor(source, target, page) {
-		super();
+class Edit extends Open {
+	constructor(page, source, target) {
+		super(page);
 		this.source = source;
 		this.target = target;
-		this.page = page;
 	}
 
 	reduce(state, payload) {
-		state[this.target] = state[this.source];
+		let data = state[this.source];
+		data.password = '';
+		state[this.target] = data;
 		return state;
-	}
-
-	run(payload) {
-		this.page.enable();
 	}
 }
 

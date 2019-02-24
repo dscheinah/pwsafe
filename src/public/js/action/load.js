@@ -1,13 +1,11 @@
-import Action from "../lib/action.js";
+import Open from "./open.js";
 import Backend from "../lib/storage/backend.js";
-import Page from "../lib/page.js";
 
-class Load extends Action {
-	constructor(target, backend, page) {
-		super();
+class Load extends Open {
+	constructor(page, target, backend) {
+		super(page);
 		this.target = target;
 		this.backend = backend;
-		this.page = page;
 	}
 
 	async convert(trigger) {
@@ -18,13 +16,9 @@ class Load extends Action {
 	}
 
 	reduce(state, payload) {
-		let result = {};
-		result[this.target] = payload;
-		return result;
-	}
-
-	run(payload) {
-		this.page.enable();
+		payload.visible = false;
+		state[this.target] = payload;
+		return state;
 	}
 }
 

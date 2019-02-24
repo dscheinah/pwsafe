@@ -1,9 +1,8 @@
 import Action from "../lib/action.js";
 
 class Init extends Action {
-	constructor(actions, login) {
+	constructor(login) {
 		super();
-		this.actions = actions;
 		this.login = login;
 	}
 
@@ -12,10 +11,12 @@ class Init extends Action {
 	}
 
 	reduce(state, payload) {
+		if (!payload.user) {
+			payload.user = '';
+		}
 		return {
-			login: {
-				login: payload ? payload.login : '' || '',
-			}
+			login: payload,
+			generate: {}
 		};
 	}
 
