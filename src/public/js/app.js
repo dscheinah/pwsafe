@@ -50,6 +50,7 @@ actions.add('init', new Action.Init(pages.login));
 actions.add('login', new Action.Login(backend, actions));
 actions.add('password', new Action.Load(pages.password, 'password', backend));
 actions.add('password_add', new Action.Add(pages.password_edit, 'login', 'password_edit'));
+actions.add('password_delete', new Action.Delete('password', 'passwords', backend, 'Soll das Passwort gelöscht werden?'));
 actions.add('password_edit', new Action.Edit(pages.password_edit, 'password', 'password_edit'));
 actions.add('password_save', new Action.Save('password', navigation, backend, 'passwords'));
 actions.add('passwords', new Action.Load(pages.passwords, 'passwords', backend));

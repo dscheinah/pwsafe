@@ -9,6 +9,7 @@ use Sx\Container\Injector;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\Router;
 use Sx\Server\RouterInterface;
+use App\Action\PasswordDelete;
 
 class RouterFactory implements FactoryInterface
 {
@@ -21,6 +22,8 @@ class RouterFactory implements FactoryInterface
         $router->get('/passwords', PasswordList::class);
 
         $router->post('/password', PasswordSave::class);
+
+        $router->delete('/password', PasswordDelete::class);
 
         return $router;
     }

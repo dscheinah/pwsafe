@@ -1,8 +1,8 @@
 import Storage from "../storage.js";
 
-const request = async function(path, query, body) {
+const request = async function(path, query, method, body) {
 	let response = await fetch(`/${path}${query}`, {
-		method: body ? 'post' : 'get',
+		method: method,
 		body: body
 	});
 	return response.json();
@@ -22,11 +22,15 @@ const request = async function(path, query, body) {
 
 class Backend extends Storage {
 	async load(key, params) {
-		return request(key, querystring(this.data, params || {}));
+		return request(key, querystring(this.data, params || {}), 'get');
 	}
 
 	async save(key, form) {
-		return request(key, querystring(this.data), new FormData(form));
+		return request(key, querystring(this.data), 'post', new FormData(form));
+	}
+
+	async remove(key, params) {
+		return request(key, querystring(this.data, params || {}), 'delete');
 	}
 }
 

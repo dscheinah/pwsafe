@@ -9,8 +9,8 @@ class Load extends Open {
 	}
 
 	async convert(trigger) {
-		if (trigger && trigger.dataset.id) {
-			return this.backend.load(this.target, {id: trigger.dataset.id});
+		if (trigger && trigger.value) {
+			return this.backend.load(this.target, {id: trigger.value});
 		}
 		return this.backend.load(this.target);
 	}

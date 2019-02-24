@@ -17,6 +17,10 @@ class Storage extends Component {
 	async save(key, form) {
 		return {};
 	}
+
+	async remove(key, params) {
+		return {};
+	}
 }
 
 export default Storage;

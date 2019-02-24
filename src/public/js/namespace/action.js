@@ -1,6 +1,7 @@
 export {default as Add} from "../action/add.js";
 export {default as Apply} from "../action/apply.js";
 export {default as Copy} from "../action/copy.js";
+export {default as Delete} from "../action/delete.js";
 export {default as Edit} from "../action/edit.js";
 export {default as Generate} from "../action/generate.js";
 export {default as Init} from "../action/init.js";

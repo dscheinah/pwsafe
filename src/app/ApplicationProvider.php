@@ -20,6 +20,7 @@ use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
+use App\Action\PasswordDelete;
 
 class ApplicationProvider implements ProviderInterface
 {
@@ -35,6 +36,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);
         $injector->set(NotFoundHandler::class, MiddlewareFactory::class);
         $injector->set(Password::class, MiddlewareFactory::class);
+        $injector->set(PasswordDelete::class, MiddlewareFactory::class);
         $injector->set(PasswordList::class, MiddlewareFactory::class);
         $injector->set(PasswordSave::class, MiddlewareFactory::class);
         $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
