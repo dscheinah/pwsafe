@@ -22,6 +22,8 @@ use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
+use Sx\Data\SessionInterface;
+use App\Action\LoginFactory;
 
 class ApplicationProvider implements ProviderInterface
 {
@@ -33,7 +35,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(ErrorHandler::class, MiddlewareFactory::class);
         $injector->set(Generate::class, MiddlewareFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);
-        $injector->set(Login::class, MiddlewareFactory::class);
+        $injector->set(Login::class, LoginFactory::class);
         $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);
         $injector->set(NotFoundHandler::class, MiddlewareFactory::class);
         $injector->set(Password::class, MiddlewareFactory::class);
@@ -43,6 +45,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(ProfileSave::class, MiddlewareFactory::class);
         $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
         $injector->set(RouterInterface::class, RouterFactory::class);
+        $injector->set(SessionInterface::class, SessionFactory::class);
         $injector->set(StreamFactoryInterface::class, StreamFactory::class);
 
         $injector->multiple(MiddlewareHandlerInterface::class);
