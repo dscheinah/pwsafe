@@ -11,13 +11,12 @@ class SessionFactory implements FactoryInterface
 
     public function create(Injector $injector, array $options, string $class): SessionInterface
     {
-        return new Session($class, [
-            'save_path' => $options['session']['save_path'] ?? '',
+        return new Session($class, array_merge([
             'name' => 'pwsafe',
             'use_strict_mode' => true,
             'use_only_cookies' => true,
             'cookie_httponly' => true,
             'cookie_samesite' => 'Strict'
-        ]);
+        ], $options['session'] ?? []));
     }
 }

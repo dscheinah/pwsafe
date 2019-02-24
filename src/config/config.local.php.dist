@@ -1,7 +1,5 @@
 <?php
 return [
     'env' => getenv('APP_ENV'),
-    'session' => [
-    	'save_path' => dirname(__DIR__, 1) . '/data/session'
-	]
+    'session' => []
 ];
