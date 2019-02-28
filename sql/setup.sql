@@ -1,0 +1,12 @@
+CREATE TABLE `users`(
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `user` VARCHAR(255) NOT NULL, `password` VARCHAR(255), `key` BINARY(48), `email` VARBINARY(255)
+) ENGINE = INNODB;
+
+CREATE TABLE `passwords`(
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, `user_id` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(255), `url` VARCHAR(255), `user` VARBINARY(255), `email` VARBINARY(255), `password` VARBINARY(255), `notice` BLOB,
+  FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE = INNODB;
+
+INSERT INTO `users`(`user`) VALUES('default');

@@ -1,5 +1,11 @@
 <?php
 return [
-    'env' => getenv('APP_ENV'),
-    'session' => []
+    'env' => getenv('APP_ENV') ?: 'production',
+    'session' => [],
+    'mysql' => [
+        'server' => getenv('MYSQL_SERVER'),
+        'user' => getenv('MYSQL_USER'),
+        'password' => getenv('MYSQL_PASSWORD'),
+        'database' => getenv('MYSQL_DATABASE')
+    ]
 ];

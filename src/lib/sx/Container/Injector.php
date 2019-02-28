@@ -33,7 +33,7 @@ class Injector extends Container
             }
         }
         if (! is_object($class)) {
-            throw new ContainerException(sprintf('instance for %s could not be created'), 500);
+            throw new ContainerException(sprintf('instance for %s could not be created', $id), 500);
         }
         return $this->instances[$id] = $class;
     }

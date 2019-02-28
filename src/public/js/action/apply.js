@@ -11,7 +11,7 @@ class Apply extends Action {
 		let data = {};
 		Array.from(trigger.elements).forEach(element => {
 			if (element.name) {
-				data[element.name] = element.value;
+				data[element.name] = element.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 			}
 		});
 		return data;

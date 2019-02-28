@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Data\SessionInterface;
 use Sx\Server\MiddlewareHandlerException;
+use App\Action\Login;
 
 class Auth extends Router
 {
@@ -30,12 +31,12 @@ class Auth extends Router
                 return $routeHandler->handle($request);
             }
         } catch (MiddlewareHandlerException $e) {
-            if (! $this->session->has('login') || ! $request->getAttribute('key')) {
+            if (! $this->session->has(Login::class) || ! $request->getAttribute('key')) {
                 throw new AuthException('please /login and provide the key', 403);
             }
         } finally {
             $this->session->end();
         }
-        return $handler->handle($request);
+        return $handler->handle($request->withAttribute(Login::class, $this->session->get(Login::class)));
     }
 }

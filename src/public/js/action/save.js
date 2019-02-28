@@ -14,6 +14,9 @@ class Save extends Apply {
 	reduce(state, payload) {
 		let data = super.reduce(state, payload), updated = false;
 		if (!this.list) {
+			if (this.target === 'profile') {
+				data.login = data[this.target];
+			}
 			return data;
 		}
 		state[this.list].list.forEach((entry, key) => {

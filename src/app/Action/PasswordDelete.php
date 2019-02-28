@@ -1,18 +1,22 @@
 <?php
 namespace App\Action;
 
-use App\MiddlewareAbstract;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
 
-class PasswordDelete extends MiddlewareAbstract
+class PasswordDelete extends Password
 {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->helper->create(200, [
-            'id' => (int) $request->getAttribute('id')
-        ]);
+        $this->prepareRepo($request);
+        $id = (int) $request->getAttribute('id');
+        if ($this->repo->deletePassword($id)) {
+            return $this->helper->create(200, [
+                'id' => $id
+            ]);
+        }
+        return $handler->handle($request);
     }
 }

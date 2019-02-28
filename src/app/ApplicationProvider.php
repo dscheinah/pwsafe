@@ -3,17 +3,30 @@ namespace App;
 
 use App\Action\Generate;
 use App\Action\Login;
+use App\Action\LoginFactory;
 use App\Action\Password;
 use App\Action\PasswordDelete;
+use App\Action\PasswordFactory;
 use App\Action\PasswordList;
 use App\Action\PasswordSave;
+use App\Action\ProfileFactory;
 use App\Action\ProfileSave;
 use App\Handler\ErrorHandler;
 use App\Handler\NotFoundHandler;
+use App\Model\PasswordRepo;
+use App\Model\PasswordRepoFactory;
+use App\Model\PasswordStorage;
+use App\Model\UserRepo;
+use App\Model\UserRepoFactory;
+use App\Model\UserStorage;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Sx\Container\Injector;
 use Sx\Container\ProviderInterface;
+use Sx\Data\Backend\MySqlBackendFactory;
+use Sx\Data\BackendInterface;
+use Sx\Data\SessionInterface;
+use Sx\Data\StorageFactory;
 use Sx\Message\Response\HelperInterface;
 use Sx\Message\Response\JsonFactory;
 use Sx\Message\ResponseFactory;
@@ -22,8 +35,6 @@ use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
-use Sx\Data\SessionInterface;
-use App\Action\LoginFactory;
 
 class ApplicationProvider implements ProviderInterface
 {
@@ -32,21 +43,26 @@ class ApplicationProvider implements ProviderInterface
     {
         $injector->set(ApplicationInterface::class, ApplicationFactory::class);
         $injector->set(Auth::class, AuthFactory::class);
+        $injector->set(BackendInterface::class, MySqlBackendFactory::class);
         $injector->set(ErrorHandler::class, MiddlewareFactory::class);
         $injector->set(Generate::class, MiddlewareFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);
         $injector->set(Login::class, LoginFactory::class);
         $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);
         $injector->set(NotFoundHandler::class, MiddlewareFactory::class);
-        $injector->set(Password::class, MiddlewareFactory::class);
-        $injector->set(PasswordDelete::class, MiddlewareFactory::class);
-        $injector->set(PasswordList::class, MiddlewareFactory::class);
-        $injector->set(PasswordSave::class, MiddlewareFactory::class);
-        $injector->set(ProfileSave::class, MiddlewareFactory::class);
+        $injector->set(Password::class, PasswordFactory::class);
+        $injector->set(PasswordDelete::class, PasswordFactory::class);
+        $injector->set(PasswordList::class, PasswordFactory::class);
+        $injector->set(PasswordRepo::class, PasswordRepoFactory::class);
+        $injector->set(PasswordSave::class, PasswordFactory::class);
+        $injector->set(PasswordStorage::class, StorageFactory::class);
+        $injector->set(ProfileSave::class, ProfileFactory::class);
         $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
         $injector->set(RouterInterface::class, RouterFactory::class);
         $injector->set(SessionInterface::class, SessionFactory::class);
         $injector->set(StreamFactoryInterface::class, StreamFactory::class);
+        $injector->set(UserRepo::class, UserRepoFactory::class);
+        $injector->set(UserStorage::class, StorageFactory::class);
 
         $injector->multiple(MiddlewareHandlerInterface::class);
     }
