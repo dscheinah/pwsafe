@@ -1,7 +1,7 @@
 .container > * {
-	display: none;
+    display: none;
 }
 
 .container > *:last-child {
-	display: block;
+    display: block;
 }

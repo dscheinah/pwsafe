@@ -1,25 +1,50 @@
-import Open from "./open.js";
-import Backend from "../lib/storage/backend.js";
+import Action from '../lib/action.js';
+import Backend from '../lib/storages/backend.js';
+import Open from './open.js';
 
+/**
+ * This actions loads data from the PHP backend to the application state and opens the corresponding page.
+ */
 class Load extends Open {
-	constructor(page, target, backend) {
-		super(page);
-		this.target = target;
-		this.backend = backend;
-	}
 
-	async convert(trigger) {
-		if (trigger && trigger.value) {
-			return this.backend.load(this.target, {id: trigger.value});
-		}
-		return this.backend.load(this.target);
-	}
+    /**
+     * Create the action with a reference to the backend. The target is used as scope and path for the PHP call.
+     *
+     * @param {Page}    page
+     * @param {string}  target
+     * @param {Backend} backend
+     */
+    constructor(page, target, backend) {
+        if (!(backend instanceof Backend)) {
+            throw new TypeError('backend must be instanceof Backend');
+        }
+        super(page);
+        this.target = target;
+        this.backend = backend;
+    }
 
-	reduce(state, payload) {
-		payload.visible = false;
-		state[this.target] = payload;
-		return state;
-	}
+    /**
+     * Loads the data using no query to be used for loading lists.
+     *
+     * @param {*} trigger
+     *
+     * @returns {Promise<{Object}>}
+     */
+    async convert(trigger) {
+        return this.backend.load(this.target);
+    }
+
+    /**
+     * Apply the loaded data to the application state.
+     *
+     * @param {Object} state
+     * @param {Object} payload
+     *
+     * @returns {Object}
+     */
+    reduce(state, payload) {
+        return Action.combine(this.target, payload, state);
+    }
 }
 
 export default Load;

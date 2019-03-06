@@ -25,7 +25,7 @@ use Sx\Container\Injector;
 use Sx\Container\ProviderInterface;
 use Sx\Data\Backend\MySqlBackendFactory;
 use Sx\Data\BackendInterface;
-use Sx\Data\SessionInterface;
+use Sx\Data\Session;
 use Sx\Data\StorageFactory;
 use Sx\Message\Response\HelperInterface;
 use Sx\Message\Response\JsonFactory;
@@ -36,9 +36,18 @@ use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
 
+/**
+ * A configuration provider for the dependency injection container.
+ *
+ * @package App
+ */
 class ApplicationProvider implements ProviderInterface
 {
-
+    /**
+     * Registers the factories for all classes used in this application. It is called before all other initialization.
+     *
+     * @param Injector $injector
+     */
     public function provide(Injector $injector): void
     {
         $injector->set(ApplicationInterface::class, ApplicationFactory::class);
@@ -59,11 +68,9 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(ProfileSave::class, ProfileFactory::class);
         $injector->set(ResponseFactoryInterface::class, ResponseFactory::class);
         $injector->set(RouterInterface::class, RouterFactory::class);
-        $injector->set(SessionInterface::class, SessionFactory::class);
+        $injector->set(Session::class, SessionFactory::class);
         $injector->set(StreamFactoryInterface::class, StreamFactory::class);
         $injector->set(UserRepo::class, UserRepoFactory::class);
         $injector->set(UserStorage::class, StorageFactory::class);
-
-        $injector->multiple(MiddlewareHandlerInterface::class);
     }
 }

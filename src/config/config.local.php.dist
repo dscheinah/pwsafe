@@ -1,11 +1,15 @@
 <?php
+// This file matches the default docker configuration. It reads options from env.
 return [
+    // Used to toggle error reporting and detail level of error handler. Fallback to production to be silent by default.
     'env' => getenv('APP_ENV') ?: 'production',
+    // Provide custom options of needed. Available options match with PHPs session options without 'session.' prefix.
     'session' => [],
+    // Required database connection properties.
     'mysql' => [
         'server' => getenv('MYSQL_SERVER'),
         'user' => getenv('MYSQL_USER'),
         'password' => getenv('MYSQL_PASSWORD'),
-        'database' => getenv('MYSQL_DATABASE')
-    ]
+        'database' => getenv('MYSQL_DATABASE'),
+    ],
 ];

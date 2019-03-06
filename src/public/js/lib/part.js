@@ -1,17 +1,42 @@
-import Template from "./template.js";
+import Template from './template.js';
 
+/**
+ * Defines the methods all parts must implement to be usable by components.
+ */
 class Part {
-	constructor(template) {
-		this.template = template;
-	}
 
-	update(data) {
-		this.template.set(data);
-	}
+    /**
+     * Creates a new part with the given template. Parts are assumed to be used for rendering.
+     *
+     * @param {Template} template
+     */
+    constructor(template) {
+        if (!(template instanceof Template)) {
+            throw new TypeError('template must be instanceof Template');
+        }
+        this.template = template;
+    }
 
-	render(container) {
-		this.template.render(container);
-	}
+    /**
+     * Must be implemented to implement logic for complex parts.
+     * In this simple implementation the data is simply forwarded to the template.
+     *
+     * @param {(Object|*)} data
+     */
+    update(data) {
+        this.template.set(data);
+    }
+
+    /**
+     * This method is called when a part is inserted into a template. The container is the position inside the parent
+     * template where it should be rendered.
+     * Usually applying the new container to the template should be the correct way to handle this.
+     *
+     * @param {Element} container
+     */
+    render(container) {
+        this.template.render(container);
+    }
 }
 
 export default Part;
