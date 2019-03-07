@@ -28,13 +28,8 @@ class PasswordDelete extends Password
         // Deletes the password for the given ID and user ID. If successful return the ID to the client.
         // With the ID from the response the client will also delete the entry from the rendered data.
         if ($this->repo->deletePassword($id)) {
-            return $this->helper->create(
-                200,
-                [
-                    'id' => $id,
-                ]
-            );
+            return $this->helper->create(200, ['id' => $id]);
         }
-        return $handler->handle($request);
+        return $this->helper->create(501, ['message' => 'Das Passwort konnte nicht gelöscht werden.']);
     }
 }

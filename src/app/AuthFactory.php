@@ -4,6 +4,7 @@ namespace App;
 use Sx\Container\Injector;
 use App\Action\Login;
 use Sx\Data\Session;
+use Sx\Message\Response\HelperInterface;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Container\FactoryInterface;
 use App\Action\Generate;
@@ -26,7 +27,11 @@ class AuthFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): Auth
     {
-        $auth = new Auth($injector->get(MiddlewareHandlerInterface::class), $injector->get(Session::class));
+        $auth = new Auth(
+            $injector->get(MiddlewareHandlerInterface::class),
+            $injector->get(Session::class),
+            $injector->get(HelperInterface::class)
+        );
         $auth->post('/generate', Generate::class);
         $auth->post('/login', Login::class);
         return $auth;

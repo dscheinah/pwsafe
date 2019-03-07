@@ -12,6 +12,8 @@ class Storages extends Component {
     constructor() {
         super();
         this.data = {};
+        this.status = 0;
+        this.message = '';
     }
 
     /**
@@ -26,6 +28,7 @@ class Storages extends Component {
 
     /**
      * Must be implemented to provide loading data for a given key with params.
+     * Set the error property to not zero and the message if available to indicate an error status.
      *
      * @param {string}  key
      * @param {Object=} params
@@ -38,6 +41,7 @@ class Storages extends Component {
 
     /**
      * Must be implemented to save data for a given key from the given form.
+     * Set the status property to not zero and the message if available to indicate an error status.
      *
      * @param {string}          key
      * @param {HTMLFormElement} form
@@ -50,6 +54,7 @@ class Storages extends Component {
 
     /**
      * Must be implemented to remove data for a given key with params.
+     * Set the status property to not zero and the message if available to indicate an error status.
      *
      * @param {string}  key
      * @param {Object=} params
@@ -58,6 +63,24 @@ class Storages extends Component {
      */
     async remove(key, params) {
         return {};
+    }
+
+    /**
+     * If the implementing storage got an error in one of the async functions, it returns the set error code and the
+     * message as an object. The implementation must set the status and message properties.
+     * The return value contains three keys: error which is true, code and message.
+     *
+     * @returns {Object|null}
+     */
+    error() {
+        if (!this.status) {
+            return null;
+        }
+        return {
+            error: true,
+            code: this.status,
+            message: this.message || '',
+        };
     }
 }
 

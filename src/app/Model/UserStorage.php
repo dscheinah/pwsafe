@@ -34,6 +34,7 @@ class UserStorage extends Storage
      * @param string $password
      *
      * @return array
+     * @throws \Sx\Data\BackendException
      */
     public function fetchUserById(int $id, string $password): array
     {
@@ -71,6 +72,7 @@ class UserStorage extends Storage
      * @param string $password
      *
      * @return array
+     * @throws \Sx\Data\BackendException
      */
     public function fetchUserByUser(string $user, string $password): array
     {
@@ -106,6 +108,8 @@ class UserStorage extends Storage
      * @param int    $id
      * @param string $password
      * @param array  $data
+     *
+     * @throws \Sx\Data\BackendException
      */
     public function updateUser(int $id, string $password, array $data): void
     {
@@ -138,6 +142,8 @@ class UserStorage extends Storage
      * statement per execute, store an SQL variable to reduce bounded parameters in queries.
      *
      * @param string $password
+     *
+     * @throws \Sx\Data\BackendException
      */
     private function preparePassword(string $password): void
     {

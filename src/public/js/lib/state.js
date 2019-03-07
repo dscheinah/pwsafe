@@ -63,7 +63,7 @@ class State {
             throw new TypeError('action must be instanceof Action');
         }
         // Only give a clone of the state to only allow changing it by returning a new state.
-        const state = action.reduce(clone(this.state), payload);
+        const state = action.reduce(clone(this.state), clone(payload));
         // Only scopes present in the new state are updated.
         for (let scope in state) {
             let data = state[scope], components = this.components[scope];

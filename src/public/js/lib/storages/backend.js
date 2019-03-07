@@ -9,13 +9,28 @@ import Storages from '../storages.js';
  * @param {*=}     body
  *
  * @returns {Promise<{Object}>}
+ *
+ * @this {Backend}
  */
 const request = async function (path, query, method, body) {
+    this.status = 0;
     let response = await fetch(`/${path}${query}`, {
         method: method,
         body: body,
     });
-    return response.json();
+    if (!response.ok) {
+        this.status = response.status;
+    }
+    let json;
+    try {
+        json = await response.json();
+    } catch {}
+    if (!json) {
+        // Error states may return no output, but ensure the correct return type.
+        json = {};
+    }
+    this.message = json.message || '';
+    return json;
 };
 
 /**
@@ -58,7 +73,7 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async load(key, params) {
-        return request(key, querystring(this.data, params || {}), 'get');
+        return request.call(this, key, querystring(this.data, params || {}), 'get');
     }
 
     /**
@@ -71,7 +86,7 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async save(key, form) {
-        return request(key, querystring(this.data), 'post', new FormData(form));
+        return request.call(this, key, querystring(this.data), 'post', new FormData(form));
     }
 
     /**
@@ -83,7 +98,7 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async remove(key, params) {
-        return request(key, querystring(this.data, params || {}), 'delete');
+        return request.call(this, key, querystring(this.data, params || {}), 'delete');
     }
 }
 

@@ -31,7 +31,8 @@ class Load extends Open {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        return this.backend.load(this.target);
+        let data = await this.backend.load(this.target), error = this.backend.error();
+        return error || data;
     }
 
     /**
@@ -43,6 +44,10 @@ class Load extends Open {
      * @returns {Object}
      */
     reduce(state, payload) {
+        // Reset error state if no error. The property must be present to be applied.
+        if (!payload.error) {
+            payload.error = false;
+        }
         return Action.combine(this.target, payload, state);
     }
 }

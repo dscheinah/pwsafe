@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 
+use Sx\Data\BackendException;
 use Sx\Data\RepoInterface;
 
 /**
@@ -68,12 +69,12 @@ class PasswordRepo implements RepoInterface
      * Returns the user from setUser but checks if the setter was called as a validation.
      *
      * @return int
-     * @throws RepoException
+     * @throws \RuntimeException
      */
     public function getUser(): int
     {
         if (!$this->user) {
-            throw new RepoException('a user needs to be set', 404);
+            throw new \RuntimeException('a user needs to be set');
         }
         return $this->user;
     }
@@ -82,12 +83,12 @@ class PasswordRepo implements RepoInterface
      * Returns the key from setKey but checks if the setter was used as a validation.
      *
      * @return string
-     * @throws RepoException
+     * @throws \RuntimeException
      */
     public function getKey(): string
     {
         if (!$this->key) {
-            throw new RepoException('a key needs to be set', 404);
+            throw new \RuntimeException('a key needs to be set');
         }
         return $this->key;
     }
@@ -102,7 +103,12 @@ class PasswordRepo implements RepoInterface
      */
     public function getPassword(int $id): array
     {
-        return $this->storage->fetchPassword($this->getKey(), $this->getUser(), $id);
+        try {
+            $password = $this->storage->fetchPassword($this->getKey(), $this->getUser(), $id);
+        } catch (BackendException $e) {
+            throw new RepoException('Beim Laden des Passworts ist ein Fehler aufgetreten.', 501);
+        }
+        return $password;
     }
 
     /**
@@ -114,7 +120,11 @@ class PasswordRepo implements RepoInterface
     public function getPasswords(): array
     {
         // All entries are returned so there is no need to keep the Generator here.
-        return iterator_to_array($this->storage->fetchPasswords($this->getUser()));
+        try {
+            return iterator_to_array($this->storage->fetchPasswords($this->getUser()));
+        } catch (BackendException $e) {
+            throw new RepoException('Beim Laden der Passwortliste ist ein Fehler aufgetreten.', 501);
+        }
     }
 
     /**
@@ -129,10 +139,18 @@ class PasswordRepo implements RepoInterface
     public function savePassword(array $data): int
     {
         $id = $data['id'] ?? 0;
-        if (! $id) {
-            return $this->storage->insertPassword($this->getKey(), $this->getUser(), $data);
+        if (!$id) {
+            try {
+                return $this->storage->insertPassword($this->getKey(), $this->getUser(), $data);
+            } catch (BackendException $e) {
+                throw new RepoException('Das Passwort konnte nicht angelegt werden.', 501);
+            }
         }
-        $this->storage->updatePassword($this->getKey(), $this->getUser(), $id, $data);
+        try {
+            $this->storage->updatePassword($this->getKey(), $this->getUser(), $id, $data);
+        } catch (BackendException $e) {
+            throw new RepoException('Das Passwort konnte nicht aktualisiert werden.', 501);
+        }
         return $id;
     }
 
@@ -142,10 +160,13 @@ class PasswordRepo implements RepoInterface
      * @param int $id
      *
      * @return bool
-     * @throws RepoException
      */
     public function deletePassword(int $id): bool
     {
-        return (bool) $this->storage->deletePassword($this->getUser(), $id);
+        try {
+            return (bool)$this->storage->deletePassword($this->getUser(), $id);
+        } catch (BackendException $e) {
+            return false;
+        }
     }
 }

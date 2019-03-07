@@ -28,7 +28,8 @@ class Generate extends Action {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        return this.backend.save('generate', trigger.form);
+        let data = await this.backend.save('generate', trigger.form), error = this.backend.error();
+        return error || data;
     }
 
     /**

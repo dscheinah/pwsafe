@@ -29,7 +29,7 @@ class Container implements ContainerInterface
     public function get($id)
     {
         if (!$this->has($id)) {
-            throw new NotFoundException(sprintf('%s: unable to get %s', \get_class($this), $id), 501);
+            throw new NotFoundException(sprintf('%s: unable to get %s', \get_class($this), $id));
         }
         return $this->stack[$id];
     }

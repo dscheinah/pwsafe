@@ -36,7 +36,10 @@ class Login extends Action {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        const data = await this.backend.save('login', trigger);
+        let data = await this.backend.save('login', trigger), error = this.backend.error();
+        if (error) {
+            return error;
+        }
         trigger.elements['password'].value = '';
         return data;
     }
@@ -52,6 +55,9 @@ class Login extends Action {
      * @returns {Object}
      */
     reduce(state, payload) {
+        if (payload.error) {
+            return Action.combine('login', payload, state);
+        }
         let user = state.user || {};
         user.key = payload.key;
         // The key must not be saved to the localStorage.
@@ -69,7 +75,9 @@ class Login extends Action {
      * @param {Object} payload
      */
     run(payload) {
-        this.actions.trigger('passwords');
+        if (!payload.error) {
+            this.actions.trigger('passwords');
+        }
     }
 }
 

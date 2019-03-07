@@ -1,5 +1,8 @@
 <h1>Login</h1>
 <form data-action="login" action="/login" method="post">
+    <template data-condition="${error}">
+        <p>${message}</p>
+    </template>
     <template>
         <label for="${ids('user')}">Benutzer</label>
         <input type="text" id="${ids('user')}" name="user" value="${user}"/>

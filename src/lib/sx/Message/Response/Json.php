@@ -49,11 +49,11 @@ class Json implements HelperInterface
      * @return ResponseInterface
      * @throws JsonException
      */
-    public function create(int $code, $response): ResponseInterface
+    public function create(int $code, $response = null): ResponseInterface
     {
-        $json = json_encode($response);
+        $json = json_encode($response || '');
         if ($json === false) {
-            throw new JsonException('error encoding json', 500);
+            throw new JsonException('error encoding json');
         }
         return $this->responseFactory->createResponse($code)
             ->withAddedHeader('Content-Type', 'application/json')

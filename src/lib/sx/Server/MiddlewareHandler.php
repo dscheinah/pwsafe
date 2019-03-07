@@ -62,7 +62,7 @@ class MiddlewareHandler implements MiddlewareHandlerInterface
         // If the next handler is called the middleware did not create a response.
         // If no next is available, this is an error.
         if (! $next) {
-            throw new MiddlewareHandlerException('no middleware returned a response', 501);
+            throw new MiddlewareHandlerException('no middleware returned a response');
         }
         // Use this instance as a next handler, which results in indirect recursion when the middleware calls handle.
         return $next->process($request, $this);

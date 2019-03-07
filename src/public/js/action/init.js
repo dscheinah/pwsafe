@@ -33,6 +33,8 @@ class Init extends Open {
         if (!payload.user) {
             payload.user = '';
         }
+        // Do not restore the error state from previous failed attempts.
+        payload.error = false;
         return {
             login: payload,
             // The generation scope must be initialized for the generation form to be rendered. Without any data

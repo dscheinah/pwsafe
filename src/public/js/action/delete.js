@@ -37,7 +37,8 @@ class Delete extends Action {
      */
     async convert(trigger) {
         if (confirm(this.message)) {
-            return this.backend.remove(this.key, {id: trigger.value});
+            let data = await this.backend.remove(this.key, {id: trigger.value}), error = this.backend.error();
+            return error || data;
         }
         return {};
     }
@@ -52,14 +53,18 @@ class Delete extends Action {
      */
     reduce(state, payload) {
         // If not confirmed or no success in backend, no ID is given. So do not change the state.
-        if (!payload.id) {
+        if (!payload.id && !payload.error) {
             return {};
+        }
+        if (payload.error) {
+            return Action.combine(this.list, payload, state);
         }
         // It is save to assume a list property for all lists since lists are always rendered by page parts.
         let list = Action.extract(state, this.list, 'list') || [];
         // Filter out the deleted entry and replace the list inside the original scope.
         list = list.filter(entry => entry.id !== payload.id);
-        return Action.combine(this.list, {list: list}, state);
+        // Reset error state if no error.
+        return Action.combine(this.list, {list: list, error: false}, state);
     }
 }
 

@@ -48,7 +48,7 @@ class Session implements SessionInterface
     public function get($id)
     {
         if (!isset($_SESSION[$this->scope][$id])) {
-            throw new SessionException(sprintf('key %s not found in session %s', $id, $this->scope), 404);
+            throw new SessionException(sprintf('key %s not found in session %s', $id, $this->scope));
         }
         return $_SESSION[$this->scope][$id];
     }
@@ -85,7 +85,7 @@ class Session implements SessionInterface
     public function start(): void
     {
         if (!session_start($this->options)) {
-            throw new SessionException('failed to start session', 500);
+            throw new SessionException('failed to start session');
         }
     }
 

@@ -19,5 +19,5 @@ interface HelperInterface
      *
      * @return ResponseInterface
      */
-    public function create(int $code, $response): ResponseInterface;
+    public function create(int $code, $response = null): ResponseInterface;
 }

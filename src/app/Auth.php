@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use Sx\Message\Response\HelperInterface;
 use Sx\Server\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,15 +29,24 @@ class Auth extends Router
     private $session;
 
     /**
-     * Creates the handler with session.
+     * Helper to create the not authorized response.
+     *
+     * @var HelperInterface
+     */
+    private $helper;
+
+    /**
+     * Creates the handler with session and response helper to create the not authorized response.
      *
      * @param MiddlewareHandlerInterface $handler
      * @param SessionInterface           $session
+     * @param HelperInterface            $helper
      */
-    public function __construct(MiddlewareHandlerInterface $handler, SessionInterface $session)
+    public function __construct(MiddlewareHandlerInterface $handler, SessionInterface $session, HelperInterface $helper)
     {
         parent::__construct($handler);
         $this->session = $session;
+        $this->helper = $helper;
     }
 
     /**
@@ -48,7 +58,6 @@ class Auth extends Router
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
-     * @throws AuthException
      * @throws \Sx\Data\SessionException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -65,7 +74,7 @@ class Auth extends Router
             // Require the user ID provided by the login action. Also the frontend needs to send the encryption key.
             // This is provided in the response of a successful login and must be appended to each request.
             if (!$this->session->has(Login::class) || !$request->getAttribute('key')) {
-                throw new AuthException('please /login and provide the key', 403);
+                return $this->helper->create(403);
             }
         } finally {
             // This releases the lock and closes the session. By design this happens as early as possible.

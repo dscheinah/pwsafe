@@ -77,7 +77,7 @@ class Injector extends Container
         }
         // The value from set will not be returned if it is not an object. Actually code should not reach this line.
         if (!\is_object($class)) {
-            throw new InjectorException(sprintf('instance for %s could not be created', $id), 500);
+            throw new InjectorException(sprintf('instance for %s could not be created', $id));
         }
         return $this->instances[$id] = $class;
     }

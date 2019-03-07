@@ -2,6 +2,7 @@
 namespace App\Action;
 
 use App\MiddlewareAbstract;
+use App\Model\RepoException;
 use App\Model\UserRepo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -42,12 +43,15 @@ class ProfileSave extends MiddlewareAbstract
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
-     * @throws \App\Model\RepoException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // This contains checks for valid password and requires, if changed, both new password fields to match.
-        $user = $this->repo->saveUser($request->getAttribute(Login::class), $request->getAttributes());
+        try {
+            $user = $this->repo->saveUser($request->getAttribute(Login::class), $request->getAttributes());
+        } catch (RepoException $e) {
+            return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
+        }
         if (!$user) {
             // Forward failures to the next handler.
             return $handler->handle($request);

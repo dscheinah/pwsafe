@@ -1,5 +1,8 @@
 <h1>Profil bearbeiten</h1>
 <form data-action="profile_save" action="/profile" method="post">
+    <template data-condition="${error}">
+        <p>${message}</p>
+    </template>
     <template>
         <label for="${ids('password')}">altes Passwort</label>
         <input type="password" id="${ids('password')}" name="password"/>

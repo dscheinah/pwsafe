@@ -1,5 +1,8 @@
 <h1>Passwort generieren</h1>
 <form data-action="generate_apply" action="/" method="get">
+    <template data-condition="${error}">
+        <p>${message}</p>
+    </template>
     <template>
         <label for="${ids('length')}">Länge</label>
         <input type="number" id="${ids('length')}" name="length" value="20"/>

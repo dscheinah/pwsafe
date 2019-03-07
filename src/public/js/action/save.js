@@ -33,7 +33,8 @@ class Save extends Apply {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        return this.backend.save(this.target, trigger);
+        let data = await this.backend.save(this.target, trigger), error = this.backend.error();
+        return error || data;
     }
 
     /**

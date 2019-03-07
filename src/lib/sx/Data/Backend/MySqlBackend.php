@@ -110,12 +110,13 @@ class MySqlBackend implements BackendInterface
      *
      * @return int
      * @throws BackendException
+     * @throws \RuntimeException
      */
     public function execute($resource, array $params = []): int
     {
         // Since the interface cannot provide type safety for the resource parameter it must be checked manually.
         if (!$resource instanceof \mysqli_stmt) {
-            throw new BackendException('only mysql_stmt are supported for queries', 500);
+            throw new \RuntimeException('only mysql_stmt are supported for queries');
         }
         // Parameter binding in MySQL needs type hints. So iterate all parameters and create the type sequence.
         $types = '';
@@ -136,7 +137,7 @@ class MySqlBackend implements BackendInterface
                     break;
                 default:
                     // No type casting. Every unknown type is an error.
-                    throw new BackendException('unsupported param type: ' . $type, 422);
+                    throw new BackendException('unsupported param type: ' . $type);
             }
         }
         // Bind the parameters with the computes types and execute the statement.

@@ -20,6 +20,7 @@ class PasswordStorage extends Storage
      * @param int    $id
      *
      * @return array
+     * @throws \Sx\Data\BackendException
      */
     public function fetchPassword(string $key, int $user, int $id): array
     {
@@ -50,6 +51,7 @@ class PasswordStorage extends Storage
      * @param int $user
      *
      * @return \Generator
+     * @throws \Sx\Data\BackendException
      */
     public function fetchPasswords(int $user): \Generator
     {
@@ -73,6 +75,7 @@ class PasswordStorage extends Storage
      * @param array  $data
      *
      * @return int
+     * @throws \Sx\Data\BackendException
      */
     public function insertPassword(string $key, int $user, array $data): int
     {
@@ -105,6 +108,8 @@ class PasswordStorage extends Storage
      * @param int    $user
      * @param int    $id
      * @param array  $data
+     *
+     * @throws \Sx\Data\BackendException
      */
     public function updatePassword(string $key, int $user, int $id, array $data): void
     {
@@ -142,6 +147,7 @@ class PasswordStorage extends Storage
      * @param int $id
      *
      * @return int
+     * @throws \Sx\Data\BackendException
      */
     public function deletePassword(int $user, int $id): int
     {
@@ -162,6 +168,8 @@ class PasswordStorage extends Storage
      * By using an SQL variable the number of bound parameters is reduced in queries.
      *
      * @param string $key
+     *
+     * @throws \Sx\Data\BackendException
      */
     private function prepareKey(string $key): void
     {

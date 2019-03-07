@@ -20,29 +20,28 @@ class Generate extends MiddlewareAbstract
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
-     * @throws \RuntimeException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $targetLength = $request->getAttribute('length', 20);
         $password = '';
         $length = 0;
-        // Fill the password to the required length.
-        // This needs to loop since char filters are applied to the random byte creation each run.
-        while ($length < $targetLength) {
-            try {
+        try {
+            // Fill the password to the required length.
+            // This needs to loop since char filters are applied to the random byte creation each run.
+            while ($length < $targetLength) {
                 // Create random bytes and filter it to printable chars.
                 $password .= preg_replace('/[^\x21-\x7E]/', '', random_bytes($targetLength - $length));
-            } catch (\Exception $e) {
-                throw new \RuntimeException('failed to create random password: ' . $e->getMessage(), $e->getCode(), $e);
+                $length = \strlen($password);
             }
-            $length = \strlen($password);
+        } catch (\Exception $e) {
+            return $this->helper->create(
+                501,
+                [
+                    'message' => 'Bei der Zufallsgenerierung ist leider ein Fehler aufgetreten.'
+                ]
+            );
         }
-        return $this->helper->create(
-            200,
-            [
-                'password' => $password,
-            ]
-        );
+        return $this->helper->create(200, ['password' => $password]);
     }
 }

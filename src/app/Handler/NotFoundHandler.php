@@ -23,6 +23,6 @@ class NotFoundHandler extends MiddlewareAbstract
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->helper->create(404, ['message' => 'not found']);
+        return $this->helper->create(404);
     }
 }

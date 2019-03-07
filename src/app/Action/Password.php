@@ -2,6 +2,7 @@
 namespace App\Action;
 
 use App\MiddlewareAbstract;
+use App\Model\RepoException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -47,10 +48,10 @@ class Password extends MiddlewareAbstract
         // Set user ID and key from request.
         $this->prepareRepo($request);
         // Load a password entry by id.
-        $password = $this->repo->getPassword($request->getAttribute('id'));
-        // If not found let the next handler (not found) handle it.
-        if (! $password) {
-            return $handler->handle($request);
+        try {
+            $password = $this->repo->getPassword($request->getAttribute('id'));
+        } catch (RepoException $e) {
+            return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
         }
         return $this->helper->create(200, $password);
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Action;
 
+use App\Model\RepoException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,8 +26,10 @@ class PasswordList extends Password
     {
         // Sets the user ID (and the not needed key) to prevent loading passwords from other users.
         $this->prepareRepo($request);
-        return $this->helper->create(200, [
-            'list' => $this->repo->getPasswords()
-        ]);
+        try {
+            return $this->helper->create(200, ['list' => $this->repo->getPasswords()]);
+        } catch (RepoException $e) {
+            return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
+        }
     }
 }

@@ -7,6 +7,7 @@ import Clipboard from './component/clipboard.js';
 import Menu from './component/menu.js';
 import Navigation from './lib/navigation.js';
 import Page from './lib/page.js';
+import Reload from './component/reload.js';
 import State from './lib/state.js';
 import Template from './lib/template.js';
 
@@ -19,6 +20,9 @@ const navigation = new Navigation(history);
 // Initialize the storages. One to interact with the PHP backend and one for the localStorage.
 const backend = new (Storage.Backend)();
 const local = new (Storage.Local)(localStorage, 'main', 1);
+// Will be registered to all scopes of the application state which interact with the PHP backend.
+// It triggers a page reload on auth error to force relogin.
+const reload = new Reload();
 
 // Register the non page components.
 // The clipboard has a corresponding action registered later in this file.
@@ -52,6 +56,7 @@ Object.keys(pages).forEach(function (key) {
     loading.push(template.load());
     pages[key] = new Page(navigation, template);
     state.register(key, pages[key]);
+    state.register(key, reload);
 });
 // Create the list part for the password list page.
 let template = new Template('passwords_list');

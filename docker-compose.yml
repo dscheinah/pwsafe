@@ -2,6 +2,7 @@ version: '3'
 
 # This file provides the default setup for development. It may also be used in production.
 # You need to provide a .env file containing APP_ENV, MYSQL_DATABASE, MYSQL_USER and MYSQL_PASSWORD.
+# The APP_ENV must be the string production to disable detailed error output.
 services:
    app:
       # Build the adjusted PHP-Apache image with public dir and MySQL support.

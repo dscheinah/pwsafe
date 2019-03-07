@@ -2,6 +2,7 @@
 namespace App\Action;
 
 use App\MiddlewareAbstract;
+use App\Model\RepoException;
 use App\Model\UserRepo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -53,7 +54,6 @@ class Login extends MiddlewareAbstract
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
-     * @throws \App\Model\RepoException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -61,16 +61,14 @@ class Login extends MiddlewareAbstract
         $password = $request->getAttribute('password') ?: '';
         // First check the password of the given user. Both parameters need to be string (not null).
         if (!$this->repo->checkPassword($user, $password)) {
-            return $this->helper->create(
-                403,
-                [
-                    'user' => $user,
-                    'message' => 'login data is invalid',
-                ]
-            );
+            return $this->helper->create(422, ['message' => 'Der Benutzer oder das Passwort sind ungültig.']);
         }
         // Get the complete user data if password check successful and store the user id.
-        $user = $this->repo->getUser($user, $password);
+        try {
+            $user = $this->repo->getUser($user, $password);
+        } catch (RepoException $e) {
+            return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
+        }
         $this->session->set(__CLASS__, $user['id']);
         // ID and hashed password should not be sent to the client since not needed.
         unset($user['id'], $user['password']);

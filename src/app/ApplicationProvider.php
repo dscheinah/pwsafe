@@ -12,6 +12,7 @@ use App\Action\PasswordSave;
 use App\Action\ProfileFactory;
 use App\Action\ProfileSave;
 use App\Handler\ErrorHandler;
+use App\Handler\ErrorHandlerFactory;
 use App\Handler\NotFoundHandler;
 use App\Model\PasswordRepo;
 use App\Model\PasswordRepoFactory;
@@ -53,7 +54,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(ApplicationInterface::class, ApplicationFactory::class);
         $injector->set(Auth::class, AuthFactory::class);
         $injector->set(BackendInterface::class, MySqlBackendFactory::class);
-        $injector->set(ErrorHandler::class, MiddlewareFactory::class);
+        $injector->set(ErrorHandler::class, ErrorHandlerFactory::class);
         $injector->set(Generate::class, MiddlewareFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);
         $injector->set(Login::class, LoginFactory::class);
