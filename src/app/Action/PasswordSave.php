@@ -24,6 +24,12 @@ class PasswordSave extends Password
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if (!$request->getAttribute('name')) {
+            return $this->helper->create(422, ['message' => 'Es muss ein Name angegeben werden.']);
+        }
+        if (!$request->getAttribute('password')) {
+            return $this->helper->create(422, ['message' => 'Es muss ein Password angegeben werden.']);
+        }
         // Set user ID and key to encrypt provided data.
         $this->prepareRepo($request);
         // A successful save will return the ID of the updated which is given to the next handler to load data for it.

@@ -9,7 +9,7 @@ export {default as Open} from '../action/open.js';
 export {default as PasswordAdd} from '../action/password/add.js';
 export {default as PasswordDetail} from '../action/password/detail.js';
 export {default as PasswordGenerate} from '../action/password/generate.js';
+export {default as PasswordSave} from '../action/password/save.js';
 export {default as PasswordShow} from '../action/password/show.js';
 export {default as ProfileEdit} from '../action/profile/edit.js';
 export {default as ProfileSave} from '../action/profile/save.js';
-export {default as Save} from '../action/save.js';

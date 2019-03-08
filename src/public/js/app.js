@@ -84,7 +84,7 @@ actions.add('password', new Action.PasswordDetail(pages.password, backend));
 actions.add('password_add', new Action.PasswordAdd(pages.password_edit));
 actions.add('password_delete', new Action.Delete('passwords', backend, 'password', confirmDelete));
 actions.add('password_edit', new Action.Edit(pages.password_edit, 'password', 'password_edit'));
-actions.add('password_save', new Action.Save('password', navigation, backend, 'passwords'));
+actions.add('password_save', new Action.PasswordSave(navigation, backend));
 actions.add('profile', new Action.ProfileEdit(pages.profile));
 actions.add('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());

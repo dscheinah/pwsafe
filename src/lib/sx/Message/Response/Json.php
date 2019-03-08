@@ -51,7 +51,7 @@ class Json implements HelperInterface
      */
     public function create(int $code, $response = null): ResponseInterface
     {
-        $json = json_encode($response || '');
+        $json = json_encode($response ?: '');
         if ($json === false) {
             throw new JsonException('error encoding json');
         }

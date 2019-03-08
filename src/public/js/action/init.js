@@ -17,7 +17,8 @@ class Init extends Open {
         if (!(trigger instanceof Storages)) {
             throw new TypeError('trigger must be instanceof Storages');
         }
-        return trigger.load('login');
+        let login = await trigger.load('login');
+        return (login instanceof Object) ? login : {};
     }
 
     /**
@@ -41,6 +42,12 @@ class Init extends Open {
             // the templates will not render since the pages update method is never called.
             generate: {},
         };
+    }
+
+    run(payload) {
+        super.run(payload);
+        // Focus is only possible if the element is in DOM, so run super first.
+        this.page.template.container.querySelector(`[name=${payload.user ? 'password' : 'user'}]`).focus();
     }
 }
 

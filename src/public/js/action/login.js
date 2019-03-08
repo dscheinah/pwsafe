@@ -40,7 +40,8 @@ class Login extends Action {
         if (error) {
             return error;
         }
-        trigger.elements['password'].value = '';
+        // Use a delay to not make the validation visible while the page is still active.
+        setTimeout(() => trigger.elements['password'].value = '', 500);
         return data;
     }
 

@@ -5,11 +5,11 @@
     </template>
     <template>
         <label for="${ids('password')}">altes Passwort</label>
-        <input type="password" id="${ids('password')}" name="password"/>
+        <input type="password" id="${ids('password')}" name="password" required/>
     </template>
     <template>
         <label for="${ids('user')}">Benutzer</label>
-        <input type="text" id="${ids('user')}" name="user" value="${user}"/>
+        <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
     </template>
     <template>
         <label for="${ids('new_password')}">neues Passwort</label>
@@ -19,7 +19,7 @@
     </template>
     <template>
         <label for="${ids('email')}">E-Mail</label>
-        <input type="text" id="${ids('email')}" name="email" value="${email}"/>
+        <input type="email" id="${ids('email')}" name="email" value="${email}"/>
     </template>
     <button>speichern</button>
 </form>

@@ -46,6 +46,9 @@ class ProfileSave extends MiddlewareAbstract
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if (!$request->getAttribute('user')) {
+            return $this->helper->create(422, ['message' => 'Der Benutzer muss gefüllt werden.']);
+        }
         // This contains checks for valid password and requires, if changed, both new password fields to match.
         try {
             $user = $this->repo->saveUser($request->getAttribute(Login::class), $request->getAttributes());

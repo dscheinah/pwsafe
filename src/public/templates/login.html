@@ -5,11 +5,11 @@
     </template>
     <template>
         <label for="${ids('user')}">Benutzer</label>
-        <input type="text" id="${ids('user')}" name="user" value="${user}"/>
+        <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
     </template>
     <template>
         <label for="${ids('password')}">Passwort</label>
-        <input type="password" id="${ids('password')}" name="password"/>
+        <input type="password" id="${ids('password')}" name="password" required/>
     </template>
     <button>Login</button>
 </form>

@@ -30,6 +30,19 @@ class Edit extends Open {
     reduce(state, payload) {
         return Action.combine(this.target, state[this.source] || {});
     }
+
+    /**
+     * Focus the first empty field on edit once the page is visible.
+     *
+     * @param {Object} payload
+     */
+    run(payload) {
+        super.run(payload);
+        let input = this.page.template.container.querySelector('input[value=""], input:not([value])');
+        if (input) {
+            input.focus();
+        }
+    }
 }
 
 export default Edit;
