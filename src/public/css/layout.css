@@ -1,7 +1,153 @@
+html {
+    height: 100%;
+}
+
+body {
+    background: lightgray;
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2 {
+    margin-top: 0;
+}
+
+input, button {
+    font-size: 1em;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    height: 60px;
+    background: lightcoral;
+    z-index: 1000;
+}
+
+.menu, .container {
+    margin: 0 auto;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.menu {
+    padding: 20px 30px;
+    text-align: right;
+}
+
+button {
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+}
+
+.container {
+    padding: 40px;
+    background: white;
+    width: 100%;
+    min-height: 100%;
+    flex: 1 0 auto;
+}
+
 .container > * {
     display: none;
 }
 
 .container > *:last-child {
     display: block;
+}
+
+.input {
+    position: relative;
+    margin-bottom: 2.5em;
+}
+
+input:focus {
+    outline: none;
+}
+
+.input label {
+    position: absolute;
+    top: 100%;
+    margin-top: .1em;
+    left: 0;
+}
+
+input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: .6em .3em;
+    border: none;
+    border-bottom: 1px solid grey;
+}
+
+textarea {
+    min-width: 100%;
+}
+
+input:invalid {
+    border-color: red;
+    box-shadow: none;
+}
+
+[required] + label {
+    font-weight: bold;
+}
+
+.container button {
+    padding: .3em;
+    background: lightblue;
+    line-height: 1.5;
+}
+
+table {
+    margin-bottom: 1.5em;
+    border-collapse: collapse;
+}
+
+thead {
+    position: sticky;
+    top: 60px;
+    background: white;
+    z-index: 100;
+    box-shadow: 0 1px gray;
+}
+
+th {
+    font-weight: bold;
+}
+
+th, td {
+    padding: .3em .6em;
+    text-align: left;
+}
+
+thead + tbody td {
+    border-top: 1px solid lightgray;
+}
+
+tbody th:first-child {
+    padding-left: 0;
+}
+
+.error {
+    color: red;
+}
+
+.control {
+    display: flex;
+}
+
+.control > *:first-child {
+    flex: 1 1 auto;
+    margin-right: 20px;
+}
+
+.hidden-password {
+    display: inline-block;
+    width: .8em;
+    text-align: center;
 }

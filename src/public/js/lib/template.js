@@ -41,6 +41,10 @@ const nodeFromTemplate = function (template, type) {
         return template.previousSibling;
     }
     let node = document.createElement(template.dataset.tag || 'div');
+    let baseStyle = template.getAttribute('class');
+    if (baseStyle) {
+        node.setAttribute('class', baseStyle);
+    }
     node.classList.add(type);
     node.dataset.template = type;
     template.parentNode.insertBefore(node, template);

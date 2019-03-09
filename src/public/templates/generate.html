@@ -1,16 +1,20 @@
 <h1>Passwort generieren</h1>
 <form data-action="generate_apply" action="/" method="get">
-    <template data-condition="${error}">
-        <p>${message}</p>
+    <template data-condition="${error}" data-tag="p" class="error">
+        ${message}
     </template>
-    <template>
-        <label for="${ids('length')}">Länge</label>
-        <input type="number" id="${ids('length')}" name="length" value="20"/>
-    </template>
-    <button type="button" data-action="generate">generieren</button>
-    <template data-condition="${password}">
-        <label for="${ids('password')}">generiertes Passwort</label>
+    <div class="control">
+        <template class="input">
+            <input type="number" id="${ids('length')}" name="length" value="20"/>
+            <label for="${ids('length')}">Länge</label>
+        </template>
+        <div>
+            <button type="button" data-action="generate">generieren</button>
+        </div>
+    </div>
+    <template class="input" data-condition="${password}">
         <input type="text" name="password" id="${ids('password')}" value="${password}"/>
-        <button>übernehmen</button>
+        <label for="${ids('password')}">generiertes Passwort</label>
     </template>
+    <button>übernehmen</button>
 </form>

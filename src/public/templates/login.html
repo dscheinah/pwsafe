@@ -1,15 +1,15 @@
 <h1>Login</h1>
 <form data-action="login" action="/login" method="post">
-    <template data-condition="${error}">
-        <p>${message}</p>
+    <template data-condition="${error}" data-tag="p" class="error">
+        ${message}
     </template>
-    <template>
-        <label for="${ids('user')}">Benutzer</label>
+    <template class="input">
         <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
+        <label for="${ids('user')}">Benutzer</label>
     </template>
-    <template>
-        <label for="${ids('password')}">Passwort</label>
+    <template class="input">
         <input type="password" id="${ids('password')}" name="password" required/>
+        <label for="${ids('password')}">Passwort</label>
     </template>
     <button>Login</button>
 </form>

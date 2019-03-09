@@ -1,25 +1,27 @@
 <h1>Profil bearbeiten</h1>
 <form data-action="profile_save" action="/profile" method="post">
-    <template data-condition="${error}">
-        <p>${message}</p>
+    <template data-condition="${error}" data-tag="p" class="error">
+        ${message}
     </template>
-    <template>
-        <label for="${ids('password')}">altes Passwort</label>
+    <template class="input">
         <input type="password" id="${ids('password')}" name="password" required/>
+        <label for="${ids('password')}">altes Passwort</label>
     </template>
-    <template>
-        <label for="${ids('user')}">Benutzer</label>
+    <template class="input">
         <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
+        <label for="${ids('user')}">Benutzer</label>
     </template>
-    <template>
-        <label for="${ids('new_password')}">neues Passwort</label>
+    <template class="input">
         <input type="password" id="${ids('new_password')}" name="new_password"/><br/>
-        <label for="${ids('confirm_password')}">neues Passwort bestätigen</label>
-        <input type="password" id="${ids('confirm_password')}" name="confirm_password"/>
+        <label for="${ids('new_password')}">neues Passwort</label>
     </template>
-    <template>
-        <label for="${ids('email')}">E-Mail</label>
+    <template class="input">
+        <input type="password" id="${ids('confirm_password')}" name="confirm_password"/>
+        <label for="${ids('confirm_password')}">neues Passwort bestätigen</label>
+    </template>
+    <template class="input">
         <input type="email" id="${ids('email')}" name="email" value="${email}"/>
+        <label for="${ids('email')}">E-Mail</label>
     </template>
     <button>speichern</button>
 </form>
