@@ -37,8 +37,7 @@ class Delete extends Action {
      */
     async convert(trigger) {
         if (confirm(this.message)) {
-            let data = await this.backend.remove(this.key, {id: trigger.value}), error = this.backend.error();
-            return error || data;
+            return this.backend.run(this.backend.remove, this.key, {id: trigger.value});
         }
         return {};
     }

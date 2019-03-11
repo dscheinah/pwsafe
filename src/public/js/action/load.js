@@ -31,8 +31,7 @@ class Load extends Open {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        let data = await this.backend.load(this.target), error = this.backend.error();
-        return error || data;
+        return this.backend.run(this.backend.load, this.target);
     }
 
     /**

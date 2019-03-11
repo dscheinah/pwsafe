@@ -77,15 +77,8 @@ class Action {
      */
     static combine(scope, data, state) {
         let combinedState = {};
-        combinedState[scope] = {};
-        // Use the original data as a base.
-        if (state && state[scope]) {
-            combinedState[scope] = state[scope];
-        }
-        // Update all values from the given data.
-        for (let key in data) {
-            combinedState[scope][key] = data[key];
-        }
+        // Use the original data as a base and update all values from the given data.
+        combinedState[scope] = Object.assign((state && state[scope]) || {}, data);
         return combinedState;
     }
 }

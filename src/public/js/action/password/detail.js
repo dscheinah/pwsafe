@@ -23,8 +23,7 @@ class Detail extends Load {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        let data = await this.backend.load('password', {id: trigger.value}), error = this.backend.error();
-        return error || data;
+        return this.backend.run(this.backend.load, 'password', {id: trigger.value});
     }
 
     /**

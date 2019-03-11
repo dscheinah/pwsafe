@@ -35,7 +35,6 @@ state.register('user', backend);
 // Make the template helpers available to all templates.
 Template.add('ids', Helper.ids);
 Template.add('mask', Helper.mask);
-Template.add('unmask', Helper.unmask);
 
 // Create all pages with the corresponding templates.
 // This represents the list of available pages.

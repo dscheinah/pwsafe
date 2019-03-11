@@ -82,6 +82,20 @@ class Storages extends Component {
             message: this.message || '',
         };
     }
+
+    /**
+     * A small helper to wrap the storage calls and error checks.
+     * It returns the error if existent and the data from the callback if no error.
+     *
+     * @param {Function} callback
+     * @param {*}        params
+     *
+     * @returns {Promise<{Object}>}
+     */
+    async run(callback, ...params) {
+        let data = await callback.apply(this, params);
+        return this.error() || data;
+    }
 }
 
 export default Storages;
