@@ -9,12 +9,16 @@
             <label for="${ids('length')}">Länge</label>
         </template>
         <div>
-            <button type="button" data-action="generate">generieren</button>
+            <button type="button" data-action="generate">⚙ generieren</button>
         </div>
     </div>
-    <template class="input" data-condition="${password}">
-        <input type="text" name="password" id="${ids('password')}" value="${password}"/>
-        <label for="${ids('password')}">generiertes Passwort</label>
+    <template data-condition="${password}">
+        <div class="input">
+            <input type="text" name="password" id="${ids('password')}" value="${password}"/>
+            <label for="${ids('password')}">generiertes Passwort</label>
+        </div>
+        <div class="actions">
+            <button>✔ übernehmen</button>
+        </div>
     </template>
-    <button>übernehmen</button>
 </form>

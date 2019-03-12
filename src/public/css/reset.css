@@ -1,0 +1,24 @@
+/* This file contains all rules to remove browser default styles where needed. These rules are layout independent. */
+
+body {
+    margin: 0;
+    background: white;
+}
+
+button, input, textarea {
+    font-size: 1em;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+}
+
+th, td {
+    text-align: left;
+}

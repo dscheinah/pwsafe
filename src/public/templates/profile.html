@@ -1,4 +1,4 @@
-<h1>Profil bearbeiten</h1>
+<h1>Profil</h1>
 <form data-action="profile_save" action="/profile" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}
@@ -23,5 +23,7 @@
         <input type="email" id="${ids('email')}" name="email" value="${email}"/>
         <label for="${ids('email')}">E-Mail</label>
     </template>
-    <button>speichern</button>
+    <div class="actions">
+        <button>🖫 speichern</button>
+    </div>
 </form>

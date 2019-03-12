@@ -1,0 +1,46 @@
+/* This applies to all inputs (but radio, checkbox and submit are currently not used). */
+input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    /* Partially match the padding with the buttons. */
+    padding: .6em .3em;
+    /* Reset the border and replace it with an input-indicating bottom one. */
+    border: none;
+    border-bottom: 1px solid lightgreen;
+    box-shadow: 0 -1px 0 lightgray inset;
+}
+
+input {
+    /* Matches the height with the buttons (font-size + padding) if used in one line. */
+    height: 2.2em;
+}
+
+/* Indicate validation errors with custom style. This also applies to required elements with initial blank value. */
+input:invalid {
+    border-color: lightpink;
+}
+
+textarea {
+    /* Do not allow vertical resizing. */
+    min-width: 100%;
+}
+
+/* Wrapper element to position the labels independent of their DOM position. */
+.input {
+    position: relative;
+    /* Extra space to not have the labels overlap with the next content. */
+    margin-bottom: 2.5em;
+}
+
+.input label {
+    position: absolute;
+    /* Position the label right below the start of the input with some space between. */
+    top: 100%;
+    margin-top: .1em;
+    left: 0;
+}
+
+/* Indicate required fields by a bold label. This assumes labels are positioned after the input. */
+[required] + label {
+    font-weight: bold;
+}

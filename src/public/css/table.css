@@ -1,0 +1,48 @@
+table {
+    margin-bottom: 1.5em;
+    border-collapse: collapse;
+    /* If the table needs more space than available on mobile devices, hide the shadow of the surrounding container. */
+    background: white;
+}
+
+/* If scrolled the header should be visible. Position it below the menu but above the table. */
+thead {
+    position: sticky;
+    top: 60px;
+    /* To have it above the table body. */
+    z-index: 1000;
+}
+
+/* Indicate the sticky header by a shadow. This is done on the tr to allow extra positioning. */
+thead tr {
+    position: relative;
+    /* Move it up to separate the box-shadow from the table body. */
+    top: -.5em;
+    box-shadow: 0 3px 0 lightgray;
+    /* In the fixed mode of position sticky it must not be transparent above the box-shadow. */
+    background: white;
+}
+
+thead th {
+    /* Padding is only available on cells. */
+    padding-top: 1.3em;
+}
+
+th {
+    font-weight: bold;
+}
+
+th, td {
+    /* Have some white space in a table. */
+    padding: .3em .6em;
+}
+
+/* Use a separator on the rows of a list table. List tables are indicates by having a thead. */
+thead + tbody tr:not(:first-child) td {
+    border-top: 1px solid lightgray;
+}
+
+/* If used in a non list table it should be aligned with the other content outside the table. */
+tbody th:first-child {
+    padding-left: 0;
+}

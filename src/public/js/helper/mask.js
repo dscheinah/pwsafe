@@ -7,12 +7,14 @@
  * @returns {string}
  */
 const mask = function (value) {
-    let widthChecker = document.createElement('span'), stars = '*'.repeat(value.length);
+    let widthChecker = document.createElement('span');
     // Create a temporary visible element to measure the real string length.
     widthChecker.innerHTML = value;
     document.body.appendChild(widthChecker);
-    let width = widthChecker.offsetWidth;
+    let width = widthChecker.getBoundingClientRect().width;
     document.body.removeChild(widthChecker);
+    // Fill the available space with stars.
+    let stars = '★'.repeat(width / 13);
     // Use the measured length to style the target element. This allows equal width on toggling.
     return `<span class="hidden-password" style="width: ${width}px;">${stars}</span>`;
 };
