@@ -1,3 +1,11 @@
 # App initialization is done by pure JavaScript, but all routes are handled by the PHP entrypoint.
 DirectoryIndex index.html
 FallbackResource /index.php
+
+# Add default security configuration. Unfortunately the templating system needs unsafe-eval and unsafe-inline...
+Header always set Content-Security-Policy "default-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; base-uri 'self'"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "no-referrer"
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "deny"
+Header always set Feature-Policy "geolocation 'none'; microphone 'none'; camera 'none'"

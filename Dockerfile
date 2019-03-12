@@ -6,4 +6,8 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
  && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
  # MySQL is required for the application.
- && docker-php-ext-install mysqli
+ && docker-php-ext-install mysqli \
+ # To set the security headers like CSP in .htaccess.
+ && a2enmod headers \
+ # Security settings not available in .htaccess context.
+ && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf

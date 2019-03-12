@@ -10,7 +10,6 @@ Also some features are still under development:
 * add categories for passwords
 * user and group management with basic privileges
 * share passwords with other users and groups
-* add default headers for security
 * create a production container with build tool configuration
 * improve the look and feel
 * enable docker compatible logging for the PHP backend

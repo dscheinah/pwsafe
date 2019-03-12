@@ -23,10 +23,6 @@ class Clipboard extends Component {
         document.execCommand('copy');
         // After successful copy the element can be removed to keep the DOM clean.
         document.body.removeChild(input);
-        // Clear the clipboard after 30s to prevent accidental pasting of passwords.
-        setTimeout(() => {
-            this.update({value: ''}, scope);
-        }, 30000);
     }
 }
 
