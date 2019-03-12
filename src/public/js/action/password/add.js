@@ -14,7 +14,7 @@ class Add extends Edit {
      * @param {Page} page
      */
     constructor(page) {
-        super(page, 'login', 'password_edit');
+        super(page, 'defaults', 'password_edit');
     }
 
     /**

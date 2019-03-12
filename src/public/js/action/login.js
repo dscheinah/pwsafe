@@ -64,7 +64,10 @@ class Login extends Action {
         // The key must not be saved to the localStorage.
         delete payload.key;
         return {
-            login: payload,
+            defaults: payload,
+            login: {
+                user: payload.user,
+            },
             user: user,
         };
     }

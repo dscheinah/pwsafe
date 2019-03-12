@@ -27,12 +27,13 @@ class Save extends Parent {
     reduce(state, payload) {
         // Update the profile edit page if the client uses navigation forward.
         let data = Action.combine('profile', payload, state);
-        // Reset previous error state if no error occurred.
         if (!payload.error) {
-            data.profile.error = false;
+            // The defaults scope is used as a source for new password defaults.
+            data.defaults = data.profile;
+            // And the login scope for the stored user name on login.
+            data.login = Action.combine('login', {user: payload.user}, state).login;
+            console.log(data);
         }
-        // The login scope is used as a source for defaults and the stored user name on login.
-        data.login = data.profile;
         return data;
     }
 }

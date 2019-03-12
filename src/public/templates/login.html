@@ -1,4 +1,10 @@
 <h1>Login</h1>
+<p>
+    Damit die Passwörter geladen und entschlüsselt werden können, muss eine Anmeldung durchgeführt werden.
+    Um der versehentlichen Nutzung fremder Accounts vorzubeugen, muss dies bei jedem Aufruf der Seite erfolgen.
+    Außerdem erfolgt nach 10 Minuten Inaktivität eine automatische Abmeldung.
+    Der zu letzt verwendete Benutzer wird automatisch für die nächste Anmeldung vorgeschlagen.
+</p>
 <form data-action="login" action="/login" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}

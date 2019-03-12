@@ -1,19 +1,30 @@
 <h1>Profil</h1>
+<p>
+    Um Änderungen am Profil vornehmen zu können, wird immer das aktuelle Passwort des Nutzers benötigt.
+    Das Passwort sollte möglichst stark gewählt werden, da damit die Verschlüsselung der anderen Passwortdaten
+    und der E-Mail Adresse des Profils erfolgt. Das Passwort wird nicht im Klartext gespeichert.
+</p>
 <form data-action="profile_save" action="/profile" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}
     </template>
     <template class="input">
         <input type="password" id="${ids('password')}" name="password" required/>
-        <label for="${ids('password')}">altes Passwort</label>
+        <label for="${ids('password')}">aktuelles Passwort</label>
     </template>
     <template class="input">
         <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
-        <label for="${ids('user')}">Benutzer</label>
+        <label for="${ids('user')}">
+            <span>Benutzer</span>
+            <small>(wird für die Anmeldung und als Vorgabe für neue Daten verwendet)</small>
+        </label>
     </template>
     <template class="input">
         <input type="password" id="${ids('new_password')}" name="new_password"/><br/>
-        <label for="${ids('new_password')}">neues Passwort</label>
+        <label for="${ids('new_password')}">
+            <span>neues Passwort</span>
+            <small>(bleibt das Feld leer, erfolgt keine Änderung)</small>
+        </label>
     </template>
     <template class="input">
         <input type="password" id="${ids('confirm_password')}" name="confirm_password"/>
@@ -21,7 +32,10 @@
     </template>
     <template class="input">
         <input type="email" id="${ids('email')}" name="email" value="${email}"/>
-        <label for="${ids('email')}">E-Mail</label>
+        <label for="${ids('email')}">
+            <span>E-Mail</span>
+            <small>(wird als Vorgabe für neue Daten verwendet)</small>
+        </label>
     </template>
     <div class="actions">
         <button>🖫 speichern</button>

@@ -6,6 +6,8 @@ html, body {
 body {
     /* To not have the content flicker on page change. */
     overflow-y: scroll;
+    /* Keep some reasonable min width for smartphones. */
+    min-width: 480px;
 }
 
 h1 {

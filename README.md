@@ -3,7 +3,19 @@
 This is a password safe to be used a self hosted web application. 
 It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML and CSS is also needed.
 
-The current state of development is pre alpha. So do not expect a working application yet.
+The current state of development currently is alpha. 
+This means the basic parts of the application are working, but are not tested very well.
+Also some features are still under development:
+* implement a simple search feature
+* add categories for passwords
+* user and group management with basic privileges
+* share passwords with other users and groups
+* add default headers for security
+* create a production container with build tool configuration
+* improve the look and feel
+* enable docker compatible logging for the PHP backend
+* add more options to the generator
+* write a bookmarklet for cross browser integration on website
 
 This readme gives information about 
 [Requirements](#requirements), 

@@ -43,10 +43,6 @@ class Load extends Open {
      * @returns {Object}
      */
     reduce(state, payload) {
-        // Reset error state if no error. The property must be present to be applied.
-        if (!payload.error) {
-            payload.error = false;
-        }
         return Action.combine(this.target, payload, state);
     }
 }

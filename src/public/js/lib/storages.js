@@ -94,6 +94,8 @@ class Storages extends Component {
      */
     async run(callback, ...params) {
         let data = await callback.apply(this, params);
+        // Allow actions to automatically reset the error state if using the complete data.
+        data.error = false;
         return this.error() || data;
     }
 }

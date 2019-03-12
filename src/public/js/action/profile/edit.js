@@ -11,7 +11,7 @@ class Edit extends Parent {
      * @param {Page} page
      */
     constructor(page) {
-        super(page, 'login', 'profile');
+        super(page, 'defaults', 'profile');
     }
 
     /**

@@ -37,7 +37,19 @@ textarea {
     /* Position the label right below the start of the input with some space between. */
     top: 100%;
     margin-top: .1em;
+    right: 0;
     left: 0;
+    /* If a combination of span and small is used, position the small as a tooltip to the right. */
+    display: flex;
+    justify-content: space-between;
+}
+
+/* The tooltip content aligned to the right. */
+.input label small {
+    /* Reset the required labels font-weight. */
+    font-weight: normal;
+    /* Keep space to the real label. */
+    margin-left: 2em;
 }
 
 /* Indicate required fields by a bold label. This assumes labels are positioned after the input. */

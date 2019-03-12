@@ -1,4 +1,10 @@
 <h1>Passwort generieren</h1>
+<p>
+    Es wird ein neues Passwort mit der gewünschten Länge aus kryptografisch sicheren Zufallszahlen generiert.
+    Das Passwort besteht aus üblichen, druckbaren Zeichen inklusive Sonderzeichen.
+    Das generierte Passwort wird anschließend im Klartext angezeigt
+    und kann vor Übernahme in das Formular angepasst werden.
+</p>
 <form data-action="generate_apply" action="/" method="get">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}
@@ -14,7 +20,7 @@
     </div>
     <template data-condition="${password}">
         <div class="input">
-            <input type="text" name="password" id="${ids('password')}" value="${password}"/>
+            <input type="text" name="password" id="${ids('password')}" value="${password}" required/>
             <label for="${ids('password')}">generiertes Passwort</label>
         </div>
         <div class="actions">
