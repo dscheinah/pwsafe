@@ -9,18 +9,16 @@ table {
 thead {
     position: sticky;
     top: 60px;
+    background: white;
     /* To have it above the table body. */
     z-index: 1000;
+    /* Indicate the sticky header by a shadow. */
+    box-shadow: 0 3px 0 lightgray;
 }
 
-/* Indicate the sticky header by a shadow. This is done on the tr to allow extra positioning. */
-thead tr {
-    position: relative;
-    /* Move it up to separate the box-shadow from the table body. */
-    top: -.5em;
-    box-shadow: 0 3px 0 lightgray;
-    /* In the fixed mode of position sticky it must not be transparent above the box-shadow. */
-    background: white;
+/* There needs to be extra space below the shadow. This styles the next available element to produce it. */
+thead + tbody tr:first-child td {
+    padding-top: .8em;
 }
 
 thead th {
