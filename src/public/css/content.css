@@ -10,3 +10,8 @@
     /* It is just a span but the width needs to be applied. */
     display: inline-block;
 }
+
+/* To make the found substring visible to users. */
+.highlight {
+    color: lightsteelblue;
+}

@@ -38,6 +38,8 @@ class RouterFactory implements FactoryInterface
         $router->post('/password', PasswordSave::class);
         $router->post('/password', Password::class);
         $router->post('/profile', ProfileSave::class);
+        // Search for passwords.
+        $router->post('/passwords', PasswordList::class);
         // Routes to delete.
         $router->delete('/password', PasswordDelete::class);
         return $router;

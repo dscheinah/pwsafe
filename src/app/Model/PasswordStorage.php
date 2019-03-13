@@ -48,22 +48,39 @@ class PasswordStorage extends Storage
     /**
      * Fetches all passwords for the given user.
      *
-     * @param int $user
+     * @param int    $user
+     * @param string $term
      *
      * @return \Generator
      * @throws \Sx\Data\BackendException
      */
-    public function fetchPasswords(int $user): \Generator
+    public function fetchPasswords(int $user, string $term = ''): \Generator
     {
-        $sql = '
-            SELECT `id`, `name`, `url` FROM `passwords` WHERE `user_id` = ? ORDER BY `name`, `url`;
-        ';
-        yield from $this->fetch(
-            $sql,
-            [
+        if ($term) {
+            // Add a condition to search for the term. Order results with matching name first by using IF.
+            $sql = '
+                SELECT `id`, `name`, `url` 
+                FROM `passwords` 
+                WHERE `user_id` = ? AND (`name` LIKE ? OR `url` LIKE ?) 
+                ORDER BY IF(`name` LIKE ?, 0, 1), `name`, `url`;
+            ';
+            // Search for substring. Do not use sprintf here since % is ugly.
+            $searchTerm = "%$term%";
+            $params = [
                 $user,
-            ]
-        );
+                $searchTerm,
+                $searchTerm,
+                $searchTerm,
+            ];
+        } else {
+            $sql = '
+                SELECT `id`, `name`, `url` FROM `passwords` WHERE `user_id` = ? ORDER BY `name`, `url`;
+            ';
+            $params = [
+                $user,
+            ];
+        }
+        yield from $this->fetch($sql, $params);
     }
 
     /**

@@ -39,6 +39,8 @@ button {
     padding-top: .5em;
     /* To be above table headers (1000) and below menu (10000). */
     z-index: 2000;
+    /* Use flex to allow multiple elements inside. */
+    display: flex;
 }
 
 /* Fade out the other content if the actions are in fixed mode of sticky. */
@@ -57,5 +59,17 @@ button {
 /* All buttons inside the actions must be relative to have the z-index raised above the pseudo:before. */
 .actions > * {
     position: relative;
+    /* Never grow, only shrink if needed. */
+    flex: 0 1 auto;
+}
+
+/* Space between the elements but not on the edges. */
+.actions > *:not(:first-child) {
+    margin-left: 20px;
+}
+
+/* A form inside the action will always fill the remaining space. */
+.actions form {
+    width: 100%;
 }
 

@@ -247,7 +247,10 @@ class Template {
         let template = this.container.querySelector(`template[data-part=${key}]`);
         if (template) {
             // Use the part type to allow checking for isPart.
-            part.render(nodeFromTemplate(template, 'part'));
+            let container = nodeFromTemplate(template, 'part');
+            // To be able to style the part by its type.
+            container.classList.add(key);
+            part.render(container);
         }
     }
 }

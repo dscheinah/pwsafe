@@ -13,6 +13,8 @@ input, textarea {
 input {
     /* Matches the height with the buttons (font-size + padding) if used in one line. */
     height: 2.2em;
+    /* Needed for long placeholders. */
+    text-overflow: ellipsis;
 }
 
 /* Indicate validation errors with custom style. This also applies to required elements with initial blank value. */

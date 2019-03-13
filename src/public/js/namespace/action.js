@@ -13,3 +13,4 @@ export {default as PasswordSave} from '../action/password/save.js';
 export {default as PasswordShow} from '../action/password/show.js';
 export {default as ProfileEdit} from '../action/profile/edit.js';
 export {default as ProfileSave} from '../action/profile/save.js';
+export {default as Search} from '../action/search.js';

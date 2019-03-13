@@ -34,6 +34,7 @@ state.register('user', backend);
 
 // Make the template helpers available to all templates.
 Template.add('ids', Helper.ids);
+Template.add('mark', Helper.mark);
 Template.add('mask', Helper.mask);
 
 // Create all pages with the corresponding templates.
@@ -85,6 +86,7 @@ actions.add('password_add', new Action.PasswordAdd(pages.password_edit));
 actions.add('password_delete', new Action.Delete('passwords', backend, 'password', confirmDelete));
 actions.add('password_edit', new Action.Edit(pages.password_edit, 'password', 'password_edit'));
 actions.add('password_save', new Action.PasswordSave(navigation, backend));
+actions.add('password_search', new Action.Search('passwords', backend));
 actions.add('profile', new Action.ProfileEdit(pages.profile));
 actions.add('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());

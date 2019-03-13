@@ -5,6 +5,16 @@ table {
     background: white;
 }
 
+/* Only list tables are required to have always a full width. */
+.list table {
+    width: 100%;
+}
+
+/* Align the search button with the in table actions. */
+.list ~ .actions form {
+    margin-right: .6em;
+}
+
 /* If scrolled the header should be visible. Position it below the menu but above the table. */
 thead {
     position: sticky;

@@ -50,6 +50,8 @@ class Password extends MiddlewareAbstract
         // Load a password entry by id.
         try {
             $password = $this->repo->getPassword($request->getAttribute('id'));
+            // Needed for new passwords to be rendered in the list.
+            $password['term'] = '';
         } catch (RepoException $e) {
             return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
         }

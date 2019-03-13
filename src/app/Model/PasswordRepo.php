@@ -114,14 +114,16 @@ class PasswordRepo implements RepoInterface
     /**
      * Retrieves all passwords as a simple list of ID, name and url. This is all unencrypted data so no key is needed.
      *
+     * @param string $term
+     *
      * @return array
      * @throws RepoException
      */
-    public function getPasswords(): array
+    public function getPasswords(string $term = ''): array
     {
         // All entries are returned so there is no need to keep the Generator here.
         try {
-            return iterator_to_array($this->storage->fetchPasswords($this->getUser()));
+            return iterator_to_array($this->storage->fetchPasswords($this->getUser(), $term));
         } catch (BackendException $e) {
             throw new RepoException('Beim Laden der Passwortliste ist ein Fehler aufgetreten.', 501);
         }
