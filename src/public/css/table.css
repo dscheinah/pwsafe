@@ -11,7 +11,7 @@ table {
 }
 
 /* Align the search button with the in table actions. */
-.list ~ .actions form {
+.list ~ .actions > *:last-child {
     margin-right: .6em;
 }
 

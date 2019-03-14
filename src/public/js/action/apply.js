@@ -50,10 +50,6 @@ class Apply extends Action {
      * @returns {Object}
      */
     reduce(state, payload) {
-        // Reset error state if no error. The property must be present to be applied.
-        if (!payload.error) {
-            payload.error = false;
-        }
         // Updates all data in the scope of state but keep existing values.
         return Action.combine(this.target, payload, state);
     }

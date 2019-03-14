@@ -7,15 +7,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * Action to create or update passwords with the provided data.
+ * An action to handle insert and update of a category.
  *
  * @package App\Action
  */
-class PasswordSave extends Password
+class CategorySave extends Category
 {
     /**
-     * Stores the password data and proxies response generation to next action.
-     * The next handler is expected to be the Password action.
+     * Validates and saves data for a category.
      *
      * @param ServerRequestInterface  $request
      * @param RequestHandlerInterface $handler
@@ -27,15 +26,12 @@ class PasswordSave extends Password
         if (!$request->getAttribute('name')) {
             return $this->helper->create(422, ['message' => 'Es muss ein Name angegeben werden.']);
         }
-        if (!$request->getAttribute('password')) {
-            return $this->helper->create(422, ['message' => 'Es muss ein Passwort angegeben werden.']);
-        }
-        // Set user ID and key to encrypt provided data.
+        // Set the user ID.
         $this->prepareRepo($request);
         // A successful save will return the ID of the updated which is given to the next handler to load data for it.
         try {
             return $handler->handle(
-                $request->withAttribute('id', $this->repo->savePassword($request->getAttributes()))
+                $request->withAttribute('id', $this->repo->saveCategory($request->getAttributes()))
             );
         } catch (RepoException $e) {
             return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);

@@ -68,8 +68,8 @@ button {
     margin-left: 20px;
 }
 
-/* A form inside the action will always fill the remaining space. */
-.actions form {
+/* A special input container inside the action will always fill the remaining space. */
+.actions .fill {
     width: 100%;
 }
 

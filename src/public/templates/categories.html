@@ -1,0 +1,14 @@
+<h1>Kategorien</h1>
+<p>
+    Alle verfügbaren Kategorien werden alphabetisch sortiert angezeigt.
+    Neue Kategorien werden bis zum erneuten Laden am Ende der Liste angezeigt.
+</p>
+<template data-condition="${error}" data-tag="p" class="error">
+    ${message}
+</template>
+<template data-part="list"></template>
+<div class="actions">
+    <div>
+        <button type="button" data-action="category_add">＋ hinzufügen</button>
+    </div>
+</div>

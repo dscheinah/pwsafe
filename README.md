@@ -6,14 +6,14 @@ It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML an
 The current state of development currently is alpha. 
 This means the basic parts of the application are working, but are not tested very well.
 Also some features are still under development:
-* add categories for passwords
+* use the categories for passwords
 * user and group management with basic privileges
-* share passwords with other users and groups
 * create a production container with build tool configuration
-* improve the look and feel
 * enable docker compatible logging for the PHP backend
+* share passwords with other users and groups
+* improve the look and feel
 * add more options to the generator
-* write a bookmarklet for cross browser integration on website
+* write a bookmarklet for cross browser integration on websites
 
 This readme gives information about 
 [Requirements](#requirements), 
@@ -37,8 +37,9 @@ Since development is not finished yet, there is no released version yet.
 All information inside this section are based on the current development deployment. 
 But in theory it is also usable for production.
 
-If you use the provided `sql/setup.sql` to initially fill your database for both deployment variants,
-a user will be added named `default` who can login with any password. The password should of course be set afterwards.
+If you use the files provided in `sql/` to initially fill your database for both deployment variants.
+To perform updates on an existing database, execute only the files not yet executed in your environment. 
+A user will be added named `default` who can login with any password. The password should of course be set afterwards.
 
 ### Docker
 

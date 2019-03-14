@@ -1,0 +1,22 @@
+<h1>
+    Kategorie
+    <template data-tag="span">${typeof id === 'undefined' ? 'hinzufügen' : 'bearbeiten'}</template>
+</h1>
+<p>
+    Kategorien werden zur Gruppierung der Passwörter verwendet. Dazu ist immer ein Name erforderlich.
+</p>
+<form data-action="category_save" action="/password" method="post">
+    <template data-condition="${error}" data-tag="p" class="error">
+        ${message}
+    </template>
+    <template data-condition="${id}">
+        <input type="hidden" name="id" value="${id}"/>
+    </template>
+    <template class="input">
+        <input type="text" id="${ids('name')}" name="name" value="${name}" required/>
+        <label for="${ids('name')}">Name</label>
+    </template>
+    <div class="actions">
+        <button>🖫 speichern</button>
+    </div>
+</form>

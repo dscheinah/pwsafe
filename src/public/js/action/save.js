@@ -46,7 +46,7 @@ class Save extends Apply {
      */
     reduce(state, payload) {
         let data = super.reduce(state, payload);
-        if (!this.list) {
+        if (!this.list || payload.error) {
             return data;
         }
         // Always assume list inside the list. This is reasonable as lists are always implemented with page parts.

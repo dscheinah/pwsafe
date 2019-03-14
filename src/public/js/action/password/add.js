@@ -27,7 +27,8 @@ class Add extends Edit {
      */
     reduce(state, payload) {
         let data = super.reduce(state, payload);
-        return Action.combine('password_edit', {'name': '', 'url': '', 'notice': '', 'password': ''}, data);
+        let defaults = {'id': '', 'name': '', 'url': '', 'notice': '', 'password': ''};
+        return Action.combine('password_edit', defaults, data);
     }
 }
 

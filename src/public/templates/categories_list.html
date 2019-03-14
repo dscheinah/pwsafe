@@ -1,0 +1,27 @@
+<table>
+    <colgroup>
+        <col/>
+        <col width="0"/>
+        <col width="0"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <template data-tag="tr" data-list="repeat">
+            <td>
+                ${name}
+            </td>
+            <td>
+                <button type="button" data-action="category" value="${id}">✎ bearbeiten</button>
+            </td>
+            <td>
+                <button type="button" data-action="category_delete" value="${id}">🗑 löschen</button>
+            </td>
+        </template>
+    </tbody>
+</table>

@@ -1,6 +1,11 @@
 <?php
 namespace App;
 
+use App\Action\Category;
+use App\Action\CategoryDelete;
+use App\Action\CategoryFactory;
+use App\Action\CategoryList;
+use App\Action\CategorySave;
 use App\Action\Generate;
 use App\Action\Login;
 use App\Action\LoginFactory;
@@ -14,6 +19,9 @@ use App\Action\ProfileSave;
 use App\Handler\ErrorHandler;
 use App\Handler\ErrorHandlerFactory;
 use App\Handler\NotFoundHandler;
+use App\Model\CategoryRepo;
+use App\Model\CategoryRepoFactory;
+use App\Model\CategoryStorage;
 use App\Model\PasswordRepo;
 use App\Model\PasswordRepoFactory;
 use App\Model\PasswordStorage;
@@ -54,6 +62,12 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(ApplicationInterface::class, ApplicationFactory::class);
         $injector->set(Auth::class, AuthFactory::class);
         $injector->set(BackendInterface::class, MySqlBackendFactory::class);
+        $injector->set(Category::class, CategoryFactory::class);
+        $injector->set(CategoryDelete::class, CategoryFactory::class);
+        $injector->set(CategoryList::class, CategoryFactory::class);
+        $injector->set(CategoryRepo::class, CategoryRepoFactory::class);
+        $injector->set(CategorySave::class, CategoryFactory::class);
+        $injector->set(CategoryStorage::class, StorageFactory::class);
         $injector->set(ErrorHandler::class, ErrorHandlerFactory::class);
         $injector->set(Generate::class, MiddlewareFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);

@@ -21,7 +21,7 @@ const navigation = new Navigation(history);
 const backend = new (Storage.Backend)();
 const local = new (Storage.Local)(localStorage, 'main', 1);
 // Will be registered to all scopes of the application state which interact with the PHP backend.
-// It triggers a page reload on auth error to force relogin.
+// It triggers a page reload on auth error to force re-login.
 const reload = new Reload();
 
 // Register the non page components.
@@ -40,6 +40,8 @@ Template.add('mask', Helper.mask);
 // Create all pages with the corresponding templates.
 // This represents the list of available pages.
 const pages = {
+    'category': null,
+    'categories': null,
     'generate': null,
     'login': null,
     'password': null,
@@ -59,10 +61,12 @@ Object.keys(pages).forEach(function (key) {
     state.register(key, pages[key]);
     state.register(key, reload);
 });
-// Create the list part for the password list page.
-let template = new Template('passwords_list');
-loading.push(template.load());
-pages.passwords.part('list', new Part.List(template));
+// Create the list part for the pages with lists.
+['categories', 'passwords'].forEach(function(key) {
+    let template = new Template(key + '_list');
+    loading.push(template.load());
+    pages[key].part('list', new Part.List(template));
+});
 
 // Create the navigation. This needs a template and a component to be only rendered in logged in state.
 let menuTemplate = new Template('menu', document.querySelector('#nav'));
@@ -72,14 +76,21 @@ const menu = new Menu(menuTemplate);
 state.register('user', menu);
 
 // The question for the clients confirmation before a password will be deleted.
-let confirmDelete = 'Soll das Passwort gelöscht werden?';
+let confirmDelete = 'Soll der Datensatz wirklich gelöscht werden?';
 
 // Register all actions needed in the application. The corresponding triggers can be found in the templates
 // as buttons or forms with data-action attributes which values match the keys.
+actions.add('category', new Action.Load(pages.category, 'category', backend));
+actions.add('category_add', new Action.CategoryAdd(pages.category));
+actions.add('category_delete', new Action.Delete('categories', backend, 'category', confirmDelete));
+actions.add('category_save', new Action.Save('category', navigation, backend, 'categories'));
+actions.add('categories', new Action.Load(pages.categories, 'categories', backend));
 actions.add('copy', new Action.ClipboardCopy('password'));
 actions.add('generate', new Action.PasswordGenerate(backend));
 actions.add('generate_apply', new Action.Apply('password_edit', navigation));
 actions.add('generate_open', new Action.Open(pages.generate));
+// This actions is triggered at the end of this file after all templates are loaded.
+actions.add('init', new Action.Init(pages.login));
 actions.add('login', new Action.Login(backend, actions));
 actions.add('password', new Action.PasswordDetail(pages.password, backend));
 actions.add('password_add', new Action.PasswordAdd(pages.password_edit));
@@ -87,13 +98,11 @@ actions.add('password_delete', new Action.Delete('passwords', backend, 'password
 actions.add('password_edit', new Action.Edit(pages.password_edit, 'password', 'password_edit'));
 actions.add('password_save', new Action.PasswordSave(navigation, backend));
 actions.add('password_search', new Action.Search('passwords', backend));
+// The passwords action is triggered from the menu and after successful login.
+actions.add('passwords', new Action.Load(pages.passwords, 'passwords', backend));
 actions.add('profile', new Action.ProfileEdit(pages.profile));
 actions.add('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());
-// These actions are triggered by JavaScript code only. Init after template loading at the end of this file and
-// passwords after a successful login.
-actions.add('init', new Action.Init(pages.login));
-actions.add('passwords', new Action.Load(pages.passwords, 'passwords', backend));
 
 // Start the event listeners. These will trigger the registered actions.
 actions.listen('click', 'button');
