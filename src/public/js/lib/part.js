@@ -20,10 +20,12 @@ class Part {
     /**
      * Must be implemented to implement logic for complex parts.
      * In this simple implementation the data is simply forwarded to the template.
+     * The parent components data is also given to allow access to the parents data scope.
      *
      * @param {(Object|*)} data
+     * @param {Object}     parent
      */
-    update(data) {
+    update(data, parent) {
         this.template.set(data);
     }
 

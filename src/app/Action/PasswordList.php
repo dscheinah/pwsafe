@@ -28,15 +28,9 @@ class PasswordList extends Password
         $this->prepareRepo($request);
         try {
             $term = $request->getAttribute('term', '');
-            // Add the term inside each list entry to make it available to helpers used inside the render part.
-            $passwords = array_map(
-                function ($value) use ($term) {
-                    $value['term'] = $term;
-                    return $value;
-                },
-                $this->repo->getPasswords($term)
-            );
-            return $this->helper->create(200, ['list' => $passwords]);
+            // Add the term to make it available to helpers used inside the render part.
+            // It will be merged with each entry inside the list part.
+            return $this->helper->create(200, ['term' => $term, 'list' => $this->repo->getPasswords($term)]);
         } catch (RepoException $e) {
             return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
         }

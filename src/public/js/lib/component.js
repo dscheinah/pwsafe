@@ -40,7 +40,7 @@ class Component {
         for (let key in this.parts) {
             let value = data[key];
             if (value) {
-                this.parts[key].update(value);
+                this.parts[key].update(value, data);
             }
         }
     }

@@ -46,13 +46,20 @@ class Page extends Component {
 
     /**
      * Gives the data to the template to trigger re-rendering.
+     * If the scope matches the key of an added part, only the part will be updated.
      *
      * @param {Object} data
-     * @param {string} key
+     * @param {string} scope
      */
-    update(data, key) {
+    update(data, scope) {
+        // To allow partial updates not providing the complete data.
+        let part = this.parts[scope];
+        if (part) {
+            part.update(data);
+            return;
+        }
         // The super call will update the data to the parts.
-        super.update(data, key);
+        super.update(data, scope);
         this.template.set(data);
     }
 }
