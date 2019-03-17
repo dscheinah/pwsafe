@@ -1,5 +1,6 @@
 export {default as Apply} from '../action/apply.js';
 export {default as CategoryAdd} from '../action/category/add.js';
+export {default as CategoryLoad} from '../action/category/load.js';
 export {default as ClipboardCopy} from '../action/clipboard/copy.js';
 export {default as Delete} from '../action/delete.js';
 export {default as Edit} from '../action/edit.js';

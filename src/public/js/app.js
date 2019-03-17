@@ -80,7 +80,7 @@ let confirmDelete = 'Soll der Datensatz wirklich gelöscht werden?';
 
 // Register all actions needed in the application. The corresponding triggers can be found in the templates
 // as buttons or forms with data-action attributes which values match the keys.
-actions.add('category', new Action.Load(pages.category, 'category', backend));
+actions.add('category', new Action.CategoryLoad(pages.category, backend));
 actions.add('category_add', new Action.CategoryAdd(pages.category));
 actions.add('category_delete', new Action.Delete('categories', backend, 'category', confirmDelete));
 actions.add('category_save', new Action.Save('category', navigation, backend, 'categories'));
