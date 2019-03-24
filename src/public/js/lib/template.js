@@ -59,11 +59,12 @@ const nodeFromTemplate = function (template, type) {
  *
  * @param {HTMLElement} template
  * @param {HTMLElement} parent
+ * @param {boolean=}    onlyParent
  *
  * @returns {boolean}
  */
-const isPart = function (template, parent) {
-    if (template.dataset.part) {
+const isPart = function (template, parent, onlyParent) {
+    if (!onlyParent && template.dataset.part) {
         return true;
     }
     // If any parent between the given parent and the given template is a rendered result from a part,
@@ -243,15 +244,19 @@ class Template {
         if (!(part instanceof Part)) {
             throw new TypeError('part must be instanceof Part');
         }
-        /** @type {HTMLTemplateElement} template */
-        let template = this.container.querySelector(`template[data-part=${key}]`);
-        if (template) {
-            // Use the part type to allow checking for isPart.
-            let container = nodeFromTemplate(template, 'part');
-            // To be able to style the part by its type.
-            container.classList.add(key);
-            part.render(container);
-        }
+        let templates = this.container.querySelectorAll(`template[data-part=${key}]`);
+        templates.forEach(
+            /** @param {HTMLTemplateElement} template */ (template) => {
+                // Do not apply the part to sub parts of other parts.
+                if (isPart(template, this.parent, true)) {
+                    return;
+                }
+                // Use the part type to allow checking for isPart.
+                let container = nodeFromTemplate(template, 'part');
+                // To be able to style the part by its type.
+                container.classList.add(key);
+                part.render(container);
+        });
     }
 }
 

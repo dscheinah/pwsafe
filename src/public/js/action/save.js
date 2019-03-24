@@ -33,6 +33,13 @@ class Save extends Apply {
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
+        // Update the DOM to match the form elements internal values.
+        // This is needed to fix change detection in template rendering.
+        for (let i = trigger.elements.length; i--;) {
+            let element = trigger.elements[i];
+            // This is not correct for most form element types. But it is sufficient for the use case.
+            element.setAttribute('value', element.value);
+        }
         return this.backend.run(this.backend.save, this.target, trigger);
     }
 

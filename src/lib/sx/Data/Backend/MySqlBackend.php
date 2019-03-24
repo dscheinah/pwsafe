@@ -121,6 +121,11 @@ class MySqlBackend implements BackendInterface
         // Parameter binding in MySQL needs type hints. So iterate all parameters and create the type sequence.
         $types = '';
         foreach ($params as $param) {
+            // NULL does not have a corresponding type. But it works by using a string.
+            if ($param === null) {
+                $types .= 's';
+                continue;
+            }
             $type = \gettype($param);
             switch ($type) {
                 // Boolean are interpreted as small integers with just 0 and 1 as a value.

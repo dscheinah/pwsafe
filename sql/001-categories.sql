@@ -9,3 +9,11 @@ CREATE TABLE `categories`
 ALTER TABLE `passwords`
   ADD `category_id` INT UNSIGNED,
   ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+
+INSERT INTO `categories` (`name`, `user_id`)
+SELECT 'Sonstiges', `id`
+FROM `users`;
+
+INSERT INTO `passwords` (`name`, `category_id`, `user_id`)
+SELECT 'temp', `id`, `user_id`
+FROM `categories`;

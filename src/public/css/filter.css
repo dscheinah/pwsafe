@@ -1,0 +1,29 @@
+/* Indicate filter tabs. */
+.filter {
+    color: lightsteelblue;
+    float: left;
+    /* Needs extra bottom spacing to not overlap the labels padding. */
+    margin: 0 .5em 1.5em 0;
+}
+
+.filter label {
+    /* To position the input inside the label. */
+    position: relative;
+    cursor: pointer;
+    padding: .5em;
+    box-shadow: 2px 1px 2px lightsteelblue;
+    border-bottom: 1px solid lightblue;
+}
+
+/* Hide the input but still have it accessible. */
+.filter input {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+}
+
+/* Indicate the currently selected filter tab. */
+.selected {
+    background: lightsteelblue;
+    color: white;
+}

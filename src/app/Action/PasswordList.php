@@ -27,10 +27,29 @@ class PasswordList extends Password
         // Sets the user ID (and the not needed key) to prevent loading passwords from other users.
         $this->prepareRepo($request);
         try {
-            $term = $request->getAttribute('term', '');
-            // Add the term to make it available to helpers used inside the render part.
+            $term = (string) $request->getAttribute('term', '');
+            // May be a category ID, "null" or empty if just searched without a category.
+            $category = $request->getAttribute('category_id');
+            // Fetch the passwords.
+            $passwords = $this->repo->getPasswords($term, $category);
+            // If no result is found for the term, check inside all categories.
+            if ($term && $category && !$passwords) {
+                $passwords = $this->repo->getPasswords($term);
+                // Reset the category filter.
+                if ($passwords) {
+                    $category = '';
+                }
+            }
+            // Add the term and category ID to make it available to helpers used inside the render part.
             // It will be merged with each entry inside the list part.
-            return $this->helper->create(200, ['term' => $term, 'list' => $this->repo->getPasswords($term)]);
+            return $this->helper->create(
+                200,
+                [
+                    'term' => $term,
+                    'category_id' => $category,
+                    'list' => $passwords,
+                ]
+            );
         } catch (RepoException $e) {
             return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
         }

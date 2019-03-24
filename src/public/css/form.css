@@ -1,13 +1,16 @@
 /* This applies to all inputs (but radio, checkbox and submit are currently not used). */
-input, textarea {
+input, textarea, select {
     width: 100%;
     box-sizing: border-box;
-    /* Partially match the padding with the buttons. */
-    padding: .6em .3em;
     /* Reset the border and replace it with an input-indicating bottom one. */
     border: none;
     border-bottom: 1px solid lightgreen;
     box-shadow: 0 -1px 0 lightgray inset;
+}
+
+input, textarea {
+    /* Partially match the padding with the buttons. */
+    padding: .6em .3em;
 }
 
 input {
@@ -25,6 +28,11 @@ input:invalid {
 textarea {
     /* Do not allow vertical resizing. */
     min-width: 100%;
+}
+
+select {
+    /* Needs a separate padding to match the height of the inputs. */
+    padding: .45em .3em;
 }
 
 /* Wrapper element to position the labels independent of their DOM position. */

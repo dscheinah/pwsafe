@@ -42,7 +42,10 @@ class Search extends Action {
      * @returns {Object}
      */
     reduce(state, payload) {
-        return Action.combine(this.target, payload, state);
+        let data = Action.combine(this.target, payload, state);
+        // Also set the loaded category ID into the state to mark the correct filter button.
+        data.categories = Action.combine('categories', {category_id: payload.category_id}, state).categories;
+        return data;
     }
 }
 

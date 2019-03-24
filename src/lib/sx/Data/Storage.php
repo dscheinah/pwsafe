@@ -96,6 +96,7 @@ class Storage
      */
     private function getResource($statement)
     {
+        $statement = trim($statement);
         // First connect or check connection.
         $this->backend->connect();
         // If a statement was already prepared return the cached resource.

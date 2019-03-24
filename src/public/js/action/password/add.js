@@ -1,5 +1,5 @@
 import Action from '../../lib/action.js';
-import Edit from '../edit.js';
+import Edit from './edit.js';
 
 /**
  * Extends the edit action to fill the initial state with defaults to use the edit view template.
@@ -14,7 +14,7 @@ class Add extends Edit {
      * @param {Page} page
      */
     constructor(page) {
-        super(page, 'defaults', 'password_edit');
+        super(page, 'defaults');
     }
 
     /**

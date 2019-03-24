@@ -41,6 +41,8 @@ button {
     z-index: 2000;
     /* Use flex to allow multiple elements inside. */
     display: flex;
+    /* Enforce minimum distance but do not add up with spacing from previous elements. */
+    margin-top: 1.5em;
 }
 
 /* Fade out the other content if the actions are in fixed mode of sticky. */

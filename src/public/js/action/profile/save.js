@@ -32,7 +32,6 @@ class Save extends Parent {
             data.defaults = data.profile;
             // And the login scope for the stored user name on login.
             data.login = Action.combine('login', {user: payload.user}, state).login;
-            console.log(data);
         }
         return data;
     }

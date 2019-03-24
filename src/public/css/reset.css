@@ -5,7 +5,7 @@ body {
     background: white;
 }
 
-button, input, textarea {
+button, input, textarea, select {
     font-size: 1em;
 }
 
@@ -15,7 +15,8 @@ button {
     cursor: pointer;
 }
 
-button:focus, input:focus {
+/* Chrome renders a colored outline. */
+*:focus {
     outline: none;
 }
 

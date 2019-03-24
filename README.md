@@ -6,12 +6,11 @@ It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML an
 The current state of development currently is alpha. 
 This means the basic parts of the application are working, but are not tested very well.
 Also some features are still under development:
-* use the categories for passwords
-* user and group management with basic privileges
 * create a production container with build tool configuration
 * enable docker compatible logging for the PHP backend
-* share passwords with other users and groups
 * improve the look and feel
+* user and group management with basic privileges
+* share passwords with other users and groups
 * add more options to the generator
 * write a bookmarklet for cross browser integration on websites
 

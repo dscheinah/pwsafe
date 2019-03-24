@@ -22,6 +22,6 @@ class PasswordRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): PasswordRepo
     {
-        return new PasswordRepo($injector->get(PasswordStorage::class));
+        return new PasswordRepo($injector->get(PasswordStorage::class), $injector->get(CategoryStorage::class));
     }
 }

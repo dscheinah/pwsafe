@@ -1,0 +1,12 @@
+<template class="filter" data-list="repeat">
+    <label class="${category_id == id ? 'selected' : ''}">
+        ${filter(id, category_id)}
+        ${name}
+    </label>
+</template>
+<template class="filter">
+    <label class="${category_id === 'null' ? 'selected' : ''}">
+        ${filter('null', category_id)}
+        - keine Kategorie -
+    </label>
+</template>

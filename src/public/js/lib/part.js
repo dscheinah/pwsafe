@@ -15,6 +15,7 @@ class Part {
             throw new TypeError('template must be instanceof Template');
         }
         this.template = template;
+        this.parts = {};
     }
 
     /**
@@ -23,10 +24,32 @@ class Part {
      * The parent components data is also given to allow access to the parents data scope.
      *
      * @param {(Object|*)} data
-     * @param {Object}     parent
+     * @param {Object=}    parent
      */
     update(data, parent) {
+        if (parent) {
+            data = Object.assign(parent, data);
+        }
+        for (let key in this.parts) {
+            let value = data[key];
+            if (value) {
+                this.parts[key].update(value, data);
+            }
+        }
         this.template.set(data);
+    }
+
+    /**
+     * Adds a new part with the given key. A part will be updated if the key is present in the data to update.
+     *
+     * @param {string} key
+     * @param {Part}   part
+     */
+    part(key, part) {
+        if (!(part instanceof Part)) {
+            throw new TypeError('part must be instanceof Part');
+        }
+        this.parts[key] = part;
     }
 
     /**
@@ -37,6 +60,9 @@ class Part {
      * @param {Element} container
      */
     render(container) {
+        for (let key in this.parts) {
+            this.template.insert(key, this.parts[key]);
+        }
         this.template.render(container);
     }
 }

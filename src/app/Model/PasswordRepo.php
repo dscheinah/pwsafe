@@ -17,7 +17,14 @@ class PasswordRepo implements RepoInterface
      *
      * @var PasswordStorage
      */
-    private $storage;
+    private $passwordStorage;
+
+    /**
+     * The storage for the categories is needed to validate access to the category_id on save.
+     *
+     * @var CategoryStorage
+     */
+    private $categoryStorage;
 
     /**
      * The currently logged in clients user ID.
@@ -37,11 +44,13 @@ class PasswordRepo implements RepoInterface
      * Creates the instance with the reference to the database storage.
      * Before most of the functions can be used, also setUser and setKey must be called.
      *
-     * @param PasswordStorage $storage
+     * @param PasswordStorage $passwordStorage
+     * @param CategoryStorage $categoryStorage
      */
-    public function __construct(PasswordStorage $storage)
+    public function __construct(PasswordStorage $passwordStorage, CategoryStorage $categoryStorage)
     {
-        $this->storage = $storage;
+        $this->passwordStorage = $passwordStorage;
+        $this->categoryStorage = $categoryStorage;
     }
 
     /**
@@ -104,7 +113,7 @@ class PasswordRepo implements RepoInterface
     public function getPassword(int $id): array
     {
         try {
-            $password = $this->storage->fetchPassword($this->getKey(), $this->getUser(), $id);
+            $password = $this->passwordStorage->fetchPassword($this->getKey(), $this->getUser(), $id);
         } catch (BackendException $e) {
             throw new RepoException('Beim Laden des Passworts ist ein Fehler aufgetreten.', 501);
         }
@@ -115,15 +124,25 @@ class PasswordRepo implements RepoInterface
      * Retrieves all passwords as a simple list of ID, name and url. This is all unencrypted data so no key is needed.
      *
      * @param string $term
+     * @param mixed  $category
      *
      * @return array
      * @throws RepoException
      */
-    public function getPasswords(string $term = ''): array
+    public function getPasswords(string $term = '', $category = ''): array
     {
         // All entries are returned so there is no need to keep the Generator here.
         try {
-            return iterator_to_array($this->storage->fetchPasswords($this->getUser(), $term));
+            $user = $this->getUser();
+            if ($category) {
+                // If the client explicitly selected "no category" search for passwords without a category.
+                if ($category === 'null') {
+                    $category = null;
+                }
+                return iterator_to_array($this->passwordStorage->fetchPasswordsByCategory($user, $category, $term));
+            }
+            // Search for all passwords independent of the category.
+            return iterator_to_array($this->passwordStorage->fetchPasswords($user, $term));
         } catch (BackendException $e) {
             throw new RepoException('Beim Laden der Passwortliste ist ein Fehler aufgetreten.', 501);
         }
@@ -140,16 +159,30 @@ class PasswordRepo implements RepoInterface
      */
     public function savePassword(array $data): int
     {
+        $user = $this->getUser();
+        if ($data['category_id'] ?? false) {
+            try {
+                $category = $this->categoryStorage->fetchCategory($user, $data['category_id']);
+                if (!$category) {
+                    throw new RepoException('Die gewählte Kategorie konnte nicht gefunden werden.', 422);
+                }
+            } catch (BackendException $e) {
+                throw new RepoException('Die gewählte Kategorie konnte nicht geladen werden.', 501);
+            }
+        } else {
+            // Rewrite empty string from empty option to explicit null.
+            $data['category_id'] = null;
+        }
         $id = $data['id'] ?? 0;
         if (!$id) {
             try {
-                return $this->storage->insertPassword($this->getKey(), $this->getUser(), $data);
+                return $this->passwordStorage->insertPassword($this->getKey(), $user, $data);
             } catch (BackendException $e) {
                 throw new RepoException('Das Passwort konnte nicht angelegt werden.', 501);
             }
         }
         try {
-            $this->storage->updatePassword($this->getKey(), $this->getUser(), $id, $data);
+            $this->passwordStorage->updatePassword($this->getKey(), $user, $id, $data);
         } catch (BackendException $e) {
             throw new RepoException('Das Passwort konnte nicht aktualisiert werden.', 501);
         }
@@ -166,7 +199,7 @@ class PasswordRepo implements RepoInterface
     public function deletePassword(int $id): bool
     {
         try {
-            return (bool)$this->storage->deletePassword($this->getUser(), $id);
+            return (bool)$this->passwordStorage->deletePassword($this->getUser(), $id);
         } catch (BackendException $e) {
             return false;
         }

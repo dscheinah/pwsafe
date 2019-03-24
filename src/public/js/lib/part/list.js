@@ -18,12 +18,16 @@ class List extends Part {
         if (!this.container) {
             // Store the templates container at first update to be able to restore it for subsequent updates.
             this.container = this.template.container.cloneNode(true);
-        } else {
+        } else if (this.template.parent) {
+            // If the template was rendered this must be undone.
+            this.template.parent.removeChild(this.template.container);
             // The original template must be restored and inserted into the DOM instead of the old container.
             // There currently is no other way to empty the previously rendered list.
-            this.template.parent.removeChild(this.template.container);
             this.template.container = this.container.cloneNode(true);
             this.template.render();
+        } else {
+            // Only restore to clear the list. Rendering is not yet possible.
+            this.template.container = this.container.cloneNode(true);
         }
         // Iterate all entries and render the template.
         data.forEach(entry => {
