@@ -16,8 +16,6 @@ h1 {
 }
 
 a {
-    color: lightgreen;
-    font-weight: bold;
     text-decoration: none;
 }
 
@@ -26,9 +24,9 @@ nav {
     position: sticky;
     top: 0;
     height: 60px;
-    background: lightsteelblue;
     /* To ensure it is on top of all elements. */
     z-index: 10000;
+    background: white;
     /* Indicate on-top-position by a shadow. */
     box-shadow: 0 2px 4px lightgray;
 }

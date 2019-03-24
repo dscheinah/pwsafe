@@ -1,0 +1,75 @@
+/* Use bold to have it readable despite the light color. */
+a, .error {
+    font-weight: bold;
+}
+
+/* Is needed for navigation and container. */
+button, .selected {
+    color: white;
+}
+
+.menu button:hover {
+    color: lightgray;
+}
+
+/* The error messages injected from error responses of the PHP backend. */
+.error {
+    color: lightpink;
+}
+
+/* Indicate validation errors with custom style. This also applies to required elements with initial blank value. */
+input:invalid {
+    border-color: lightpink;
+}
+
+.container button {
+    background: lightpink;
+
+}
+
+.container button:hover {
+    background: pink;
+}
+
+a {
+    color: lightgreen;
+}
+
+a:hover {
+    color: green;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: lightgreen;
+}
+
+/* Indicate the currently selected filter tab. */
+nav, .selected {
+    background: lightsteelblue;
+}
+
+/* To make the found substring visible to users. */
+.filter, .highlight {
+    color: lightsteelblue;
+}
+
+.filter:hover {
+    color: steelblue;
+}
+
+.filter label {
+    box-shadow: 2px 1px 2px lightsteelblue;
+    border-bottom: 1px solid lightsteelblue;
+}
+
+a, button, .selected, .filter {
+    transition: color .5s;
+}
+
+input, textarea, select {
+    transition: border-color .5s;
+}
+
+.container button {
+    transition: background .5s;
+}

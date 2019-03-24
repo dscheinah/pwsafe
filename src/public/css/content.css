@@ -1,17 +1,5 @@
-/* The error messages injected from error responses of the PHP backend. */
-.error {
-    color: lightpink;
-    /* Use bold to have it readable despite the light color. */
-    font-weight: bold;
-}
-
 /* Is used by Helper.mask to indicate the element whose width has been calculated. */
 .hidden-password {
     /* It is just a span but the width needs to be applied. */
     display: inline-block;
-}
-
-/* To make the found substring visible to users. */
-.highlight {
-    color: lightsteelblue;
 }

@@ -1,5 +1,4 @@
 button {
-    color: white;
     /* To not let the browser split the icon and label. */
     white-space: nowrap;
 }
@@ -13,11 +12,10 @@ button {
     /* Fix the line-height to make the padding appear equal. */
     line-height: 1;
     padding: .6em;
-    /* Indicate a control by color and shadow. */
-    background: lightpink;
-    box-shadow: 1px 1px 2px lightgray;
     /* Buttons side by side have a default spacing, but if they break on mobile devices there is none. */
     margin-bottom: .3em;
+    /* Indicate a control by shadow. */
+    box-shadow: 1px 1px 2px lightgray;
 }
 
 /* To position buttons on the same line as other contents use a control wrapper. */
