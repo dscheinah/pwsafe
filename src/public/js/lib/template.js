@@ -170,13 +170,19 @@ class Template {
         if (this.container) {
             return;
         }
-        let response = await fetch(`/templates/${this.key}.html`);
         this.container = document.createElement('section');
         // Mark the container for CSS to be a page of the type represented by the unique key.
         this.container.classList.add('page');
         this.container.classList.add(this.key);
         // Fill the container with the template. It is still not present in the DOM until render is called.
-        this.container.innerHTML = await response.text();
+        // If the build tools created a cache inside the main container, the element will be found by ID.
+        let template = document.getElementById(this.key);
+        if (template) {
+            this.container.innerHTML = template.innerHTML;
+        } else {
+            let response = await fetch(`/templates/${this.key}.html`);
+            this.container.innerHTML = await response.text();
+        }
     }
 
     /**

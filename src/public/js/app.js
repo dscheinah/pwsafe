@@ -114,7 +114,7 @@ actions.add('show', new Action.PasswordShow());
 // Start the event listeners. These will trigger the registered actions.
 actions.listen('click', 'button');
 actions.listen('submit');
-actions.listen('change');
+actions.listen('change', 'input');
 
 // The navigation needs to be started to listen to the popstate event.
 navigation.start(window);

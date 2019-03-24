@@ -6,7 +6,6 @@ It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML an
 The current state of development currently is alpha. 
 This means the basic parts of the application are working, but are not tested very well.
 Also some features are still under development:
-* create a production container with build tool configuration
 * enable docker compatible logging for the PHP backend
 * improve the look and feel
 * user and group management with basic privileges
@@ -60,6 +59,10 @@ As for PHP at least version 7.2 is required.
 
 Additionally to the setup of the server applications you need to prepare the application. 
 This can be done as described in the development section following this one.
+
+Also you may want to minify the CSS and JavaScript and insert the templates inside the index.html file.
+These must be wrapped inside a template with the ID matching the file name without extension.
+See the `Dockerfile` and `build.js` for more information.
 
 ## Development
 
