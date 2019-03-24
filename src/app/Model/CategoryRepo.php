@@ -2,7 +2,7 @@
 namespace App\Model;
 
 use Sx\Data\BackendException;
-use Sx\Data\RepoInterface;
+use Sx\Utility\LogInterface;
 
 /**
  * This class represents the domain functionality to handle category entries.
@@ -10,7 +10,7 @@ use Sx\Data\RepoInterface;
  *
  * @package App\Model
  */
-class CategoryRepo implements RepoInterface
+class CategoryRepo extends RepoAbstract
 {
     /**
      * The storage for the real database queries.
@@ -30,10 +30,12 @@ class CategoryRepo implements RepoInterface
      * Creates the domain repository with the required storage.
      * Before the functions can be used also setUser must be called.
      *
+     * @param LogInterface    $logger
      * @param CategoryStorage $storage
      */
-    public function __construct(CategoryStorage $storage)
+    public function __construct(LogInterface $logger, CategoryStorage $storage)
     {
+        parent::__construct($logger);
         $this->storage = $storage;
     }
 
@@ -75,6 +77,7 @@ class CategoryRepo implements RepoInterface
         try {
             $category = $this->storage->fetchCategory($this->getUser(), $id);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden der Kategorie ist ein Fehler aufgetreten.', 501);
         }
         return $category;
@@ -92,6 +95,7 @@ class CategoryRepo implements RepoInterface
         try {
             return iterator_to_array($this->storage->fetchCategories($this->getUser()));
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden der Kategorien ist ein Fehler aufgetreten.', 501);
         }
     }
@@ -112,12 +116,14 @@ class CategoryRepo implements RepoInterface
             try {
                 return $this->storage->insertCategory($this->getUser(), $data);
             } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
                 throw new RepoException('Die Kategorie konnte nicht angelegt werden.', 501);
             }
         }
         try {
             $this->storage->updateCategory($this->getUser(), $id, $data);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Die Kategorie konnte nicht aktualisiert werden.', 501);
         }
         return $id;
@@ -135,6 +141,7 @@ class CategoryRepo implements RepoInterface
         try {
             return (bool)$this->storage->deleteCategory($this->getUser(), $id);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             return false;
         }
     }

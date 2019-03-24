@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
+use Sx\Utility\LogInterface;
 
 /**
  * Factory for the UserRepo domain.
@@ -22,6 +23,6 @@ class UserRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): UserRepo
     {
-        return new UserRepo($injector->get(UserStorage::class));
+        return new UserRepo($injector->get(LogInterface::class), $injector->get(UserStorage::class));
     }
 }

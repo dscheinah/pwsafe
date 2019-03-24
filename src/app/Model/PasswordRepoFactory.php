@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
+use Sx\Utility\LogInterface;
 
 /**
  * Factory for the PasswordRepo domain.
@@ -22,6 +23,10 @@ class PasswordRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): PasswordRepo
     {
-        return new PasswordRepo($injector->get(PasswordStorage::class), $injector->get(CategoryStorage::class));
+        return new PasswordRepo(
+            $injector->get(LogInterface::class),
+            $injector->get(PasswordStorage::class),
+            $injector->get(CategoryStorage::class)
+        );
     }
 }

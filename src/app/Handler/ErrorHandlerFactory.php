@@ -4,6 +4,7 @@ namespace App\Handler;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
 use Sx\Message\Response\HelperInterface;
+use Sx\Utility\LogInterface;
 
 /**
  * The factory to create the error handler.
@@ -23,6 +24,10 @@ class ErrorHandlerFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): ErrorHandler
     {
-        return new ErrorHandler($injector->get(HelperInterface::class), $options['env'] ?? '');
+        return new ErrorHandler(
+            $injector->get(HelperInterface::class),
+            $injector->get(LogInterface::class),
+            $options['env'] ?? ''
+        );
     }
 }

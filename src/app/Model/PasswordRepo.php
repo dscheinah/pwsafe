@@ -2,7 +2,7 @@
 namespace App\Model;
 
 use Sx\Data\BackendException;
-use Sx\Data\RepoInterface;
+use Sx\Utility\LogInterface;
 
 /**
  * This class represents the domain functionality to handle password entries.
@@ -10,7 +10,7 @@ use Sx\Data\RepoInterface;
  *
  * @package App\Model
  */
-class PasswordRepo implements RepoInterface
+class PasswordRepo extends RepoAbstract
 {
     /**
      * The storage for the real database queries.
@@ -44,11 +44,16 @@ class PasswordRepo implements RepoInterface
      * Creates the instance with the reference to the database storage.
      * Before most of the functions can be used, also setUser and setKey must be called.
      *
+     * @param LogInterface    $logger
      * @param PasswordStorage $passwordStorage
      * @param CategoryStorage $categoryStorage
      */
-    public function __construct(PasswordStorage $passwordStorage, CategoryStorage $categoryStorage)
-    {
+    public function __construct(
+        LogInterface $logger,
+        PasswordStorage $passwordStorage,
+        CategoryStorage $categoryStorage
+    ) {
+        parent::__construct($logger);
         $this->passwordStorage = $passwordStorage;
         $this->categoryStorage = $categoryStorage;
     }
@@ -115,6 +120,7 @@ class PasswordRepo implements RepoInterface
         try {
             $password = $this->passwordStorage->fetchPassword($this->getKey(), $this->getUser(), $id);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden des Passworts ist ein Fehler aufgetreten.', 501);
         }
         return $password;
@@ -144,6 +150,7 @@ class PasswordRepo implements RepoInterface
             // Search for all passwords independent of the category.
             return iterator_to_array($this->passwordStorage->fetchPasswords($user, $term));
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden der Passwortliste ist ein Fehler aufgetreten.', 501);
         }
     }
@@ -167,6 +174,7 @@ class PasswordRepo implements RepoInterface
                     throw new RepoException('Die gewählte Kategorie konnte nicht gefunden werden.', 422);
                 }
             } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
                 throw new RepoException('Die gewählte Kategorie konnte nicht geladen werden.', 501);
             }
         } else {
@@ -178,12 +186,14 @@ class PasswordRepo implements RepoInterface
             try {
                 return $this->passwordStorage->insertPassword($this->getKey(), $user, $data);
             } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
                 throw new RepoException('Das Passwort konnte nicht angelegt werden.', 501);
             }
         }
         try {
             $this->passwordStorage->updatePassword($this->getKey(), $user, $id, $data);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Das Passwort konnte nicht aktualisiert werden.', 501);
         }
         return $id;
@@ -201,6 +211,7 @@ class PasswordRepo implements RepoInterface
         try {
             return (bool)$this->passwordStorage->deletePassword($this->getUser(), $id);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             return false;
         }
     }

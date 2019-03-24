@@ -44,6 +44,8 @@ use Sx\Server\ApplicationInterface;
 use Sx\Server\MiddlewareHandlerFactory;
 use Sx\Server\MiddlewareHandlerInterface;
 use Sx\Server\RouterInterface;
+use Sx\Utility\ErrorLog;
+use Sx\Utility\LogInterface;
 
 /**
  * A configuration provider for the dependency injection container.
@@ -69,6 +71,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(CategorySave::class, CategoryFactory::class);
         $injector->set(CategoryStorage::class, StorageFactory::class);
         $injector->set(ErrorHandler::class, ErrorHandlerFactory::class);
+        $injector->set(LogInterface::class, ErrorLog::class);
         $injector->set(Generate::class, MiddlewareFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);
         $injector->set(Login::class, LoginFactory::class);

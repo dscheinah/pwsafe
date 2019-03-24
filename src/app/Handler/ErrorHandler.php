@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Sx\Message\Response\HelperInterface;
+use Sx\Utility\LogInterface;
 
 /**
  * The error handler to create error responses out of exceptions.
@@ -14,6 +15,13 @@ use Sx\Message\Response\HelperInterface;
  */
 class ErrorHandler extends MiddlewareAbstract
 {
+    /**
+     * The logger to write errors to.
+     *
+     * @var LogInterface
+     */
+    private $logger;
+
     /**
      * The env from config to check if to output the original message and trace.
      *
@@ -25,11 +33,13 @@ class ErrorHandler extends MiddlewareAbstract
      * Create the error handler with helper and env from config.
      *
      * @param HelperInterface $helper
+     * @param LogInterface    $logger
      * @param string          $env
      */
-    public function __construct(HelperInterface $helper, string $env)
+    public function __construct(HelperInterface $helper, LogInterface $logger, string $env)
     {
         parent::__construct($helper);
+        $this->logger = $logger;
         $this->env = $env;
     }
 
@@ -46,6 +56,7 @@ class ErrorHandler extends MiddlewareAbstract
         try {
             return $handler->handle($request);
         } catch (\Exception $e) {
+            $this->logger->log($e->getMessage());
             // Do not output any internal information in production environment.
             if ($this->env === 'production') {
                 return $this->helper->create(500);

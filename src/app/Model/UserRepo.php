@@ -2,14 +2,14 @@
 namespace App\Model;
 
 use Sx\Data\BackendException;
-use Sx\Data\RepoInterface;
+use Sx\Utility\LogInterface;
 
 /**
  * A class to represent the domain of the user. It is used for login and profile updates.
  *
  * @package App\Model
  */
-class UserRepo implements RepoInterface
+class UserRepo extends RepoAbstract
 {
     /**
      * The storage to access the database.
@@ -21,10 +21,12 @@ class UserRepo implements RepoInterface
     /**
      * Creates the domain repository with the database storage.
      *
-     * @param UserStorage $storage
+     * @param LogInterface $logger
+     * @param UserStorage  $storage
      */
-    public function __construct(UserStorage $storage)
+    public function __construct(LogInterface $logger, UserStorage $storage)
     {
+        parent::__construct($logger);
         $this->storage = $storage;
     }
 
@@ -41,6 +43,7 @@ class UserRepo implements RepoInterface
         try {
             $data = $this->storage->fetchUserByUser($user, $password);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             return false;
         }
         // An invalid username is handled as a validation error too.
@@ -69,6 +72,7 @@ class UserRepo implements RepoInterface
         try {
             $data = $this->storage->fetchUserByUser($user, $password);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Der angegebene Benutzer konnte nicht geladen werden.', 501);
         }
         if (!$data) {
@@ -80,6 +84,7 @@ class UserRepo implements RepoInterface
             try {
                 $key = bin2hex(random_bytes(16));
             } catch (\Exception $e) {
+                $this->logger->log($e->getMessage());
                 throw new \RuntimeException('error creating key: ' . $e->getMessage(), $e->getCode(), $e);
             }
             $data['key'] = $key;
@@ -87,6 +92,7 @@ class UserRepo implements RepoInterface
             try {
                 $this->storage->updateUser($data['id'], $password, $data);
             } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
                 throw new RepoException('Der Benutzer konnte nicht aktualisiert werden.', 422);
             }
         }
@@ -112,6 +118,7 @@ class UserRepo implements RepoInterface
         try {
             $user = $this->storage->fetchUserById($id, $password);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden des Profils ist ein Fehler aufgetreten.', 501);
         }
         if (!$user) {
@@ -140,6 +147,7 @@ class UserRepo implements RepoInterface
         try {
             $this->storage->updateUser($id, $password, $user);
         } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
             throw new RepoException('Das Profil konnte nicht aktualisiert werden.', 501);
         }
         return $user;

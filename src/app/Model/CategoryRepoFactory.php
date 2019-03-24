@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
+use Sx\Utility\LogInterface;
 
 /**
  * Factory for the CategoryRepo domain.
@@ -20,6 +21,6 @@ class CategoryRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): CategoryRepo
     {
-        return new CategoryRepo($injector->get(CategoryStorage::class));
+        return new CategoryRepo($injector->get(LogInterface::class), $injector->get(CategoryStorage::class));
     }
 }
