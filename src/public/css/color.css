@@ -4,7 +4,7 @@ a, .error {
 }
 
 /* Is needed for navigation and container. */
-button, .selected {
+button, .selected, .loading {
     color: white;
 }
 
@@ -58,7 +58,6 @@ nav, .selected {
 }
 
 .filter label {
-    box-shadow: 2px 1px 2px lightsteelblue;
     border-bottom: 1px solid lightsteelblue;
 }
 

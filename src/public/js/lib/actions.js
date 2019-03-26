@@ -93,32 +93,40 @@ class Actions {
             if (!this.actions[action]) {
                 return;
             }
-            // Dispatch the actions and prevent the event to toggle default behaviour, but only if actions are found.
-            this.trigger(action, target);
             e.preventDefault();
+            // Only have one client action at the same time running.
+            if (this.isRunning) {
+                return;
+            }
+            this.isRunning = true;
+            // Dispatch the actions and prevent the event to toggle default behaviour, but only if actions are found.
+            this.trigger(action, target).then(() => this.isRunning = false);
         });
     }
 
     /**
      * Used to trigger all actions added for the given key. This is used in the event listener and can be used
      * to dispatch actions from outside code.
+     * This function needs to be async to handle all registered actions in sequential order with await.
      *
      * @param {string} key
      * @param {*=}     trigger
      */
-    trigger(key, trigger) {
-        if (!this.actions[key]) {
+    async trigger(key, trigger) {
+        let actions = this.actions[key];
+        if (!actions) {
             return;
         }
-        this.actions[key].forEach(action => {
+        let length = actions.length;
+        for (let i = 0; i < length; i++) {
+            let action = actions[i];
             // First create a payload from the given trigger. This returns a promise to resolve.
-            action.convert(trigger).then((payload) => {
-                // If resolved, use the action and payload to handle application state changes.
-                this.state.dispatch(action, payload);
-                // Finally allow the action to do changes independent from application state.
-                action.run(payload);
-            });
-        });
+            let payload = await action.convert(trigger);
+            // If resolved, use the action and payload to handle application state changes.
+            this.state.dispatch(action, payload);
+            // Finally allow the action to do changes independent from application state.
+            action.run(payload);
+        }
     }
 }
 

@@ -80,35 +80,51 @@ state.register('categories', pages.password_edit);
 const menu = new Menu(templates.get('menu', document.querySelector('#nav')));
 // The user scope contains the key if the user is logged in. This is checked in the template.
 state.register('user', menu);
+// Also register the loading animation within the menu.
+menu.part('loading', new Part.Basic(templates.get('loading')));
+state.register('loading', menu);
 
 // The question for the clients confirmation before a password will be deleted.
 let confirmDelete = 'Soll der Datensatz wirklich gelöscht werden?';
 
+let loadStart = new Action.Loading(true), loadEnd = new Action.Loading(false);
+/**
+ * Registers an action with additional loading animation to indicate the backend work to the user.
+ *
+ * @param {string} key
+ * @param {Action} action
+ */
+const loading = function(key, action) {
+    actions.add(key, loadStart);
+    actions.add(key, action);
+    actions.add(key, loadEnd);
+};
+
 // Register all actions needed in the application. The corresponding triggers can be found in the templates
 // as buttons or forms with data-action attributes which values match the keys.
-actions.add('category', new Action.CategoryLoad(pages.category, backend));
+loading('category', new Action.CategoryLoad(pages.category, backend));
 actions.add('category_add', new Action.CategoryAdd(pages.category));
-actions.add('category_delete', new Action.Delete('categories', backend, 'category', confirmDelete));
-actions.add('category_save', new Action.CategorySave(navigation, backend));
-actions.add('categories', new Action.Load(pages.categories, 'categories', backend));
+loading('category_delete', new Action.Delete('categories', backend, 'category', confirmDelete));
+loading('category_save', new Action.CategorySave(navigation, backend));
+loading('categories', new Action.Load(pages.categories, 'categories', backend));
 actions.add('copy', new Action.ClipboardCopy('password'));
-actions.add('filter', new Action.Filter(actions));
-actions.add('generate', new Action.PasswordGenerate(backend));
+loading('filter', new Action.Filter(actions));
+loading('generate', new Action.PasswordGenerate(backend));
 actions.add('generate_apply', new Action.Apply('password_edit', navigation));
 actions.add('generate_open', new Action.Open(pages.generate));
 // This actions is triggered at the end of this file after all templates are loaded.
 actions.add('init', new Action.Init(pages.login));
-actions.add('login', new Action.Login(backend, actions));
-actions.add('password', new Action.PasswordDetail(pages.password, backend));
+loading('login', new Action.Login(backend, actions));
+loading('password', new Action.PasswordDetail(pages.password, backend));
 actions.add('password_add', new Action.PasswordAdd(pages.password_edit));
-actions.add('password_delete', new Action.Delete('passwords', backend, 'password', confirmDelete));
+loading('password_delete', new Action.Delete('passwords', backend, 'password', confirmDelete));
 actions.add('password_edit', new Action.PasswordEdit(pages.password_edit));
-actions.add('password_save', new Action.PasswordSave(navigation, backend));
-actions.add('password_search', new Action.Search('passwords', backend));
+loading('password_save', new Action.PasswordSave(navigation, backend));
+loading('password_search', new Action.Search('passwords', backend));
 // The passwords action is triggered from the menu and after successful login.
-actions.add('passwords', new Action.PasswordList(pages.passwords, backend));
+loading('passwords', new Action.PasswordList(pages.passwords, backend));
 actions.add('profile', new Action.ProfileEdit(pages.profile));
-actions.add('profile_save', new Action.ProfileSave(navigation, backend));
+loading('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());
 
 // Start the event listeners. These will trigger the registered actions.
@@ -121,4 +137,4 @@ navigation.start(window);
 
 // Load all templates in parallel.
 // If this is finished the init action runs to fill the initial application state and open the login page.
-templates.load().then(() => actions.trigger('init', local));
+templates.load().then(() => actions.trigger('init', local)).then();

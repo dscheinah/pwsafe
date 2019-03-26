@@ -80,7 +80,7 @@ class Login extends Action {
      */
     run(payload) {
         if (!payload.error) {
-            this.actions.trigger('passwords');
+            this.actions.trigger('passwords').then();
         }
     }
 }

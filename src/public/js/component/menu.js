@@ -28,6 +28,13 @@ class Menu extends Component {
      * @param {string} scope
      */
     update(data, scope) {
+        // If the loading animation is requested, simply forward the data to the part to not kill the rendered menu.
+        let loading = this.parts[scope];
+        if (loading) {
+            loading.update(data);
+            this.template.insert(scope, loading);
+            return;
+        }
         // The super call forwards the data to all registered parts.
         super.update(data, scope);
         this.template.set(data);

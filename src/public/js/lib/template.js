@@ -181,7 +181,9 @@ class Template {
             this.container.innerHTML = template.innerHTML;
         } else {
             let response = await fetch(`/templates/${this.key}.html`);
-            this.container.innerHTML = await response.text();
+            if (response.status === 200) {
+                this.container.innerHTML = await response.text();
+            }
         }
     }
 

@@ -1,0 +1,26 @@
+.part.loading {
+    position: absolute;
+    top: 15px;
+}
+
+.loading-animation {
+    font-size: 30px;
+    line-height: 1;
+    animation: loading 1s infinite;
+    /* Start with the from values. */
+    opacity: 0;
+    transform: scale(.8);
+    /* Only show the animation if loading takes long. */
+    animation-delay: 200ms;
+}
+
+@keyframes loading {
+    from, to {
+        opacity: 0;
+        transform: scale(.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

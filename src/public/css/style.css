@@ -1,8 +1,10 @@
 @import "./reset.css";
 @import "./layout.css";
+@import "./animation.css";
 @import "./button.css";
+@import "./color.css";
+@import "./content.css";
 @import "./filter.css";
 @import "./form.css";
+@import "./shadow.css";
 @import "./table.css";
-@import "./content.css";
-@import "./color.css";

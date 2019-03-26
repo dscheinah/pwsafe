@@ -41,9 +41,15 @@ class Init extends Open {
             // The generation scope must be initialized for the generation form to be rendered. Without any data
             // the templates will not render since the pages update method is never called.
             generate: {},
+            user: {},
         };
     }
 
+    /**
+     * Focus the empty input field.
+     *
+     * @param {Object} payload
+     */
     run(payload) {
         super.run(payload);
         // Focus is only possible if the element is in DOM, so run super first.

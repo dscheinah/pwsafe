@@ -27,8 +27,6 @@ nav {
     /* To ensure it is on top of all elements. */
     z-index: 10000;
     background: white;
-    /* Indicate on-top-position by a shadow. */
-    box-shadow: 0 2px 4px lightgray;
 }
 
 /* Do not use the real body, to not accidentally apply styles to temporary injected elements. */
@@ -49,7 +47,10 @@ nav {
 
 .menu {
     /* Use less padding since the buttons inside the navigation do provide extra padding on their own. */
-    padding: 20px 30px;
+    padding: 10px 30px;
+}
+
+.menu .template {
     text-align: right;
 }
 
@@ -60,8 +61,6 @@ nav {
     /* Let the content at least grow to full browser height. */
     flex: 1 0 auto;
     min-height: 100%;
-    /* Indicate the max-width with a shadow to the left and right. */
-    box-shadow: 0 0 4px lightgray;
 }
 
 /* The page rendering never removes pages to not have render dependencies. To avoid positioning hide the pages. */

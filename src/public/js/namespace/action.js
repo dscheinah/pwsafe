@@ -7,6 +7,7 @@ export {default as Delete} from '../action/delete.js';
 export {default as Filter} from '../action/filter.js';
 export {default as Init} from '../action/init.js';
 export {default as Load} from '../action/load.js';
+export {default as Loading} from '../action/loading.js';
 export {default as Login} from '../action/login.js';
 export {default as Open} from '../action/open.js';
 export {default as PasswordAdd} from '../action/password/add.js';

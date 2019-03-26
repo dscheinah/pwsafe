@@ -1,0 +1,36 @@
+/* Indicate on-top-position by a shadow. */
+nav {
+    box-shadow: 0 2px 8px lightgray;
+}
+
+/* Indicate the max-width with a shadow to the left and right. */
+.container {
+    box-shadow: 0 0 8px lightgray;
+}
+
+/* Indicate a control by shadow. */
+.container button {
+    box-shadow: 1px 1px 4px lightgray;
+}
+
+.filter label {
+    box-shadow: 2px 1px 4px lightsteelblue;
+}
+
+/* On click, "push" the buttons by inverting its shadow. */
+.container button:active {
+    box-shadow: 0 0 2px gray inset;
+}
+
+.filter label:active {
+    box-shadow: 0 0 2px lightsteelblue inset;
+}
+
+/* Adopt the shadow for the navigation buttons. */
+.menu button {
+    text-shadow: 0 0 4px gray;
+}
+
+.menu button:active {
+    text-shadow: 0 0 2px gray;
+}

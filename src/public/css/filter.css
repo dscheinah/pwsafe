@@ -8,8 +8,12 @@
 .filter label {
     /* To position the input inside the label. */
     position: relative;
-    cursor: pointer;
     padding: .5em;
+    cursor: pointer;
+}
+
+.filter label.selected {
+    cursor: default;
 }
 
 /* Hide the input but still have it accessible. */

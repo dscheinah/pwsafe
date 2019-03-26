@@ -28,7 +28,7 @@ class Filter extends Action {
      */
     async convert(trigger) {
         let form = trigger.form;
-        this.actions.trigger(form.dataset.action, form);
+        await this.actions.trigger(form.dataset.action, form);
         return {};
     }
 }
