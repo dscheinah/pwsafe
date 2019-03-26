@@ -6,9 +6,9 @@ ENV NODE_PATH /usr/local/lib/node_modules
 ADD ./build.js /build/build.js
 ADD ./src/public /build/src
 # Build JavaScript with webpack.
-RUN webpack /build/src/js/app.js -o /build/dist/js/app.js \
- # Build CSS and templates cache with the build.js script.
- && node /build/build.js
+RUN webpack /build/src/js/app.js -o /build/dist/js/app.js
+# Build CSS and templates cache with the build.js script.
+RUN node /build/build.js
 
 FROM composer as vendor
 ADD ./src/composer.json /src/
@@ -25,8 +25,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
  # To set the security headers like CSP in .htaccess.
  && a2enmod headers \
  # Security settings not available in .htaccess context.
- && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
-# Copy the complete source.
+ && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf \
+ # Prevent apache from logging the encryption key by removing the query params from the access logs.
+ && sed -Ei "s/%r/%m %U %H/g" /etc/apache2/apache2.conf
 ADD ./src /var/www/html
 # Create the default configuration compatible with passing options via environment.
 ADD ./src/config/config.local.php.dist /var/www/html/config/config.local.php
