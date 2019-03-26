@@ -8,7 +8,7 @@ CREATE TABLE `categories`
 
 ALTER TABLE `passwords`
   ADD `category_id` INT UNSIGNED,
-  ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
+  ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL;
 
 INSERT INTO `categories` (`name`, `user_id`)
 SELECT 'Sonstiges', `id`

@@ -4,38 +4,38 @@ version: '3'
 # You need to provide a .env file containing APP_ENV, MYSQL_DATABASE, MYSQL_USER and MYSQL_PASSWORD.
 # The APP_ENV must be the string production to disable detailed error output.
 services:
-   app:
-      # Build the adjusted PHP-Apache image with public dir and MySQL support.
-      build: .
-      ports:
-         - "80:80"
-      # Provide the current development source to the container.
-      volumes:
-         - ./src:/var/www/html
-      environment:
-         - MYSQL_SERVER=db
-         - MYSQL_DATABASE
-         - MYSQL_USER
-         - MYSQL_PASSWORD
-         - APP_ENV
-      depends_on:
-         - db
-   db:
-      # The application needs to use MySQL since the statements are not cross SQL compatible.
-      image: mysql
-      # PHP currently does not support the new authentication method.
-      command: --default-authentication-plugin=mysql_native_password
-      # The container should run the setup.sql in the sql folder on init to create tables and a default user.
-      # Database files are stored in a named volume.
-      volumes:
-         - ./sql:/docker-entrypoint-initdb.d
-         - db:/var/lib/mysql
-      environment:
-         - MYSQL_RANDOM_ROOT_PASSWORD=1
-         - MYSQL_ONETIME_PASSWORD=1
-         - MYSQL_DATABASE
-         - MYSQL_USER
-         - MYSQL_PASSWORD
+  app:
+    # Build the adjusted PHP-Apache image with public dir and MySQL support.
+    build: .
+    ports:
+      - "80:80"
+    # Provide the current development source to the container.
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - MYSQL_SERVER=db
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - APP_ENV
+    depends_on:
+      - db
+  db:
+    # The application needs to use MySQL since the statements are not cross SQL compatible.
+    image: mysql
+    # PHP currently does not support the new authentication method.
+    command: --default-authentication-plugin=mysql_native_password
+    # The container should run the setup.sql in the sql folder on init to create tables and a default user.
+    # Database files are stored in a named volume.
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_ONETIME_PASSWORD=1
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
 
 volumes:
-   db:
+  db:
