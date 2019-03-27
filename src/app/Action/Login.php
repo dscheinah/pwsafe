@@ -67,7 +67,8 @@ class Login extends MiddlewareAbstract
         try {
             $user = $this->repo->getUser($user, $password);
         } catch (RepoException $e) {
-            return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
+            // Use a 500 code to not indicate unauthorized. Otherwise a page reload would be triggered.
+            return $this->helper->create(500, ['message' => $e->getMessage()]);
         }
         $this->session->set(__CLASS__, $user['id']);
         // ID and hashed password should not be sent to the client since not needed.
