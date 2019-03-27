@@ -2,10 +2,7 @@ const css = require('clean-css');
 const fs = require('fs');
 
 // Minify CSS. Start with a local import to have relative imports inside ready to be found.
-let out = new css().minify('@import url(/build/src/css/style.css);');
-if (!fs.existsSync('/build/dist/css/')) {
-    fs.mkdirSync('/build/dist/css/');
-}
+let out = new css({level: 2}).minify('@import url(/build/src/css/style.css);');
 fs.writeFileSync('/build/dist/css/style.css', out.styles);
 
 // Load templates and create a cache inside the index.html file.
