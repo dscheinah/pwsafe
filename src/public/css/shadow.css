@@ -22,7 +22,7 @@ nav {
     box-shadow: 0 0 2px gray inset;
 }
 
-.filter label:active {
+.filter label:not(.selected):active {
     box-shadow: 0 0 2px lightsteelblue inset;
 }
 

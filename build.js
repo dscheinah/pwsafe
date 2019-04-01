@@ -9,7 +9,8 @@ fs.writeFileSync('/build/dist/css/style.css', out.styles);
 let cache = '';
 fs.readdir('/build/src/templates/', (error, files) => {
     files.forEach(function (file) {
-        let id = file.replace(/\.html$/, ''), content = fs.readFileSync('/build/src/templates/' + file);
+        let id = file.replace(/\.html$/, '');
+        let content = fs.readFileSync('/build/src/templates/' + file);
         cache += `<template id="${id}">${content.toString()}</template>`;
     });
     let index = fs.readFileSync('/build/src/index.html');

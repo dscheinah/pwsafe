@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 
+use Sx\Data\BackendException;
 use Sx\Data\Storage;
 
 /**
@@ -20,7 +21,7 @@ class PasswordStorage extends Storage
      * @param int    $id
      *
      * @return array
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchPassword(string $key, int $user, int $id): array
     {
@@ -54,7 +55,7 @@ class PasswordStorage extends Storage
      * @param string $term
      *
      * @return \Generator
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchPasswords(int $user, string $term = ''): \Generator
     {
@@ -96,7 +97,7 @@ class PasswordStorage extends Storage
      * @param string $term
      *
      * @return \Generator
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchPasswordsByCategory(int $user, int $category = null, string $term = ''): \Generator
     {
@@ -141,7 +142,7 @@ class PasswordStorage extends Storage
      * @param array  $data
      *
      * @return int
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function insertPassword(string $key, int $user, array $data): int
     {
@@ -176,7 +177,7 @@ class PasswordStorage extends Storage
      * @param int    $id
      * @param array  $data
      *
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function updatePassword(string $key, int $user, int $id, array $data): void
     {
@@ -216,7 +217,7 @@ class PasswordStorage extends Storage
      * @param int $id
      *
      * @return int
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function deletePassword(int $user, int $id): int
     {
@@ -238,7 +239,7 @@ class PasswordStorage extends Storage
      *
      * @param string $key
      *
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     private function prepareKey(string $key): void
     {

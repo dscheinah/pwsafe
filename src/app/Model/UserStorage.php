@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 
+use Sx\Data\BackendException;
 use Sx\Data\Storage;
 
 /**
@@ -34,7 +35,7 @@ class UserStorage extends Storage
      * @param string $password
      *
      * @return array
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchUserById(int $id, string $password): array
     {
@@ -72,7 +73,7 @@ class UserStorage extends Storage
      * @param string $password
      *
      * @return array
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchUserByUser(string $user, string $password): array
     {
@@ -109,7 +110,7 @@ class UserStorage extends Storage
      * @param string $password
      * @param array  $data
      *
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function updateUser(int $id, string $password, array $data): void
     {
@@ -143,7 +144,7 @@ class UserStorage extends Storage
      *
      * @param string $password
      *
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     private function preparePassword(string $password): void
     {

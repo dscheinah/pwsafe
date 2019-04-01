@@ -5,6 +5,7 @@ import Storages from '../storages.js';
  *
  * @param {string} path
  * @param {string} query
+ * @param {Object} headers
  * @param {string} method
  * @param {*=}     body
  *
@@ -12,11 +13,12 @@ import Storages from '../storages.js';
  *
  * @this {Backend}
  */
-const request = async function (path, query, method, body) {
+const request = async function (path, query, headers, method, body) {
     this.status = 0;
     let response = await fetch(`/${path}${query}`, {
         method: method,
         body: body,
+        headers: headers
     });
     if (!response.ok) {
         this.status = response.status;
@@ -59,13 +61,28 @@ const querystring = function (...args) {
 };
 
 /**
+ * Prefixes the header keys with 'X-' to have no collisions with standard headers.
+ *
+ * @param {Object} data
+ *
+ * @returns {Object}
+ */
+const asHeaders = function(data) {
+    let headers = {};
+    for (let key in data) {
+        headers['X-' + key] = data[key];
+    }
+    return headers;
+};
+
+/**
  * Implement a basic connection to a PHP backend returning JSON objects.
  */
 class Backend extends Storages {
 
     /**
      * Loads data from the backend. The key is used as the absolute path.
-     * The params are combined with the data from the application state (see parent class).
+     * The params are combined with headers from the data of the application state (see parent class).
      *
      * @param {string}  key
      * @param {Object=} params
@@ -73,12 +90,12 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async load(key, params) {
-        return request.call(this, key, querystring(this.data, params || {}), 'get');
+        return request.call(this, key, querystring(params || {}), asHeaders(this.data), 'get');
     }
 
     /**
      * Saves the form using a FormData object from the given element using the key as an absolute path.
-     * The querystring for the POST request is generated from the application state (see parent class).
+     * The headers for the POST request are generated from the application state (see parent class).
      *
      * @param {string}          key
      * @param {HTMLFormElement} form
@@ -86,7 +103,7 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async save(key, form) {
-        return request.call(this, key, querystring(this.data), 'post', new FormData(form));
+        return request.call(this, key, '', asHeaders(this.data), 'post', new FormData(form));
     }
 
     /**
@@ -98,7 +115,7 @@ class Backend extends Storages {
      * @returns {Promise<{Object}>}
      */
     async remove(key, params) {
-        return request.call(this, key, querystring(this.data, params || {}), 'delete');
+        return request.call(this, key, querystring(params || {}), asHeaders(this.data), 'delete');
     }
 }
 

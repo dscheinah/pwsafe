@@ -26,9 +26,7 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
  # To set the security headers like CSP in .htaccess.
  && a2enmod headers \
  # Security settings not available in .htaccess context.
- && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf \
- # Prevent apache from logging the encryption key by removing the query params from the access logs.
- && sed -Ei "s/%r/%m %U %H/g" /etc/apache2/apache2.conf
+ && echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
 ADD ./src /var/www/html
 # Create the default configuration compatible with passing options via environment.
 ADD ./src/config/config.local.php.dist /var/www/html/config/config.local.php

@@ -59,7 +59,7 @@ class ServerRequestFactory extends ServerRequest implements ServerRequestFactory
         foreach ($serverParams as $key => $value) {
             if ($value && strpos($key, 'HTTP_') === 0) {
                 $name = substr($key, 5);
-                $headers[$name] = $value;
+                $headers[$name] = \is_array($value) ? $value : [$value];
                 // Convert the underscore from the web servers conversion to the canonical minus.
                 // Also fill the insensitive mapper as no withHeader is used.
                 $mapper[str_replace('_', '-', strtolower($name))] = $name;

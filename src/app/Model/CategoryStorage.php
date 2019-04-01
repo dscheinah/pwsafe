@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 
+use Sx\Data\BackendException;
 use Sx\Data\Storage;
 
 /**
@@ -18,7 +19,7 @@ class CategoryStorage extends Storage
      * @param int $id
      *
      * @return array
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchCategory(int $user, int $id): array
     {
@@ -33,7 +34,7 @@ class CategoryStorage extends Storage
      * @param int $user
      *
      * @return \Generator
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function fetchCategories(int $user): \Generator
     {
@@ -48,7 +49,7 @@ class CategoryStorage extends Storage
      * @param array $data
      *
      * @return int
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function insertCategory(int $user, array $data): int
     {
@@ -63,7 +64,7 @@ class CategoryStorage extends Storage
      * @param int   $id
      * @param array $data
      *
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function updateCategory(int $user, int $id, array $data): void
     {
@@ -78,7 +79,7 @@ class CategoryStorage extends Storage
      * @param int $id
      *
      * @return int
-     * @throws \Sx\Data\BackendException
+     * @throws BackendException
      */
     public function deleteCategory(int $user, int $id): int
     {

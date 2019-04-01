@@ -80,11 +80,13 @@ class UserRepo extends RepoAbstract
         }
         // If the data does not contain a valid key (e.g. a newly created user) a new one must be created.
         if (!($data['key'] ?? '')) {
-            // This creates a 256bit key for MySQL AES with random printable characters.
             try {
-                $key = bin2hex(random_bytes(16));
+                // This creates a 256bit key for MySQL AES with random printable characters.
+                $key = '';
+                for ($i = 0; $i < 32; $i++) {
+                    $key .= \chr(random_int(0x21, 0x7E));
+                }
             } catch (\Exception $e) {
-                $this->logger->log($e->getMessage());
                 throw new \RuntimeException('error creating key: ' . $e->getMessage(), $e->getCode(), $e);
             }
             $data['key'] = $key;

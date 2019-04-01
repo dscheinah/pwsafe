@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use Sx\Data\SessionException;
 use Sx\Message\Response\HelperInterface;
 use Sx\Server\Router;
 use Psr\Http\Message\ServerRequestInterface;
@@ -58,10 +59,13 @@ class Auth extends Router
      * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
-     * @throws \Sx\Data\SessionException
+     * @throws SessionException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // This is provided in the response of a successful login and must be appended to each other request.
+        // The JS codes uses the header to not send the key by GET, which would make it visible in the logs.
+        $key = $request->getAttribute('key', $request->getHeaderLine('X-KEY'));
         $this->session->start();
         try {
             // Do public dispatch as the parent router does. The exception is thrown if no action handled the request.
@@ -72,8 +76,7 @@ class Auth extends Router
             }
         } catch (MiddlewareHandlerException $e) {
             // Require the user ID provided by the login action. Also the frontend needs to send the encryption key.
-            // This is provided in the response of a successful login and must be appended to each request.
-            if (!$this->session->has(Login::class) || !$request->getAttribute('key')) {
+            if (!$key || !$this->session->has(Login::class)) {
                 return $this->helper->create(403);
             }
         } finally {
@@ -81,7 +84,12 @@ class Auth extends Router
             // All next handlers should not use any session start again to prevent long locks.
             $this->session->end();
         }
-        // Since the session should not be started and used in next handlers, provide the user ID as an attribute.
-        return $handler->handle($request->withAttribute(Login::class, $this->session->get(Login::class)));
+        return $handler->handle(
+            $request
+                // Since the session should not be used in next handlers, provide the user ID as an attribute.
+                ->withAttribute(Login::class, $this->session->get(Login::class))
+                // When transferred as a header, it must still be accessible as an attribute for the actions.
+                ->withAttribute('key', $key)
+        );
     }
 }
