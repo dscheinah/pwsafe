@@ -4,6 +4,7 @@ import * as Part from './namespace/part.js';
 import * as Storage from './namespace/storage.js';
 import Actions from './lib/actions.js';
 import Clipboard from './component/clipboard.js';
+import Fragment from './component/fragment.js';
 import Menu from './component/menu.js';
 import Navigation from './lib/navigation.js';
 import Page from './lib/page.js';
@@ -134,6 +135,11 @@ actions.listen('change', 'input');
 
 // The navigation needs to be started to listen to the popstate event.
 navigation.start(window);
+
+// Register the automatic search feature. This must listen to categories and passwords to follow the initial setup path.
+const fragment = new Fragment(actions);
+state.register('categories', fragment);
+state.register('passwords', fragment);
 
 // Load all templates in parallel.
 // If this is finished the init action runs to fill the initial application state and open the login page.

@@ -24,7 +24,7 @@ class Search extends Action {
     /**
      * Sends the search form to the backend to request the new data.
      *
-     * @param {HTMLFormElement} trigger
+     * @param {HTMLFormElement|FormData} trigger
      *
      * @returns {Promise<{Object}>}
      */

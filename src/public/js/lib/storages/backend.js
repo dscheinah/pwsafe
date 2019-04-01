@@ -97,13 +97,16 @@ class Backend extends Storages {
      * Saves the form using a FormData object from the given element using the key as an absolute path.
      * The headers for the POST request are generated from the application state (see parent class).
      *
-     * @param {string}          key
-     * @param {HTMLFormElement} form
+     * @param {string}                   key
+     * @param {HTMLFormElement|FormData} form
      *
      * @returns {Promise<{Object}>}
      */
     async save(key, form) {
-        return request.call(this, key, '', asHeaders(this.data), 'post', new FormData(form));
+        if (!(form instanceof FormData)) {
+            form = new FormData(form);
+        }
+        return request.call(this, key, '', asHeaders(this.data), 'post', form);
     }
 
     /**

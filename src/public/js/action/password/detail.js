@@ -18,7 +18,7 @@ class Detail extends Load {
     /**
      * Loads the data using the value of the trigger button as ID.
      *
-     * @param {HTMLButtonElement} trigger
+     * @param {HTMLButtonElement|Object} trigger
      *
      * @returns {Promise<{Object}>}
      */

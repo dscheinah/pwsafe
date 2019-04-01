@@ -9,15 +9,27 @@ Also some features are still under development:
 * user and group management with basic privileges
 * share passwords with other users and groups
 * add more options to the generator
-* write a bookmarklet for cross browser integration on websites
 
 This readme gives information about 
 [Requirements](#requirements), 
 [Deployment](#deployment) and 
 [Development](#development). 
 
-It is does not contain user documentation for end users. I also do not intend to create one.
-Also for now the application is only available in german language and has no translations ready. Sorry.
+## Documentation
+
+This file does not contain user documentation for end users. I also do not intend to create one.
+
+Also for now the application is only available in german language and has no translations ready. 
+
+Sorry :(
+
+### Bookmarklet
+
+It is possible to open the app with a pre defined search. Simply fill the URL fragment. 
+This can also be used to create a bookmarklet with e.g. this code:
+    
+    javascript:(function(){window.open('https://replace.with.your.url#'+window.location.host)})()
+    
 
 ## Requirements
 
