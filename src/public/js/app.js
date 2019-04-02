@@ -112,7 +112,9 @@ actions.add('copy', new Action.ClipboardCopy('password'));
 loading('filter', new Action.Filter(actions));
 loading('generate', new Action.PasswordGenerate(backend));
 actions.add('generate_apply', new Action.Apply('password_edit', navigation));
-actions.add('generate_open', new Action.Open(pages.generate));
+actions.add('generate_copy', new Action.ClipboardCopy('generate', navigation));
+actions.add('generate_open', new Action.Generate(pages.generate, true));
+actions.add('generate_type', new Action.Change('generate'));
 // This actions is triggered at the end of this file after all templates are loaded.
 actions.add('init', new Action.Init(pages.login));
 loading('login', new Action.Login(backend, actions));
@@ -125,13 +127,17 @@ loading('password_search', new Action.Search('passwords', backend));
 // The passwords action is triggered from the menu and after successful login.
 loading('passwords', new Action.PasswordList(pages.passwords, backend));
 actions.add('profile', new Action.ProfileEdit(pages.profile));
+actions.add('profile_generate', new Action.Generate(pages.generate, false));
 loading('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());
 
 // Start the event listeners. These will trigger the registered actions.
 actions.listen('click', 'button');
 actions.listen('submit');
+// Used for category selection on passwords list and the type select in generation.
+// Must be scoped to the specific tags to not bubble to the form and trigger the submit action.
 actions.listen('change', 'input');
+actions.listen('change', 'select');
 
 // The navigation needs to be started to listen to the popstate event.
 navigation.start(window);

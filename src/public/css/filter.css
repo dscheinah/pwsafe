@@ -9,7 +9,6 @@
     /* To position the input inside the label. */
     position: relative;
     padding: .5em;
-    cursor: pointer;
 }
 
 .filter .selected {

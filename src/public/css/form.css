@@ -61,3 +61,32 @@ select {
 [required] + label {
     font-weight: bold;
 }
+
+/* Do not use the input type to be flexible with e.g. radio. */
+.checkbox {
+    margin-bottom: 1em;
+}
+
+.checkbox input {
+    /* Reset common input style not usable for checkboxes. */
+    width: auto;
+    border: none;
+    box-shadow: none;
+}
+
+/* Align the label with the checkbox. */
+.checkbox input, .checkbox label {
+    vertical-align: middle;
+}
+
+/* To render multiple checkboxes in a row. */
+.multi {
+    display: flex;
+    flex-wrap: wrap;
+    /* Use the margin on the wrapper to not generate extra space with following margins. */
+    margin-bottom: 1em;
+}
+
+.multi > * {
+    margin: 0 1em 0 0;
+}

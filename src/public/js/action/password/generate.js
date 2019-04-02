@@ -23,12 +23,12 @@ class Generate extends Action {
      * Trigger a save of the given buttons form on the backend. This will return a generated password. The action is
      * registered to a non submit button, since the submit will apply the generated password to the edit form.
      *
-     * @param {HTMLButtonElement} trigger
+     * @param {HTMLFormElement} trigger
      *
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        return this.backend.run(this.backend.save, 'generate', trigger.form);
+        return this.backend.run(this.backend.save, 'generate', trigger);
     }
 
     /**
@@ -40,9 +40,7 @@ class Generate extends Action {
      * @returns {Object}
      */
     reduce(state, payload) {
-        return {
-            generate: payload,
-        };
+        return Action.combine('generate', payload, state);
     }
 }
 

@@ -7,6 +7,7 @@ use App\Action\CategoryFactory;
 use App\Action\CategoryList;
 use App\Action\CategorySave;
 use App\Action\Generate;
+use App\Action\GenerateFactory;
 use App\Action\Login;
 use App\Action\LoginFactory;
 use App\Action\Password;
@@ -72,7 +73,7 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(CategoryStorage::class, StorageFactory::class);
         $injector->set(ErrorHandler::class, ErrorHandlerFactory::class);
         $injector->set(LogInterface::class, ErrorLog::class);
-        $injector->set(Generate::class, MiddlewareFactory::class);
+        $injector->set(Generate::class, GenerateFactory::class);
         $injector->set(HelperInterface::class, JsonFactory::class);
         $injector->set(Login::class, LoginFactory::class);
         $injector->set(MiddlewareHandlerInterface::class, MiddlewareHandlerFactory::class);

@@ -8,7 +8,6 @@ This means the basic parts of the application are working, but are not tested ve
 Also some features are still under development:
 * user and group management with basic privileges
 * share passwords with other users and groups
-* add more options to the generator
 
 This readme gives information about 
 [Requirements](#requirements), 

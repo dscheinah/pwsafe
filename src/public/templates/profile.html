@@ -19,13 +19,18 @@
             <small>(wird für die Anmeldung und als Vorgabe für neue Daten verwendet)</small>
         </label>
     </template>
-    <template class="input">
-        <input type="password" id="${ids('new_password')}" name="new_password"/><br/>
-        <label for="${ids('new_password')}">
-            <span>neues Passwort</span>
-            <small>(bleibt das Feld leer, erfolgt keine Änderung)</small>
-        </label>
-    </template>
+    <div class="control">
+        <template class="input">
+            <input type="password" id="${ids('new_password')}" name="new_password"/><br/>
+            <label for="${ids('new_password')}">
+                <span>neues Passwort</span>
+                <small>(bleibt das Feld leer, erfolgt keine Änderung)</small>
+            </label>
+        </template>
+        <div>
+            <button type="button" data-action="profile_generate">⚙ generieren</button>
+        </div>
+    </div>
     <template class="input">
         <input type="password" id="${ids('confirm_password')}" name="confirm_password"/>
         <label for="${ids('confirm_password')}">neues Passwort bestätigen</label>

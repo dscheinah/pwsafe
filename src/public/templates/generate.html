@@ -1,30 +1,78 @@
 <h1>Passwort generieren</h1>
 <p>
-    Es wird ein neues Passwort mit der gewünschten Länge aus kryptografisch sicheren Zufallszahlen generiert.
-    Das Passwort besteht aus üblichen, druckbaren Zeichen inklusive Sonderzeichen.
-    Das generierte Passwort wird anschließend im Klartext angezeigt
+    Es wird ein neues Passwort mit der gewünschten Länge entsprechend der gewählten Einstellungen
+    aus kryptografisch sicheren Zufallszahlen generiert. Das generierte Passwort wird anschließend im Klartext angezeigt
     und kann vor Übernahme in das Formular angepasst werden.
 </p>
-<form data-action="generate_apply" action="/" method="get">
-    <template data-condition="${error}" data-tag="p" class="error">
-        ${message}
+<template data-condition="${error}" data-tag="p" class="error">
+    ${message}
+</template>
+<form id="generate" data-action="generate" action="/" method="post">
+    <template class="input">
+        <select id="${ids('type')}" name="type" data-action="generate_type">
+            <option value="random" selected>Zufall</option>
+            <option value="dictionary">Wörterbuch</option>
+        </select>
+        <label for="${ids('type')}">
+            <span>Modus</span>
+            <small>(Zufall für sichere und Wörterbuch für merkbare Passwörter)</small>
+        </label>
     </template>
-    <div class="control">
-        <template class="input">
-            <input type="number" id="${ids('length')}" name="length" value="20"/>
+    <template data-condition="${type === 'random'}">
+        <div class="input">
+            <input type="number" id="${ids('length')}" name="length" value="30" min="1" max="256"/>
             <label for="${ids('length')}">Länge</label>
-        </template>
-        <div>
-            <button type="button" data-action="generate">⚙ generieren</button>
         </div>
-    </div>
-    <template data-condition="${password}">
+        <div class="multi">
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('lower')}" name="pattern[]" value="lower" checked/>
+                <label for="${ids('lower')}">Kleinbuchstaben</label>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('upper')}" name="pattern[]" value="upper" checked/>
+                <label for="${ids('upper')}">Großbuchstaben</label>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('digits')}" name="pattern[]" value="digits" checked/>
+                <label for="${ids('digits')}">Zahlen</label>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('symbols')}" name="pattern[]" value="symbols" checked/>
+                <label for="${ids('symbols')}">Sonderzeichen</label>
+            </div>
+        </div>
+    </template>
+    <template data-condition="${type === 'dictionary'}">
+        <div class="input">
+            <input type="number" id="${ids('words')}" name="words" value="4" min="1" max="16"/>
+            <label for="${ids('words')}">Anzahl der Wörter</label>
+        </div>
+        <div class="multi">
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('camel')}" name="camel" value="1" checked/>
+                <label for="${ids('camel')}">Wörter jeweils mit Großbuchstaben beginnen</label>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="${ids('space')}" name="space" value="1" checked/>
+                <label for="${ids('space')}">Wörter mit Leerzeichen trennen</label>
+            </div>
+        </div>
+    </template>
+</form>
+<template data-condition="${password}">
+    <form id="generate_apply" data-action="${apply ? 'generate_apply' : 'generate_copy'}" action="/" method="post">
         <div class="input">
             <input type="text" name="password" id="${ids('password')}" value="${password}" required/>
             <label for="${ids('password')}">generiertes Passwort</label>
         </div>
-        <div class="actions">
-            <button>✔ übernehmen</button>
-        </div>
+    </form>
+</template>
+<div class="actions">
+    <button form="generate">⚙ generieren</button>
+    <template data-condition="${password && apply}">
+        <button form="generate_apply">✔ übernehmen</button>
     </template>
-</form>
+    <template data-condition="${password && !apply}">
+        <button form="generate_apply">✖ kopieren und schließen</button>
+    </template>
+</div>

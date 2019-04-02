@@ -5,14 +5,17 @@ body {
     background: white;
 }
 
-button, input, textarea, select {
+button, input, textarea, select, label {
     font-size: 1em;
+}
+
+button, select, label, [type=checkbox], [type=radio] {
+    cursor: pointer;
 }
 
 button {
     border: none;
     background: none;
-    cursor: pointer;
 }
 
 button::-moz-focus-inner {

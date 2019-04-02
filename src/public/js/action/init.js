@@ -38,9 +38,6 @@ class Init extends Open {
         payload.error = false;
         return {
             login: payload,
-            // The generation scope must be initialized for the generation form to be rendered. Without any data
-            // the templates will not render since the pages update method is never called.
-            generate: {},
             user: {},
         };
     }
