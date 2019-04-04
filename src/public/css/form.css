@@ -79,6 +79,11 @@ select {
     vertical-align: middle;
 }
 
+/* To allow giving it a color. */
+.checkbox label {
+    border-bottom: 1px solid transparent;
+}
+
 /* To render multiple checkboxes in a row. */
 .multi {
     display: flex;

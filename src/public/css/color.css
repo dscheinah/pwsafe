@@ -39,8 +39,12 @@ a:hover {
     color: green;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus, textarea:focus, select:focus, .checkbox *:focus + label {
     border-color: lightgreen;
+}
+
+.checkbox *:focus {
+    color: lightgreen;
 }
 
 /* Indicate the currently selected filter tab. */
@@ -62,11 +66,11 @@ nav, .selected {
 }
 
 a, button, .selected, .filter {
-    transition: color .5s;
+    transition: color .2s;
 }
 
-input, textarea, select {
-    transition: border-color .5s;
+input, textarea, select, .checkbox * {
+    transition: border-color .2s;
 }
 
 .container button {

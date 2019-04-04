@@ -68,11 +68,11 @@
     </form>
 </template>
 <div class="actions">
-    <button form="generate">⚙ generieren</button>
+    <button form="generate" accesskey="g">⚙ generieren</button>
     <template data-condition="${password && apply}">
-        <button form="generate_apply">✔ übernehmen</button>
+        <button form="generate_apply" accesskey="s">✔ übernehmen</button>
     </template>
     <template data-condition="${password && !apply}">
-        <button form="generate_apply">✖ kopieren und schließen</button>
+        <button form="generate_apply" accesskey="s">✖ kopieren und schließen</button>
     </template>
 </div>

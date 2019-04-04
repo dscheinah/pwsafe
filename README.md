@@ -22,6 +22,21 @@ Also for now the application is only available in german language and has no tra
 
 Sorry :(
 
+### Shortcuts
+
+The app uses the browsers "accesskey" feature. The combination depends on the used browser and OS.
+The following keys are implemented:
+* __1...9__ main menu in order
+* __f__ search ("find")
+* __p__ navigate back ("previous")
+* __n__ follow link ("next")
+* __s__ save or submit
+* __a__ add new entry
+* __e__ edit or details
+* __d__ delete
+* __g__ generate
+* __c__ copy
+
 ### Bookmarklet
 
 It is possible to open the app with a pre defined search. Simply fill the URL fragment. 

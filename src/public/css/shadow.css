@@ -18,7 +18,7 @@ nav {
 }
 
 /* On click, "push" the buttons by inverting its shadow. */
-.container button:active {
+.container button:active, .container button:focus {
     box-shadow: 0 0 2px gray inset;
 }
 
@@ -31,6 +31,6 @@ nav {
     text-shadow: 0 0 4px gray;
 }
 
-.menu button:active {
+.menu button:active, .menu button:focus {
     text-shadow: 0 0 2px gray;
 }

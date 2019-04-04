@@ -13,7 +13,7 @@ class Save extends Parent {
      * @param {Backend}    backend
      */
     constructor(navigation, backend) {
-        super('category', navigation, backend, 'categories');
+        super(navigation, 'category', backend, 'categories');
     }
 
     /**

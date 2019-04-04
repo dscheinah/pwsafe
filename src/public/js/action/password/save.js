@@ -10,7 +10,7 @@ class Save extends Parent {
      * @param {Navigation} navigation
      */
     constructor(navigation, backend) {
-        super('password', navigation, backend, 'passwords');
+        super(navigation, 'password', backend, 'passwords');
     }
 
     /**

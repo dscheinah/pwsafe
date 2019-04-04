@@ -4,6 +4,7 @@ export {default as CategoryLoad} from '../action/category/load.js';
 export {default as CategorySave} from '../action/category/save.js';
 export {default as Change} from '../action/change.js';
 export {default as ClipboardCopy} from '../action/clipboard/copy.js';
+export {default as Close} from '../action/close.js';
 export {default as Delete} from '../action/delete.js';
 export {default as Filter} from '../action/filter.js';
 export {default as Generate} from '../action/generate.js';

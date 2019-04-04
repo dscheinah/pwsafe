@@ -1,25 +1,22 @@
 import Action from '../lib/action.js';
+import Close from './close.js';
 import Navigation from '../lib/navigation.js';
 
 /**
  * Action used to copy data from the active to the target page using the submit of a form.
  * This will close the active page.
  */
-class Apply extends Action {
+class Apply extends Close {
 
     /**
      * Creates the action defining the target. The navigation will be used to close the active page.
      *
-     * @param {string}     target
      * @param {Navigation} navigation
+     * @param {string}     target
      */
-    constructor(target, navigation) {
-        if (!(navigation instanceof Navigation)) {
-            throw new TypeError('navigation must instanceof Navigation');
-        }
-        super();
+    constructor(navigation, target) {
+        super(navigation);
         this.target = target;
-        this.navigation = navigation;
     }
 
     /**
@@ -53,18 +50,6 @@ class Apply extends Action {
         // Updates all data in the scope of state but keep existing values.
         return Action.combine(this.target, payload, state);
     }
-
-    /**
-     * Close the active page using the navigation after the state was updated.
-     *
-     * @param {Object} payload
-     */
-    run(payload) {
-        if (!payload.error) {
-            this.navigation.close();
-        }
-    }
-
 }
 
 export default Apply;

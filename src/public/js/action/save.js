@@ -11,16 +11,16 @@ class Save extends Apply {
      * Creates the action with all needed names and references.
      * The list is optional as not all forms have a corresponding list.
      *
-     * @param {string}     target
      * @param {Navigation} navigation
+     * @param {string}     target
      * @param {Backend}    backend
      * @param {string=}    list
      */
-    constructor(target, navigation, backend, list) {
+    constructor(navigation, target, backend, list) {
         if (!(backend instanceof Backend)) {
             throw new TypeError('backend must be instanceof Backend');
         }
-        super(target, navigation);
+        super(navigation, target);
         this.backend = backend;
         this.list = list;
     }
