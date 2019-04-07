@@ -61,6 +61,8 @@ class Login extends Action {
         }
         let user = state.user || {};
         user.key = payload.key;
+        // Used for menu visibility.
+        user.role = payload.role;
         // The key must not be saved to the localStorage.
         delete payload.key;
         return {
@@ -68,7 +70,7 @@ class Login extends Action {
             login: {
                 user: payload.user,
             },
-            user: user,
+            current: user,
         };
     }
 

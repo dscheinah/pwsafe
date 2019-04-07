@@ -34,7 +34,7 @@ state.register('clipboard', new Clipboard());
 // Stores the last used user name to suggest it on next login.
 state.register('login', local);
 // Needs to get the encryption key from the login action. The key is needed to access the the PHP backend.
-state.register('user', backend);
+state.register('current', backend);
 
 // Make the template helpers available to all templates.
 Template.add('filter', Helper.filter);
@@ -53,6 +53,8 @@ const pages = {
     'password_edit': null,
     'passwords': null,
     'profile': null,
+    'user': null,
+    'users': null,
 };
 // The templates will be rendered inside the container.
 const container = document.querySelector('#main');
@@ -63,7 +65,7 @@ Object.keys(pages).forEach(function (key) {
     state.register(key, reload);
 });
 // Create the list part for the pages with lists.
-['categories', 'passwords'].forEach(function(key) {
+['categories', 'passwords', 'users'].forEach(function(key) {
     pages[key].part('list', new Part.List(templates.get(key + '_list')));
 });
 
@@ -77,10 +79,13 @@ pages.passwords.part('categories', wrapper);
 state.register('categories', pages.passwords);
 state.register('categories', pages.password_edit);
 
+// Add the role selection to the user edit page.
+pages.user.part('roles', new Part.Select(templates.get('user_select'), 'role'));
+
 // Create the navigation. This needs a template and a component to be only rendered in logged in state.
 const menu = new Menu(templates.get('menu', document.querySelector('#nav')));
-// The user scope contains the key if the user is logged in. This is checked in the template.
-state.register('user', menu);
+// The current scope contains the key if the user is logged in. This is checked in the template.
+state.register('current', menu);
 // Also register the loading animation within the menu.
 menu.part('loading', new Part.Basic(templates.get('loading')));
 state.register('loading', menu);
@@ -103,8 +108,8 @@ const loading = function(key, action) {
 
 // Register all actions needed in the application. The corresponding triggers can be found in the templates
 // as buttons or forms with data-action attributes which values match the keys.
-loading('category', new Action.CategoryLoad(pages.category, backend));
-actions.add('category_add', new Action.CategoryAdd(pages.category));
+loading('category', new Action.Load(pages.category, 'category', backend));
+actions.add('category_add', new Action.Add(pages.category, 'category', {id: '', name: ''}));
 loading('category_delete', new Action.Delete('categories', backend, 'category', confirmDelete));
 loading('category_save', new Action.CategorySave(navigation, backend));
 loading('categories', new Action.Load(pages.categories, 'categories', backend));
@@ -131,6 +136,12 @@ actions.add('profile', new Action.ProfileEdit(pages.profile));
 actions.add('profile_generate', new Action.Generate(pages.generate, false));
 loading('profile_save', new Action.ProfileSave(navigation, backend));
 actions.add('show', new Action.PasswordShow());
+loading('user', new Action.Load(pages.user, 'user', backend));
+actions.add('user_add', new Action.Add(pages.user, 'user', {id: '', user: '', role: ''}));
+loading('user_delete', new Action.Delete('users', backend, 'user', confirmDelete));
+loading('user_save', new Action.Save(navigation, 'user', backend, 'users'));
+loading('users', new Action.Load(pages.users, 'users', backend));
+
 
 // Start the event listeners. These will trigger the registered actions.
 actions.listen('click', 'button');

@@ -8,6 +8,10 @@ use App\Action\CategorySave;
 use App\Action\Password;
 use App\Action\PasswordList;
 use App\Action\PasswordSave;
+use App\Action\User;
+use App\Action\UserDelete;
+use App\Action\UserList;
+use App\Action\UserSave;
 use Sx\Container\FactoryInterface;
 use Sx\Container\Injector;
 use Sx\Server\MiddlewareHandlerInterface;
@@ -40,17 +44,22 @@ class RouterFactory implements FactoryInterface
         $router->get('/categories', CategoryList::class);
         $router->get('/password', Password::class);
         $router->get('/passwords', PasswordList::class);
+        $router->get('/user', User::class);
+        $router->get('/users', UserList::class);
         // Routes to save data. After successful save the data will be loaded using the chained load action.
         $router->post('/category', CategorySave::class);
         $router->post('/category', Category::class);
         $router->post('/password', PasswordSave::class);
         $router->post('/password', Password::class);
         $router->post('/profile', ProfileSave::class);
+        $router->post('/user', UserSave::class);
+        $router->post('/user', User::class);
         // Search for passwords.
         $router->post('/passwords', PasswordList::class);
         // Routes to delete.
         $router->delete('/category', CategoryDelete::class);
         $router->delete('/password', PasswordDelete::class);
+        $router->delete('/user', UserDelete::class);
         return $router;
     }
 }

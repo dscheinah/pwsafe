@@ -1,0 +1,27 @@
+<table>
+    <colgroup>
+        <col/>
+        <col width="1"/>
+        <col width="1"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Benutzer</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <template data-tag="tr" data-list="repeat">
+            <td>
+                ${user}
+            </td>
+            <td>
+                <button type="button" data-action="user" value="${id}" accesskey="e">✎ bearbeiten</button>
+            </td>
+            <td>
+                <button type="button" data-action="user_delete" value="${id}" accesskey="d">🗑 löschen</button>
+            </td>
+        </template>
+    </tbody>
+</table>

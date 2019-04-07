@@ -67,7 +67,7 @@ class UserRepo extends RepoAbstract
      * @throws RepoException
      * @throws \RuntimeException
      */
-    public function getUser(string $user, string $password): array
+    public function getUserForLogin(string $user, string $password): array
     {
         try {
             $data = $this->storage->fetchUserByUser($user, $password);
@@ -92,13 +92,107 @@ class UserRepo extends RepoAbstract
             $data['key'] = $key;
             // Give the password to encrypt the key.
             try {
-                $this->storage->updateUser($data['id'], $password, $data);
+                $this->storage->updateProfile($data['id'], $password, $data);
             } catch (BackendException $e) {
                 $this->logger->log($e->getMessage());
                 throw new RepoException('Der Benutzer konnte nicht aktualisiert werden.', 422);
             }
         }
         return $data;
+    }
+
+    /**
+     * Fetches the data for a given user. Only the unencrypted data is available.
+     * This is used for administrative edits.
+     *
+     * @param int $id
+     *
+     * @return array
+     * @throws RepoException
+     */
+    public function getUser(int $id): array
+    {
+        try {
+            $data = $this->storage->fetchUserById($id);
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Der angegebene Benutzer konnte nicht geladen werden.', 501);
+        }
+        if (!$data) {
+            throw new RepoException('Der angegebene Benutzer konnte nicht gefunden werden.', 422);
+        }
+        return $data;
+    }
+
+    /**
+     * Fetches the basic data for all users.
+     * This is used for administrative edits.
+     *
+     * @return array
+     * @throws RepoException
+     */
+    public function getUsers(): array
+    {
+        // All entries are returned so there is no need to keep the Generator here.
+        try {
+            return iterator_to_array($this->storage->fetchUsers());
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Beim Laden der Benutzer ist ein Fehler aufgetreten.', 501);
+        }
+    }
+
+    /**
+     * Saves the data for a user.
+     * This is used for administrative edits.
+     *
+     * @param array $data
+     *
+     * @return int
+     * @throws RepoException
+     */
+    public function saveUser(array $data): int
+    {
+        $id = $data['id'] ?? 0;
+        if (!$id) {
+            if (!isset($data['password'])) {
+                throw new RepoException('Es muss ein Passwort angegeben werden.', 422);
+            }
+            $password = $data['password'];
+            // Do not save plain text passwords but use a password hash.
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+            try {
+                return $this->storage->insertUser($data, $password);
+            } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
+                throw new RepoException('Der Benutzer konnte nicht angelegt werden.', 501);
+            }
+        }
+        try {
+            $this->storage->updateUser($id, $data);
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Der Benutzer konnte nicht aktualisiert werden.', 501);
+        }
+        return $id;
+    }
+
+    /**
+     * Deletes the user.
+     * This is used for administrative edits.
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function deleteUser(int $id): bool
+    {
+        try {
+            return (bool)$this->storage->deleteUser($id);
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -113,12 +207,12 @@ class UserRepo extends RepoAbstract
      * @return array
      * @throws RepoException
      */
-    public function saveUser(int $id, array $data): array
+    public function saveProfile(int $id, array $data): array
     {
         $password = $data['password'] ?? '';
         // Validate the password, first retrieve it to get the current (unchanged) user name for validation.
         try {
-            $user = $this->storage->fetchUserById($id, $password);
+            $user = $this->storage->fetchCompleteUserById($id, $password);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden des Profils ist ein Fehler aufgetreten.', 501);
@@ -147,11 +241,29 @@ class UserRepo extends RepoAbstract
         // Do not save plain text passwords but use a password hash.
         $user['password'] = password_hash($password, PASSWORD_DEFAULT);
         try {
-            $this->storage->updateUser($id, $password, $user);
+            $this->storage->updateProfile($id, $password, $user);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Das Profil konnte nicht aktualisiert werden.', 501);
         }
         return $user;
+    }
+
+    /**
+     * Checks if the given user is an administrator.
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function isAdmin(int $id): bool
+    {
+        try {
+            $user = $this->getUser($id);
+        } catch (RepoException $e) {
+            return false;
+        }
+        $role = $user['role'] ?? '';
+        return $role === 'admin';
     }
 }

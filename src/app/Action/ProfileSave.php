@@ -51,7 +51,7 @@ class ProfileSave extends MiddlewareAbstract
         }
         // This contains checks for valid password and requires, if changed, both new password fields to match.
         try {
-            $user = $this->repo->saveUser($request->getAttribute(Login::class), $request->getAttributes());
+            $user = $this->repo->saveProfile($request->getAttribute(Login::class), $request->getAttributes());
         } catch (RepoException $e) {
             return $this->helper->create($e->getCode(), ['message' => $e->getMessage()]);
         }

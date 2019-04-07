@@ -5,3 +5,6 @@
     <button type="button" data-action="categories" accesskey="2">Kategorien</button>
     <button type="button" data-action="profile" accesskey="3">Profil</button>
 </template>
+<template data-condition="${role === 'admin'}">
+    <button type="button" data-action="users" accesskey="4">Benutzer</button>
+</template>

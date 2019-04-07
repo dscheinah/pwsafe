@@ -1,0 +1,50 @@
+<h1>
+    Benutzer
+    <template data-tag="span">${id ? 'bearbeiten' : 'hinzufügen'}</template>
+</h1>
+<template data-tag="p" data-condition="${id}">
+    Das Passwort kann nicht geändert werden, da es für die Verschlüsselung benötigt wird.
+    Ebenso ist die E-Mail Adresse nicht veränderbar, da sie verschlüsselt gespeichert ist.
+</template>
+<template data-tag="p" data-condition="${!id}">
+    Zum Anlegen eines neuen Benutzers wird einmalig ein Passwort benötigt.
+    Optional kann auch die E-Mail Adresse angegeben werden.
+    Diese dient aber nur als Vorlage für neue Passwörter des Benutzers.
+</template>
+<form data-action="user_save" action="/user" method="post">
+    <template data-condition="${error}" data-tag="p" class="error">
+        ${message}
+    </template>
+    <template data-condition="${id}">
+        <input type="hidden" name="id" value="${id}"/>
+    </template>
+    <template class="input">
+        <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
+        <label for="${ids('user')}">
+            <span>Benutzer</span>
+            <small>(wird für die Anmeldung und als Vorgabe für neue Daten verwendet)</small>
+        </label>
+    </template>
+    <template data-part="roles"></template>
+    <template class="control" data-condition="${!id}">
+        <div class="input">
+            <input type="password" id="${ids('password')}" name="password" required/><br/>
+            <label for="${ids('password')}">
+                <span>Passwort</span>
+            </label>
+        </div>
+        <div>
+            <button type="button" data-action="profile_generate" accesskey="g">⚙ generieren</button>
+        </div>
+    </template>
+    <template class="input" data-condition="${!id}">
+        <input type="email" id="${ids('email')}" name="email" pattern="[^@]+@[^@]+\.[^@]+"/>
+        <label for="${ids('email')}">
+            <span>E-Mail</span>
+            <small>(wird als Vorgabe für neue Daten verwendet)</small>
+        </label>
+    </template>
+    <div class="actions">
+        <button accesskey="s">🖫 speichern</button>
+    </div>
+</form>

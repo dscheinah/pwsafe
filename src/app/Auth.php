@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Model\UserRepo;
 use Sx\Data\SessionException;
 use Sx\Message\Response\HelperInterface;
 use Sx\Server\Router;
@@ -37,17 +38,30 @@ class Auth extends Router
     private $helper;
 
     /**
+     * The repository to load the current user for checking its role.
+     *
+     * @var UserRepo
+     */
+    private $userRepo;
+
+    /**
      * Creates the handler with session and response helper to create the not authorized response.
      *
      * @param MiddlewareHandlerInterface $handler
      * @param SessionInterface           $session
      * @param HelperInterface            $helper
+     * @param UserRepo                   $userRepo
      */
-    public function __construct(MiddlewareHandlerInterface $handler, SessionInterface $session, HelperInterface $helper)
-    {
+    public function __construct(
+        MiddlewareHandlerInterface $handler,
+        SessionInterface $session,
+        HelperInterface $helper,
+        UserRepo $userRepo
+    ) {
         parent::__construct($handler);
         $this->session = $session;
         $this->helper = $helper;
+        $this->userRepo = $userRepo;
     }
 
     /**
@@ -63,17 +77,14 @@ class Auth extends Router
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $path = $request->getUri()->getPath();
         // This is provided in the response of a successful login and must be appended to each other request.
         // The JS codes uses the header to not send the key by GET, which would make it visible in the logs.
         $key = $request->getAttribute('key', $request->getHeaderLine('X-KEY'));
         $this->session->start();
         try {
             // Do public dispatch as the parent router does. The exception is thrown if no action handled the request.
-            $uri = $request->getUri();
-            $routeHandler = $this->getHandler($request->getMethod(), $uri->getPath());
-            if ($routeHandler) {
-                return $routeHandler->handle($request);
-            }
+            return $this->getHandler($request->getMethod(), $path)->handle($request);
         } catch (MiddlewareHandlerException $e) {
             // Require the user ID provided by the login action. Also the frontend needs to send the encryption key.
             if (!$key || !$this->session->has(Login::class)) {
@@ -84,10 +95,15 @@ class Auth extends Router
             // All next handlers should not use any session start again to prevent long locks.
             $this->session->end();
         }
+        $userId = $this->session->get(Login::class);
+        // All user management routes can only be accessed by administrators.
+        if (stripos($path, 'user') !== false && !$this->userRepo->isAdmin($userId)) {
+            return $this->helper->create(403);
+        }
         return $handler->handle(
             $request
                 // Since the session should not be used in next handlers, provide the user ID as an attribute.
-                ->withAttribute(Login::class, $this->session->get(Login::class))
+                ->withAttribute(Login::class, $userId)
                 // When transferred as a header, it must still be accessible as an attribute for the actions.
                 ->withAttribute('key', $key)
         );

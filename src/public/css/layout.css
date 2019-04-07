@@ -48,10 +48,11 @@ nav {
 .menu {
     /* Use less padding since the buttons inside the navigation do provide extra padding on their own. */
     padding: 10px 30px;
+    text-align: right;
 }
 
 .menu .template {
-    text-align: right;
+    display: inline;
 }
 
 .container {

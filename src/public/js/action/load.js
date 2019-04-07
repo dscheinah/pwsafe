@@ -24,14 +24,19 @@ class Load extends Open {
     }
 
     /**
-     * Loads the data using no query to be used for loading lists.
+     * Loads the data to be used for loading lists or entries.
      *
-     * @param {*} trigger
+     * @param {HTMLButtonElement|*=} trigger
      *
      * @returns {Promise<{Object}>}
      */
     async convert(trigger) {
-        return this.backend.run(this.backend.load, this.target);
+        let data = {};
+        // If given a button this action will load exactly one entry with the ID from the buttons value attribute.
+        if (trigger && trigger.value) {
+            data.id = trigger.value;
+        }
+        return this.backend.run(this.backend.load, this.target, data);
     }
 
     /**

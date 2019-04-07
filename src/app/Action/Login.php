@@ -65,7 +65,7 @@ class Login extends MiddlewareAbstract
         }
         // Get the complete user data if password check successful and store the user id.
         try {
-            $user = $this->repo->getUser($user, $password);
+            $user = $this->repo->getUserForLogin($user, $password);
         } catch (RepoException $e) {
             // Use a 500 code to not indicate unauthorized. Otherwise a page reload would be triggered.
             return $this->helper->create(500, ['message' => $e->getMessage()]);

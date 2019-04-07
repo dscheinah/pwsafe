@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Model\UserRepo;
 use Sx\Container\Injector;
 use App\Action\Login;
 use Sx\Data\Session;
@@ -30,7 +31,8 @@ class AuthFactory implements FactoryInterface
         $auth = new Auth(
             $injector->get(MiddlewareHandlerInterface::class),
             $injector->get(Session::class),
-            $injector->get(HelperInterface::class)
+            $injector->get(HelperInterface::class),
+            $injector->get(UserRepo::class)
         );
         $auth->post('/generate', Generate::class);
         $auth->post('/login', Login::class);

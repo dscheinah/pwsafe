@@ -146,7 +146,7 @@ class MySqlBackend implements BackendInterface
             }
         }
         // Bind the parameters with the computes types and execute the statement.
-        if (!$resource->bind_param($types, ...$params)) {
+        if ($params && !$resource->bind_param($types, ...$params)) {
             throw new BackendException('error binding parameter', $resource->errno);
         }
         if (!$resource->execute()) {

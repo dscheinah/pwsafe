@@ -3,10 +3,11 @@
 This is a password safe to be used a self hosted web application. 
 It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML and CSS is also needed.
 
-The current state of development currently is alpha. 
-This means the basic parts of the application are working, but are not tested very well.
-Also some features are still under development:
-* user and group management with basic privileges
+The current state of development currently is beta. 
+This means most parts of the application are working, but are not tested very well.
+
+Some features are still under development:
+* group management
 * share passwords with other users and groups
 
 This readme gives information about 
@@ -26,7 +27,7 @@ Sorry :(
 
 The app uses the browsers "accesskey" feature. The combination depends on the used browser and OS.
 The following keys are implemented:
-* __1...9__ main menu in order
+* __1...4__ main menu in order
 * __f__ search ("find")
 * __p__ navigate back ("previous")
 * __n__ follow link ("next")
@@ -111,5 +112,5 @@ If not you need to setup your server stack according to the previous deployment 
 * Client interaction is pure JavaScript starting with `src/public/js/app.js`
 * Startup of the browser side application is defined in `src/public/index.html`
 * Requests to PHP routes are rewritten to `src/public/index.php` 
-* To get an overview over the database structure see `sql/setup.sql`
+* To get an overview over the database structure see `sql/*.sql`
 * All CSS style is defined in files located in `src/public/css`

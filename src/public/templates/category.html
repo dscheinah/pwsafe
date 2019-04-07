@@ -1,6 +1,6 @@
 <h1>
     Kategorie
-    <template data-tag="span">${typeof id === 'undefined' ? 'hinzufügen' : 'bearbeiten'}</template>
+    <template data-tag="span">${id ? 'bearbeiten' : 'hinzufügen'}</template>
 </h1>
 <p>
     Kategorien werden zur Gruppierung der Passwörter verwendet. Dazu ist immer ein Name erforderlich.

@@ -51,11 +51,9 @@ class Router implements RouterInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $uri = $request->getUri();
         // Use a matching route by method and path. The handler may be empty and throw an exception.
-        $routeHandler = $this->getHandler($request->getMethod(), $uri->getPath());
         try {
-            return $routeHandler->handle($request);
+            return $this->getHandler($request->getMethod(), $request->getUri()->getPath())->handle($request);
         } catch (MiddlewareHandlerException $e) {
             // If no matching route is registered or the tree chain did not produce a response.
             return $handler->handle($request);

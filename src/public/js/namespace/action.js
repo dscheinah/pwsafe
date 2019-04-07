@@ -1,6 +1,5 @@
+export {default as Add} from '../action/add.js';
 export {default as Apply} from '../action/apply.js';
-export {default as CategoryAdd} from '../action/category/add.js';
-export {default as CategoryLoad} from '../action/category/load.js';
 export {default as CategorySave} from '../action/category/save.js';
 export {default as Change} from '../action/change.js';
 export {default as ClipboardCopy} from '../action/clipboard/copy.js';
@@ -21,4 +20,5 @@ export {default as PasswordSave} from '../action/password/save.js';
 export {default as PasswordShow} from '../action/password/show.js';
 export {default as ProfileEdit} from '../action/profile/edit.js';
 export {default as ProfileSave} from '../action/profile/save.js';
+export {default as Save} from '../action/save.js';
 export {default as Search} from '../action/search.js';

@@ -17,6 +17,11 @@ use App\Action\PasswordList;
 use App\Action\PasswordSave;
 use App\Action\ProfileFactory;
 use App\Action\ProfileSave;
+use App\Action\User;
+use App\Action\UserDelete;
+use App\Action\UserFactory;
+use App\Action\UserList;
+use App\Action\UserSave;
 use App\Handler\ErrorHandler;
 use App\Handler\ErrorHandlerFactory;
 use App\Handler\NotFoundHandler;
@@ -89,7 +94,11 @@ class ApplicationProvider implements ProviderInterface
         $injector->set(RouterInterface::class, RouterFactory::class);
         $injector->set(Session::class, SessionFactory::class);
         $injector->set(StreamFactoryInterface::class, StreamFactory::class);
+        $injector->set(User::class, UserFactory::class);
+        $injector->set(UserDelete::class, UserFactory::class);
+        $injector->set(UserList::class, UserFactory::class);
         $injector->set(UserRepo::class, UserRepoFactory::class);
+        $injector->set(UserSave::class, UserFactory::class);
         $injector->set(UserStorage::class, StorageFactory::class);
     }
 }

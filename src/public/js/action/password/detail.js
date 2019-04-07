@@ -16,17 +16,6 @@ class Detail extends Load {
     }
 
     /**
-     * Loads the data using the value of the trigger button as ID.
-     *
-     * @param {HTMLButtonElement|Object} trigger
-     *
-     * @returns {Promise<{Object}>}
-     */
-    async convert(trigger) {
-        return this.backend.run(this.backend.load, 'password', {id: trigger.value});
-    }
-
-    /**
      * The passwords will not be visible by default if not clicking on the toggle button.
      *
      * @param {Object} state
