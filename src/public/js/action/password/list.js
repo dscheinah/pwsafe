@@ -48,7 +48,10 @@ class List extends Open {
         return {
             categories: Action.combine('categories', payload, state).categories,
             // Still create the scope to have the search rendered.
-            passwords: {},
+            passwords: {
+                // Must be present to allow the list to be rendered on adding a password without a previous search.
+                term: '',
+            },
         };
     }
 }

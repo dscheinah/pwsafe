@@ -65,12 +65,24 @@ class Login extends Action {
         user.role = payload.role;
         // The key must not be saved to the localStorage.
         delete payload.key;
+        // The list property is needed to trigger a part redraw.
+        let emptyList = {list: []};
         return {
             defaults: payload,
             login: {
                 user: payload.user,
             },
             current: user,
+            // Always clear other users data after login.
+            passwords: emptyList,
+            password: {},
+            password_edit: {},
+            categories: emptyList,
+            category: {},
+            generate: {},
+            profile: {},
+            users: emptyList,
+            user: {},
         };
     }
 

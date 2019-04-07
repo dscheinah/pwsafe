@@ -26,7 +26,7 @@ class Load extends Open {
     /**
      * Loads the data to be used for loading lists or entries.
      *
-     * @param {HTMLButtonElement|*=} trigger
+     * @param {(HTMLButtonElement|*)=} trigger
      *
      * @returns {Promise<{Object}>}
      */
