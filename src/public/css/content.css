@@ -2,4 +2,18 @@
 .hidden-password {
     /* It is just a span but the width needs to be applied. */
     display: inline-block;
+    /* Fix the height to not flicker on toggle. */
+    line-height: 1.2;
+}
+
+/* Clear the filter float. */
+.part.categories:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Keep the copy and hide/ show buttons on one line. */
+.nowrap {
+    white-space: nowrap;
 }

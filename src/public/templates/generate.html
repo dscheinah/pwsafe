@@ -1,8 +1,7 @@
 <h1>Passwort generieren</h1>
 <p>
-    Es wird ein neues Passwort mit der gewünschten Länge entsprechend der gewählten Einstellungen
-    aus kryptografisch sicheren Zufallszahlen generiert. Das generierte Passwort wird anschließend im Klartext angezeigt
-    und kann vor Übernahme in das Formular angepasst werden.
+    Es wird ein kryptografisch sicheres Passwort entsprechend der gewählten Einstellungen generiert.
+    Das Passwort wird anschließend im Klartext angezeigt und kann angepasst werden.
 </p>
 <template data-condition="${error}" data-tag="p" class="error">
     ${message}
@@ -15,7 +14,7 @@
         </select>
         <label for="${ids('type')}">
             <span>Modus</span>
-            <small>(Zufall für sichere und Wörterbuch für merkbare Passwörter)</small>
+            <small>(Wörterbuch für merkbare Passwörter)</small>
         </label>
     </template>
     <template data-condition="${type === 'random'}">
@@ -50,7 +49,7 @@
         <div class="multi">
             <div class="checkbox">
                 <input type="checkbox" id="${ids('camel')}" name="camel" value="1" checked/>
-                <label for="${ids('camel')}">Wörter jeweils mit Großbuchstaben beginnen</label>
+                <label for="${ids('camel')}">Wörter mit Großbuchstaben beginnen</label>
             </div>
             <div class="checkbox">
                 <input type="checkbox" id="${ids('space')}" name="space" value="1" checked/>

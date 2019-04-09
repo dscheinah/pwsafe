@@ -1,15 +1,3 @@
-// Simple error fallback for old browser and development, showing a message to the user.
-window.onerror = function(e) {
-    var error = document.createElement('div');
-    error.setAttribute('class', 'error');
-    error.innerHTML = 'Leider ist bei der Verarbeitung ein Fehler aufgetreten.<br/>'
-        + 'Das geschieht z.B. durch die Verwendung veralteter oder nicht unterstützter Browser.';
-    if (e) {
-        error.innerHTML += '<br/><br/>Folgender Fehler wird vom Browser mitgeteilt:<br/>' + e;
-    }
-    document.querySelector('#main').appendChild(error);
-};
-
 import * as Action from './namespace/action.js';
 import * as Helper from './namespace/helper.js';
 import * as Part from './namespace/part.js';
@@ -24,6 +12,11 @@ import Reload from './component/reload.js';
 import State from './lib/state.js';
 import Template from './lib/template.js';
 import Templates from './lib/templates.js';
+
+// Small polyfill for Sailfish not provided by babel.
+if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+}
 
 // This represents the global application state.
 const state = new State();
@@ -173,4 +166,4 @@ state.register('passwords', fragment);
 
 // Load all templates in parallel.
 // If this is finished the init action runs to fill the initial application state and open the login page.
-templates.load().then(() => actions.trigger('init', local)).then();
+templates.load().then(() => actions.trigger('init', local)).then().catch(window.onerror);

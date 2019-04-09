@@ -1,0 +1,19 @@
+@media only screen and (max-width: 480px) {
+    /* Very simple method to get everything on screen. */
+    body {
+        font-size: .8em;
+    }
+    .container {
+        padding: 20px;
+    }
+    .menu {
+        padding: 5px 10px;
+    }
+    nav {
+        height: 40px;
+    }
+    /* Do not display as table to allow wrapping of buttons. */
+    .no-mobile-table, .no-mobile-table th, .no-mobile-table td {
+        display: inline-block;
+    }
+}

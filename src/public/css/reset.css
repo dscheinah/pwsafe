@@ -7,6 +7,9 @@ body {
 
 button, input, textarea, select, label {
     font-size: 1em;
+    /* Resets for Sailfish browser. */
+    border-radius: 0;
+    background: none;
 }
 
 button, select, label, [type=checkbox], [type=radio] {

@@ -20,7 +20,11 @@ class Clipboard extends Component {
         document.body.appendChild(input);
         input.value = data.value;
         input.select();
-        document.execCommand('copy');
+        try {
+            document.execCommand('copy');
+        } catch {
+            // If the copy command is not available the app should not fail completely.
+        }
         // After successful copy the element can be removed to keep the DOM clean.
         document.body.removeChild(input);
     }

@@ -100,7 +100,7 @@ class Actions {
             }
             this.isRunning = true;
             // Dispatch the actions and prevent the event to toggle default behaviour, but only if actions are found.
-            this.trigger(action, target).then(() => this.isRunning = false);
+            this.trigger(action, target).then(() => this.isRunning = false).catch(window.onerror);
         });
     }
 

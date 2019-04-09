@@ -1,11 +1,13 @@
 FROM node as build
-# Install in a separate RUN command to utilize build cache.
-RUN npm install -g webpack clean-css
-# Needed to be able to require global packages.
-ENV NODE_PATH /usr/local/lib/node_modules
-ADD ./build.js /build/build.js
-ADD ./src/public /build/src
 RUN mkdir -p /build/dist/js /build/dist/css
+WORKDIR /build
+# Install in a separate RUN command to utilize build cache.
+RUN npm install --no-save webpack clean-css \
+    # The following are required to make the app work with Sailfish.
+    babel-loader @babel/core @babel/preset-env \
+    @babel/polyfill whatwg-fetch
+ADD ./build.js /build/build.js
+ADD ./src/public/ /build/src
 # Build JavaScript, CSS and templates cache with the build.js script.
 RUN node /build/build.js
 

@@ -1,8 +1,8 @@
 <h1>Profil</h1>
 <p>
-    Um Änderungen am Profil vornehmen zu können, wird immer das aktuelle Passwort des Nutzers benötigt.
-    Das Passwort sollte möglichst stark gewählt werden, da damit die Verschlüsselung der anderen Passwortdaten
-    und der E-Mail Adresse des Profils erfolgt. Das Passwort wird nicht im Klartext gespeichert.
+    Um Änderungen vornehmen zu können, wird immer das aktuelle Passwort benötigt.
+    Das Passwort sollte möglichst stark gewählt werden, da damit die Verschlüsselung der Daten erfolgt.
+    Das Passwort wird nicht im Klartext gespeichert.
 </p>
 <form data-action="profile_save" action="/profile" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
@@ -16,7 +16,7 @@
         <input type="text" id="${ids('user')}" name="user" value="${user}" required/>
         <label for="${ids('user')}">
             <span>Benutzer</span>
-            <small>(wird für die Anmeldung und als Vorgabe für neue Daten verwendet)</small>
+            <small>(zur Anmeldung und als Vorgabe für neue Daten)</small>
         </label>
     </template>
     <div class="control">
