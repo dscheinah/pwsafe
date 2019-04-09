@@ -1,3 +1,15 @@
+// Simple error fallback for old browser and development, showing a message to the user.
+window.onerror = function(e) {
+    var error = document.createElement('div');
+    error.setAttribute('class', 'error');
+    error.innerHTML = 'Leider ist bei der Verarbeitung ein Fehler aufgetreten.<br/>'
+        + 'Das geschieht z.B. durch die Verwendung veralteter oder nicht unterstützter Browser.';
+    if (e) {
+        error.innerHTML += '<br/><br/>Folgender Fehler wird vom Browser mitgeteilt:<br/>' + e;
+    }
+    document.querySelector('#main').appendChild(error);
+};
+
 import * as Action from './namespace/action.js';
 import * as Helper from './namespace/helper.js';
 import * as Part from './namespace/part.js';

@@ -1,14 +1,12 @@
 FROM node as build
 # Install in a separate RUN command to utilize build cache.
-RUN npm install -g webpack webpack-cli clean-css
+RUN npm install -g webpack clean-css
 # Needed to be able to require global packages.
 ENV NODE_PATH /usr/local/lib/node_modules
 ADD ./build.js /build/build.js
 ADD ./src/public /build/src
 RUN mkdir -p /build/dist/js /build/dist/css
-# Build JavaScript with webpack.
-RUN webpack -p /build/src/js/app.js -o /build/dist/js/app.js
-# Build CSS and templates cache with the build.js script.
+# Build JavaScript, CSS and templates cache with the build.js script.
 RUN node /build/build.js
 
 FROM composer as vendor

@@ -15,24 +15,30 @@ import Storages from '../storages.js';
  */
 const request = async function (path, query, headers, method, body) {
     this.status = 0;
-    let response = await fetch(`/${path}${query}`, {
-        method: method,
-        body: body,
-        headers: headers
-    });
-    if (!response.ok) {
-        this.status = response.status;
-    }
-    let json;
     try {
-        json = await response.json();
-    } catch {}
-    if (!json) {
-        // Error states may return no output, but ensure the correct return type.
-        json = {};
+        let response = await fetch(`/${path}${query}`, {
+            method: method,
+            body: body,
+            headers: headers
+        });
+        if (!response.ok) {
+            this.status = response.status;
+        }
+        let json;
+        try {
+            json = await response.json();
+        } catch {}
+        if (!json) {
+            // Error states may return no output, but ensure the correct return type.
+            json = {};
+        }
+        this.message = json.message || '';
+        return json;
+    } catch (e) {
+        this.message = e.message;
+        this.status = 500;
+        return {};
     }
-    this.message = json.message || '';
-    return json;
 };
 
 /**

@@ -71,6 +71,12 @@ class UserRepo extends RepoAbstract
     {
         try {
             $data = $this->storage->fetchUserByUser($user, $password);
+            // The initial user without a password can be accessed with every password,
+            // but must be loaded with an empty one to correctly decrypt the data.
+            if ($data && !$data['password']) {
+                $password = '';
+                $data = $this->storage->fetchUserByUser($user, '');
+            }
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Der angegebene Benutzer konnte nicht geladen werden.', 501);

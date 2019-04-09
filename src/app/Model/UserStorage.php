@@ -56,8 +56,8 @@ class UserStorage extends Storage
     public function fetchCompleteUserById(int $id, string $password): array
     {
         // Use cache if available.
-        if (isset($this->cacheById[$id])) {
-            return $this->cacheById[$id];
+        if (isset($this->cacheById[$id][$password])) {
+            return $this->cacheById[$id][$password];
         }
         // Afterwards the password is available as an SQL variable.
         $this->preparePassword($password);
@@ -70,8 +70,8 @@ class UserStorage extends Storage
         // Use the first result or empty array to indicate not found.
         $data = $this->fetch($sql, [$id])->current() ?: [];
         // Store cache for both fetch functions.
-        $this->cacheById[$id] = $data;
-        $this->cacheByUser[$data['user'] ?? ''] = $data;
+        $this->cacheById[$id][$password] = $data;
+        $this->cacheByUser[$data['user'] ?? ''][$password] = $data;
         return $data;
     }
 
@@ -101,8 +101,8 @@ class UserStorage extends Storage
     public function fetchUserByUser(string $user, string $password): array
     {
         // Use cache if available.
-        if (isset($this->cacheByUser[$user])) {
-            return $this->cacheByUser[$user];
+        if (isset($this->cacheByUser[$user][$password])) {
+            return $this->cacheByUser[$user][$password];
         }
         // Afterwards the password is available as an SQL variable.
         $this->preparePassword($password);
@@ -120,8 +120,8 @@ class UserStorage extends Storage
             ]
         )->current() ?: [];
         // Store cache for both fetch functions.
-        $this->cacheByUser[$user] = $data;
-        $this->cacheById[$data['id'] ?? 0] = $data;
+        $this->cacheByUser[$user][$password] = $data;
+        $this->cacheById[$data['id'] ?? 0][$password] = $data;
         return $data;
     }
 
@@ -198,8 +198,8 @@ class UserStorage extends Storage
             ]
         );
         // Update caches to represent the new data.
-        $this->cacheById[$id] = $data;
-        $this->cacheByUser[$data['user'] ?? ''] = $data;
+        $this->cacheById[$id][$password] = $data;
+        $this->cacheByUser[$data['user'] ?? ''][$password] = $data;
     }
 
     /**
