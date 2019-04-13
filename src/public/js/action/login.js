@@ -82,7 +82,23 @@ class Login extends Action {
             generate: {},
             profile: {},
             users: emptyList,
-            user: {},
+            // Add the data for the role selection of users.
+            user: {
+                roles: {
+                    list: [
+                        {
+                            id: 'user',
+                            name: 'Benutzer',
+                        },
+                        {
+                            id: 'admin',
+                            name: 'Administrator',
+                        },
+                    ],
+                },
+                // To trigger the select part with the current selected data.
+                groups: {},
+            }
         };
     }
 

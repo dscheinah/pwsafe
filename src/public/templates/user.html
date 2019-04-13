@@ -38,12 +38,18 @@
         </div>
     </template>
     <template class="input" data-condition="${!id}">
-        <input type="email" id="${ids('email')}" name="email" pattern="[^@]+@[^@]+\.[^@]+"/>
+        <input type="email" id="${ids('email')}" name="email"/>
         <label for="${ids('email')}">
             <span>E-Mail</span>
             <small>(wird als Vorgabe für neue Daten verwendet)</small>
         </label>
     </template>
+    <div class="control">
+        <template data-part="groups"></template>
+        <div>
+            <button type="button" data-action="group_add" accesskey="a">＋ neue Gruppe</button>
+        </div>
+    </div>
     <div class="actions">
         <button accesskey="s">🖫 speichern</button>
     </div>

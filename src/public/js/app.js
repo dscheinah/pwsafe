@@ -53,6 +53,8 @@ const pages = {
     'category': null,
     'categories': null,
     'generate': null,
+    'group': null,
+    'groups': null,
     'login': null,
     'password': null,
     'password_edit': null,
@@ -70,7 +72,7 @@ Object.keys(pages).forEach(function (key) {
     state.register(key, reload);
 });
 // Create the list part for the pages with lists.
-['categories', 'passwords', 'users'].forEach(function(key) {
+['categories', 'groups', 'passwords', 'users'].forEach(function(key) {
     pages[key].part('list', new Part.List(templates.get(key + '_list')));
 });
 
@@ -86,6 +88,9 @@ state.register('categories', pages.password_edit);
 
 // Add the role selection to the user edit page.
 pages.user.part('roles', new Part.Select(templates.get('user_select'), 'role'));
+// Add the group selection to the user edit page.
+pages.user.part('groups', new Part.Select(templates.get('user_groups'), 'group'));
+state.register('groups', pages.user);
 
 // Create the navigation. This needs a template and a component to be only rendered in logged in state.
 const menu = new Menu(templates.get('menu', document.querySelector('#nav')));
@@ -126,6 +131,11 @@ actions.add('generate_apply', new Action.Apply(navigation, 'password_edit'));
 actions.add('generate_copy', new Action.ClipboardCopy('generate', navigation));
 actions.add('generate_open', new Action.Generate(pages.generate, true));
 actions.add('generate_type', new Action.Change('generate'));
+loading('group', new Action.Load(pages.group, 'group', backend));
+actions.add('group_add', new Action.Add(pages.group, 'group', {id: '', name: ''}));
+loading('group_delete', new Action.Delete('groups', backend, 'group', confirmDelete));
+loading('group_save', new Action.Save(navigation, 'group', backend, 'groups'));
+loading('groups', new Action.Load(pages.groups, 'groups', backend));
 // This actions is triggered at the end of this file after all templates are loaded.
 actions.add('init', new Action.Init(pages.login));
 loading('login', new Action.Login(backend, actions));
@@ -146,7 +156,8 @@ actions.add('user_add', new Action.Add(pages.user, 'user', {id: '', user: '', ro
 loading('user_delete', new Action.Delete('users', backend, 'user', confirmDelete));
 loading('user_save', new Action.Save(navigation, 'user', backend, 'users'));
 loading('users', new Action.Load(pages.users, 'users', backend));
-
+// This is a hack to load the base data for the group selection without implementing a separate user action.
+loading('users', new Action.Load(pages.users, 'groups', backend));
 
 // Start the event listeners. These will trigger the registered actions.
 actions.listen('click', 'button');

@@ -97,7 +97,8 @@ class Auth extends Router
         }
         $userId = $this->session->get(Login::class);
         // All user management routes can only be accessed by administrators.
-        if (stripos($path, 'user') !== false && !$this->userRepo->isAdmin($userId)) {
+        $needsAdmin = stripos($path, 'user') !== false || stripos($path, 'group') !== false;
+        if ($needsAdmin && !$this->userRepo->isAdmin($userId)) {
             return $this->helper->create(403);
         }
         return $handler->handle(

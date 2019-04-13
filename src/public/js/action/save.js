@@ -73,21 +73,6 @@ class Save extends Apply {
         data[this.list].list = list;
         return data;
     }
-
-    /**
-     * Focus the first empty input after error.
-     *
-     * @param {Object} payload
-     */
-    run(payload) {
-        super.run(payload);
-        if (payload.error) {
-            let input = this.page.template.container.querySelector('input[value=""], input:not([value])');
-            if (input) {
-                input.focus();
-            }
-        }
-    }
 }
 
 export default Save;

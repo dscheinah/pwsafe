@@ -1,0 +1,15 @@
+<h1>Gruppen</h1>
+<p>
+    Alle Gruppen werden alphabetisch sortiert angezeigt.
+    Neue Gruppen werden bis zum Neuladen am Ende der Liste angezeigt.
+    Beim Löschen einer Gruppe wird diese von den Benutzern entfernt.
+</p>
+<template data-condition="${error}" data-tag="p" class="error">
+    ${message}
+</template>
+<template data-part="list"></template>
+<div class="actions">
+    <div>
+        <button type="button" data-action="group_add" accesskey="a">＋ hinzufügen</button>
+    </div>
+</div>

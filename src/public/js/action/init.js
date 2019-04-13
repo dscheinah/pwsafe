@@ -39,21 +39,6 @@ class Init extends Open {
         return {
             login: payload,
             current: {},
-            // Add the data for the role selection of users.
-            user: {
-                roles: {
-                    list: [
-                        {
-                            id: 'user',
-                            name: 'Benutzer',
-                        },
-                        {
-                            id: 'admin',
-                            name: 'Administrator',
-                        },
-                    ],
-                }
-            }
         };
     }
 

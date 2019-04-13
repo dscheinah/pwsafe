@@ -7,7 +7,6 @@ The current state of development currently is beta.
 This means most parts of the application are working, but are not tested very well.
 
 Some features are still under development:
-* group management
 * share passwords with other users and groups
 
 This readme gives information about 

@@ -19,15 +19,24 @@ class UserRepo extends RepoAbstract
     private $storage;
 
     /**
+     * The storage to handle the user-group relation.
+     *
+     * @var GroupStorage
+     */
+    private $groupStorage;
+
+    /**
      * Creates the domain repository with the database storage.
      *
      * @param LogInterface $logger
      * @param UserStorage  $storage
+     * @param GroupStorage $groupStorage
      */
-    public function __construct(LogInterface $logger, UserStorage $storage)
+    public function __construct(LogInterface $logger, UserStorage $storage, GroupStorage $groupStorage)
     {
         parent::__construct($logger);
         $this->storage = $storage;
+        $this->groupStorage = $groupStorage;
     }
 
     /**
@@ -127,6 +136,15 @@ class UserRepo extends RepoAbstract
         if (!$data) {
             throw new RepoException('Der angegebene Benutzer konnte nicht gefunden werden.', 422);
         }
+        try {
+            // Load the groups for the selected user. Only the IDs are needed to be used in the selection.
+            foreach ($this->groupStorage->fetchForUser($id) as $group) {
+                $data['group'][] = $group['id'];
+            }
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Die Gruppen für den Benutzer konnten nicht geladen werden.', 501);
+        }
         return $data;
     }
 
@@ -168,17 +186,36 @@ class UserRepo extends RepoAbstract
             // Do not save plain text passwords but use a password hash.
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
             try {
-                return $this->storage->insertUser($data, $password);
+                $id = $this->storage->insertUser($data, $password);
             } catch (BackendException $e) {
                 $this->logger->log($e->getMessage());
                 throw new RepoException('Der Benutzer konnte nicht angelegt werden.', 501);
             }
+        } else {
+            try {
+                $this->storage->updateUser($id, $data);
+            } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
+                throw new RepoException('Der Benutzer konnte nicht aktualisiert werden.', 501);
+            }
         }
         try {
-            $this->storage->updateUser($id, $data);
+            $groups = isset($data['groups']) ? array_flip((array)$data['groups']) : [];
+            $toDelete = [];
+            // Compare the current state to get the groups to insert and to delete.
+            foreach ($this->groupStorage->fetchForUser($id) as $group) {
+                $groupId = $group['id'];
+                if (!isset($groups[$groupId])) {
+                    $toDelete[] = $groupId;
+                } else {
+                    unset($groups[$groupId]);
+                }
+            }
+            $this->groupStorage->removeUser($id, $toDelete);
+            $this->groupStorage->assignUser($id, array_flip($groups));
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
-            throw new RepoException('Der Benutzer konnte nicht aktualisiert werden.', 501);
+            throw new RepoException('Die Gruppen konnten nicht zugewiesen werden.', 501);
         }
         return $id;
     }
@@ -265,8 +302,8 @@ class UserRepo extends RepoAbstract
     public function isAdmin(int $id): bool
     {
         try {
-            $user = $this->getUser($id);
-        } catch (RepoException $e) {
+            $user = $this->storage->fetchUserById($id);
+        } catch (BackendException $e) {
             return false;
         }
         $role = $user['role'] ?? '';

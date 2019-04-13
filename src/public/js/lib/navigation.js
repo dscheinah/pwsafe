@@ -47,7 +47,8 @@ class Navigation {
         // Iterate the ID for the history state and save the page for the popstate event.
         this.id++;
         this.states[this.id] = page;
-        if (Object.keys(this.states).length) {
+        // Do not push a new state, if the page is already active.
+        if (Object.keys(this.states).length && this.getPage(this.history.state) !== page) {
             this.history.pushState(this.id, '', window.location.href);
         } else {
             // Replace the first state since the initial page view is not intended to show a page.

@@ -28,7 +28,7 @@ class GenerateFactory implements FactoryInterface
         $factory = $injector->get(StreamFactoryInterface::class);
         return new Generate(
             $injector->get(HelperInterface::class),
-            $factory->createStreamFromFile(\dirname(__DIR__, 2) . '/data/dictionary.txt')
+            $factory->createStreamFromFile(\dirname(__DIR__, 2) . '/data/dictionary.dic')
         );
     }
 }

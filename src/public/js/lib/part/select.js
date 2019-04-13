@@ -38,18 +38,19 @@ class Select extends Part {
         if (!this.list) {
             return;
         }
-        // Add the options as a helper to disable escaping.
-        Template.add('options', () => {
+        // Add the options as a helper function to disable escaping. But use the current instead of the helper scope.
+        data.options = () => {
             let options = '';
             this.list.forEach((entry) => {
                 let attributes = `value="${entry.id}"`;
-                if (entry.id === this.value) {
+                // Test for single and multi select.
+                if (((this.value instanceof Array) && this.value.includes(entry.id)) || entry.id === this.value) {
                     attributes += ' selected';
                 }
                 options += `<option ${attributes}>${entry.name}</option>`;
             });
             return options;
-        });
+        };
         super.update(data, parent);
     }
 }

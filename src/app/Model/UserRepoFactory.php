@@ -23,6 +23,10 @@ class UserRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): UserRepo
     {
-        return new UserRepo($injector->get(LogInterface::class), $injector->get(UserStorage::class));
+        return new UserRepo(
+            $injector->get(LogInterface::class),
+            $injector->get(UserStorage::class),
+            $injector->get(GroupStorage::class)
+        );
     }
 }

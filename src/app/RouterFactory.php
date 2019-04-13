@@ -5,6 +5,10 @@ use App\Action\Category;
 use App\Action\CategoryDelete;
 use App\Action\CategoryList;
 use App\Action\CategorySave;
+use App\Action\Group;
+use App\Action\GroupDelete;
+use App\Action\GroupList;
+use App\Action\GroupSave;
 use App\Action\Password;
 use App\Action\PasswordList;
 use App\Action\PasswordSave;
@@ -42,6 +46,8 @@ class RouterFactory implements FactoryInterface
         // Routes to load data.
         $router->get('/category', Category::class);
         $router->get('/categories', CategoryList::class);
+        $router->get('/group', Group::class);
+        $router->get('/groups', GroupList::class);
         $router->get('/password', Password::class);
         $router->get('/passwords', PasswordList::class);
         $router->get('/user', User::class);
@@ -49,6 +55,8 @@ class RouterFactory implements FactoryInterface
         // Routes to save data. After successful save the data will be loaded using the chained load action.
         $router->post('/category', CategorySave::class);
         $router->post('/category', Category::class);
+        $router->post('/group', GroupSave::class);
+        $router->post('/group', Group::class);
         $router->post('/password', PasswordSave::class);
         $router->post('/password', Password::class);
         $router->post('/profile', ProfileSave::class);
@@ -58,6 +66,7 @@ class RouterFactory implements FactoryInterface
         $router->post('/passwords', PasswordList::class);
         // Routes to delete.
         $router->delete('/category', CategoryDelete::class);
+        $router->delete('/group', GroupDelete::class);
         $router->delete('/password', PasswordDelete::class);
         $router->delete('/user', UserDelete::class);
         return $router;
