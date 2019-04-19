@@ -140,8 +140,11 @@ class PasswordRepo extends RepoAbstract
     {
         try {
             $password = $this->passwordStorage->fetchPassword($this->getKey(), $this->getUser(), $id);
-            $password['share_groups'] = $this->passwordStorage->fetchGroupIds($id);
-            $password['share_users'] = $this->passwordStorage->fetchUserIds($id);
+            // Do not allow reading of IDs if an error occurred.
+            if ($password) {
+                $password['share_groups'] = $this->passwordStorage->fetchGroupIds($id);
+                $password['share_users'] = $this->passwordStorage->fetchUserIds($id);
+            }
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden des Passworts ist ein Fehler aufgetreten.', 501);
@@ -228,8 +231,15 @@ class PasswordRepo extends RepoAbstract
             }
         }
 
-        $this->updateUsers($users, $id);
-        $this->updateGroups($groups, $id);
+        try {
+            // Validate the users access to the password before updating the share data.
+            if ($this->passwordStorage->fetchPassword($this->getKey(), $user, $id)) {
+                $this->updateUsers($users, $id);
+                $this->updateGroups($groups, $id);
+            }
+        } catch (BackendException $e) {
+            throw new RepoException('Beim Speichern des Passworts ist ein Fehler aufgetreten.', 501);
+        }
 
         return $id;
     }
