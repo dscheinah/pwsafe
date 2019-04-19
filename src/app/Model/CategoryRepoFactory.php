@@ -21,6 +21,10 @@ class CategoryRepoFactory implements FactoryInterface
      */
     public function create(Injector $injector, array $options, string $class): CategoryRepo
     {
-        return new CategoryRepo($injector->get(LogInterface::class), $injector->get(CategoryStorage::class));
+        return new CategoryRepo(
+            $injector->get(LogInterface::class),
+            $injector->get(CategoryStorage::class),
+            $injector->get(PasswordStorage::class)
+        );
     }
 }

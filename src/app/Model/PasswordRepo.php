@@ -27,6 +27,21 @@ class PasswordRepo extends RepoAbstract
     private $categoryStorage;
 
     /**
+     * The storage for the groups is needed to validate access to the shared groups and users on save.
+     * Also it is used to load the available groups to share to.
+     *
+     * @var GroupStorage
+     */
+    private $groupStorage;
+
+    /**
+     * The storage for the users is needed to load the available users to share to.
+     *
+     * @var UserStorage
+     */
+    private $userStorage;
+
+    /**
      * The currently logged in clients user ID.
      *
      * @var int
@@ -47,15 +62,21 @@ class PasswordRepo extends RepoAbstract
      * @param LogInterface    $logger
      * @param PasswordStorage $passwordStorage
      * @param CategoryStorage $categoryStorage
+     * @param GroupStorage    $groupStorage
+     * @param UserStorage     $userStorage
      */
     public function __construct(
         LogInterface $logger,
         PasswordStorage $passwordStorage,
-        CategoryStorage $categoryStorage
+        CategoryStorage $categoryStorage,
+        GroupStorage $groupStorage,
+        UserStorage $userStorage
     ) {
         parent::__construct($logger);
         $this->passwordStorage = $passwordStorage;
         $this->categoryStorage = $categoryStorage;
+        $this->groupStorage = $groupStorage;
+        $this->userStorage = $userStorage;
     }
 
     /**
@@ -119,6 +140,8 @@ class PasswordRepo extends RepoAbstract
     {
         try {
             $password = $this->passwordStorage->fetchPassword($this->getKey(), $this->getUser(), $id);
+            $password['share_groups'] = $this->passwordStorage->fetchGroupIds($id);
+            $password['share_users'] = $this->passwordStorage->fetchUserIds($id);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden des Passworts ist ein Fehler aufgetreten.', 501);
@@ -181,21 +204,33 @@ class PasswordRepo extends RepoAbstract
             // Rewrite empty string from empty option to explicit null.
             $data['category_id'] = null;
         }
+
+        // Filter the share options to users and groups inside the shareable scope.
+        $users = $this->validateUsers((array)($data['users'] ?? []));
+        $groups = $this->validateGroups((array)($data['groups'] ?? []));
+        // If there are users or groups, the password needs to be shared. This changes the used decryption key.
+        $data['shared'] = $users || $groups;
+
         $id = $data['id'] ?? 0;
         if (!$id) {
             try {
-                return $this->passwordStorage->insertPassword($this->getKey(), $user, $data);
+                $id = $this->passwordStorage->insertPassword($this->getKey(), $user, $data);
             } catch (BackendException $e) {
                 $this->logger->log($e->getMessage());
                 throw new RepoException('Das Passwort konnte nicht angelegt werden.', 501);
             }
+        } else {
+            try {
+                $this->passwordStorage->updatePassword($this->getKey(), $user, $id, $data);
+            } catch (BackendException $e) {
+                $this->logger->log($e->getMessage());
+                throw new RepoException('Das Passwort konnte nicht aktualisiert werden.', 501);
+            }
         }
-        try {
-            $this->passwordStorage->updatePassword($this->getKey(), $user, $id, $data);
-        } catch (BackendException $e) {
-            $this->logger->log($e->getMessage());
-            throw new RepoException('Das Passwort konnte nicht aktualisiert werden.', 501);
-        }
+
+        $this->updateUsers($users, $id);
+        $this->updateGroups($groups, $id);
+
         return $id;
     }
 
@@ -213,6 +248,101 @@ class PasswordRepo extends RepoAbstract
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Filters the given users to only contain IDs the current user can share to.
+     *
+     * @param array $users
+     *
+     * @return array
+     */
+    private function validateUsers(array $users): array
+    {
+        try {
+            return array_intersect(
+                $users,
+                $this->groupStorage->fetchShareableUserIds($this->getUser())
+            );
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Filters the given groups to only contain IDs the current user can share to.
+     *
+     * @param array $groups
+     *
+     * @return array
+     */
+    private function validateGroups(array $groups): array
+    {
+        try {
+            return array_intersect($groups, $this->groupStorage->fetchShareableGroupIds($this->getUser()));
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Updates the user assignment of the given password.
+     *
+     * @param array $users
+     * @param int   $id
+     *
+     * @throws RepoException
+     */
+    private function updateUsers(array $users, int $id): void
+    {
+        $users = array_flip($users);
+        $toDelete = [];
+        try {
+            // Compare the current state to get the relations to insert and to delete.
+            foreach ($this->passwordStorage->fetchUserIds($id) as $userId) {
+                if (!isset($users[$userId])) {
+                    $toDelete[] = $userId;
+                } else {
+                    unset($users[$userId]);
+                }
+            }
+            $this->passwordStorage->removeUsers($id, $toDelete);
+            $this->passwordStorage->assignUsers($id, array_flip($users));
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Fehler beim Zuweisen der Benutzer.', 501);
+        }
+    }
+
+    /**
+     * Updates the group assignment of the given password.
+     *
+     * @param array $groups
+     * @param int   $id
+     *
+     * @throws RepoException
+     */
+    private function updateGroups(array $groups, int $id): void
+    {
+        $groups = array_flip($groups);
+        $toDelete = [];
+        try {
+            // Compare the current state to get the relations to insert and to delete.
+            foreach ($this->passwordStorage->fetchGroupIds($id) as $groupId) {
+                if (!isset($groups[$groupId])) {
+                    $toDelete[] = $groupId;
+                } else {
+                    unset($groups[$groupId]);
+                }
+            }
+            $this->passwordStorage->removeGroups($id, $toDelete);
+            $this->passwordStorage->assignGroups($id, array_flip($groups));
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Fehler beim Zuweisen der Gruppen.', 501);
         }
     }
 }

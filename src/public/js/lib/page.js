@@ -55,7 +55,8 @@ class Page extends Component {
         // To allow partial updates not providing the complete data.
         let part = this.parts[scope];
         if (part) {
-            part.update(data);
+            // Clone the data to not let parts modify it.
+            part.update(JSON.parse(JSON.stringify(data)));
             return;
         }
         // The super call will update the data to the parts.

@@ -217,6 +217,26 @@ class UserStorage extends Storage
     }
 
     /**
+     * Fetches the users. This is used for the share to user list.
+     *
+     * @param array $users
+     *
+     * @return \Generator
+     * @throws BackendException
+     */
+    public function fetchUsersByIds(array $users): \Generator
+    {
+        if (!$users) {
+            return;
+        }
+        $sql = sprintf(
+            'SELECT `id`, `user` FROM `users` WHERE `id` IN (%s) ORDER BY `user`;',
+            implode(', ', array_pad([], count($users), '?'))
+        );
+        yield from $this->fetch($sql, $users);
+    }
+
+    /**
      * Use the password as de-/ encryption key. Hash it as recommended by MySQL. Since the backend only supports one
      * statement per execute, store an SQL variable to reduce bounded parameters in queries.
      *

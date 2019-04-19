@@ -3,11 +3,10 @@
 This is a password safe to be used a self hosted web application. 
 It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML and CSS is also needed.
 
-The current state of development currently is beta. 
-This means most parts of the application are working, but are not tested very well.
+The application currently is and will stay in beta. 
+This means all parts are working, but need to be tested.
 
-Some features are still under development:
-* share passwords with other users and groups
+Some mobile optimizations are still missing.
 
 This readme gives information about 
 [Requirements](#requirements), 

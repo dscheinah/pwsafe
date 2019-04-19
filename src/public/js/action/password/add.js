@@ -11,10 +11,11 @@ class Add extends Edit {
      * Initialize the edit action with fixed source and target.
      * The login scope contains the default user and email from the profile and is used as a source.
      *
-     * @param {Page} page
+     * @param {Page}    page
+     * @param {Backend} backend
      */
-    constructor(page) {
-        super(page, 'defaults');
+    constructor(page, backend) {
+        super(page, backend, 'defaults');
     }
 
     /**
@@ -28,7 +29,8 @@ class Add extends Edit {
     reduce(state, payload) {
         let data = super.reduce(state, payload);
         let defaults = {'id': '', 'name': '', 'url': '', 'notice': '', 'password': ''};
-        return Action.combine('password_edit', defaults, data);
+        data.password_edit = Action.combine('password_edit', defaults, data).password_edit;
+        return data;
     }
 }
 

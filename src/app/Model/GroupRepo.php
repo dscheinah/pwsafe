@@ -111,4 +111,22 @@ class GroupRepo extends RepoAbstract
             return false;
         }
     }
+
+    /**
+     * Loads the groups that passwords can be shared to.
+     *
+     * @param int $id
+     *
+     * @return array
+     * @throws RepoException
+     */
+    public function getShareableGroups(int $id): array
+    {
+        try {
+            return iterator_to_array($this->storage->fetchShareableGroups($id));
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Die Gruppen konnten nicht geladen werden.', 500);
+        }
+    }
 }

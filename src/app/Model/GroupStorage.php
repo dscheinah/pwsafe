@@ -124,7 +124,8 @@ class GroupStorage extends Storage
      *
      * @throws BackendException
      */
-    public function assignUser(int $user, array $groups): void {
+    public function assignUser(int $user, array $groups): void
+    {
         if (!$groups) {
             return;
         }
@@ -134,5 +135,68 @@ class GroupStorage extends Storage
         );
         $this->execute('SET @user = ?;', [$user]);
         $this->execute($sql, $groups);
+    }
+
+    /**
+     * Fetches the groups to be used for the selection.
+     *
+     * @param int $user
+     *
+     * @return \Generator
+     * @throws BackendException
+     */
+    public function fetchShareableGroups(int $user): \Generator
+    {
+        $ids = $this->fetchShareableGroupIds($user);
+        if (!$ids) {
+            return;
+        }
+        $sql = sprintf(
+            'SELECT `id`, `name` FROM `groups` WHERE `id` IN (%s) ORDER BY `name`;',
+            implode(', ', array_pad([], count($ids), '?'))
+        );
+        yield from $this->fetch($sql, $ids);
+    }
+
+    /**
+     * Fetches the IDs of the groups the user can share to.
+     *
+     * @param int $user
+     *
+     * @return array
+     * @throws BackendException
+     */
+    public function fetchShareableGroupIds(int $user): array
+    {
+        $sql = 'SELECT `group_id` FROM `groups_x_users` WHERE `user_id` = ?;';
+        $ids = [];
+        foreach ($this->fetch($sql, [$user]) as $entry) {
+            $ids[] = $entry['group_id'];
+        }
+        return $ids;
+    }
+
+    /**
+     * Fetches the IDs of the users the user can share to.
+     *
+     * @param int $user
+     *
+     * @return array
+     * @throws BackendException
+     */
+    public function fetchShareableUserIds(int $user): array
+    {
+        $sql = '
+            SELECT `user_id` 
+            FROM `groups_x_users` 
+            WHERE `group_id` IN (
+                SELECT `group_id` FROM `groups_x_users` WHERE `user_id` = ? 
+            ) AND `user_id` <> ?;
+        ';
+        $ids = [];
+        foreach ($this->fetch($sql, [$user, $user]) as $entry) {
+            $ids[] = $entry['user_id'];
+        }
+        return $ids;
     }
 }

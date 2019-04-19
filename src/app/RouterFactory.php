@@ -12,6 +12,7 @@ use App\Action\GroupSave;
 use App\Action\Password;
 use App\Action\PasswordList;
 use App\Action\PasswordSave;
+use App\Action\Share;
 use App\Action\User;
 use App\Action\UserDelete;
 use App\Action\UserList;
@@ -50,6 +51,7 @@ class RouterFactory implements FactoryInterface
         $router->get('/groups', GroupList::class);
         $router->get('/password', Password::class);
         $router->get('/passwords', PasswordList::class);
+        $router->get('/share', Share::class);
         $router->get('/user', User::class);
         $router->get('/users', UserList::class);
         // Routes to save data. After successful save the data will be loaded using the chained load action.

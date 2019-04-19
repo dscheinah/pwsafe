@@ -26,7 +26,9 @@ class PasswordRepoFactory implements FactoryInterface
         return new PasswordRepo(
             $injector->get(LogInterface::class),
             $injector->get(PasswordStorage::class),
-            $injector->get(CategoryStorage::class)
+            $injector->get(CategoryStorage::class),
+            $injector->get(GroupStorage::class),
+            $injector->get(UserStorage::class)
         );
     }
 }

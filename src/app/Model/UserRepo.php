@@ -309,4 +309,23 @@ class UserRepo extends RepoAbstract
         $role = $user['role'] ?? '';
         return $role === 'admin';
     }
+
+    /**
+     * Loads the users that can be selected to share passwords to.
+     *
+     * @param int $id
+     *
+     * @return array
+     * @throws RepoException
+     */
+    public function getShareableUsers(int $id): array
+    {
+        try {
+            $ids = $this->groupStorage->fetchShareableUserIds($id);
+            return iterator_to_array($this->storage->fetchUsersByIds($ids));
+        } catch (BackendException $e) {
+            $this->logger->log($e->getMessage());
+            throw new RepoException('Die Benutzer konnten nicht geladen werden.', 500);
+        }
+    }
 }

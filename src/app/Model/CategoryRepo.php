@@ -17,7 +17,14 @@ class CategoryRepo extends RepoAbstract
      *
      * @var CategoryStorage
      */
-    private $storage;
+    private $categoryStorage;
+
+    /**
+     * The storage for the passwords is needed to give the category to the next user if shared.
+     *
+     * @var PasswordStorage
+     */
+    private $passwordStorage;
 
     /**
      * The currently logged in clients user ID.
@@ -32,11 +39,16 @@ class CategoryRepo extends RepoAbstract
      *
      * @param LogInterface    $logger
      * @param CategoryStorage $storage
+     * @param PasswordStorage $userStorage
      */
-    public function __construct(LogInterface $logger, CategoryStorage $storage)
-    {
+    public function __construct(
+        LogInterface $logger,
+        CategoryStorage $storage,
+        PasswordStorage $userStorage
+    ) {
         parent::__construct($logger);
-        $this->storage = $storage;
+        $this->categoryStorage = $storage;
+        $this->passwordStorage = $userStorage;
     }
 
     /**
@@ -75,7 +87,7 @@ class CategoryRepo extends RepoAbstract
     public function getCategory(int $id): array
     {
         try {
-            $category = $this->storage->fetchCategory($this->getUser(), $id);
+            $category = $this->categoryStorage->fetchCategory($this->getUser(), $id);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden der Kategorie ist ein Fehler aufgetreten.', 501);
@@ -93,7 +105,7 @@ class CategoryRepo extends RepoAbstract
     {
         // All entries are returned so there is no need to keep the Generator here.
         try {
-            return iterator_to_array($this->storage->fetchCategories($this->getUser()));
+            return iterator_to_array($this->categoryStorage->fetchCategories($this->getUser()));
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Beim Laden der Kategorien ist ein Fehler aufgetreten.', 501);
@@ -114,14 +126,14 @@ class CategoryRepo extends RepoAbstract
         $id = $data['id'] ?? 0;
         if (!$id) {
             try {
-                return $this->storage->insertCategory($this->getUser(), $data);
+                return $this->categoryStorage->insertCategory($this->getUser(), $data);
             } catch (BackendException $e) {
                 $this->logger->log($e->getMessage());
                 throw new RepoException('Die Kategorie konnte nicht angelegt werden.', 501);
             }
         }
         try {
-            $this->storage->updateCategory($this->getUser(), $id, $data);
+            $this->categoryStorage->updateCategory($this->getUser(), $id, $data);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             throw new RepoException('Die Kategorie konnte nicht aktualisiert werden.', 501);
@@ -139,7 +151,14 @@ class CategoryRepo extends RepoAbstract
     public function deleteCategory(int $id): bool
     {
         try {
-            return (bool)$this->storage->deleteCategory($this->getUser(), $id);
+            $currentUserId = $this->getUser();
+            // If the category is used by another user, transfer it to the user instead of deleting.
+            $userId = $this->passwordStorage->fetchSharedUserIdForCategory($id, $currentUserId);
+            if ($userId) {
+                $this->categoryStorage->updateUserForCategory($id, $currentUserId, $userId);
+                return true;
+            }
+            return (bool)$this->categoryStorage->deleteCategory($currentUserId, $id);
         } catch (BackendException $e) {
             $this->logger->log($e->getMessage());
             return false;

@@ -40,7 +40,8 @@ class Component {
         for (let key in this.parts) {
             let value = data[key];
             if (value) {
-                this.parts[key].update(value, data);
+                // Clone the data to not let parts modify it.
+                this.parts[key].update(value, JSON.parse(JSON.stringify(data)));
             }
         }
     }

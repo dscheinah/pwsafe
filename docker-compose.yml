@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 # This file provides the default setup for development. It may also be used in production.
 # You need to provide a .env file containing APP_ENV, MYSQL_DATABASE, MYSQL_USER and MYSQL_PASSWORD.
@@ -18,6 +18,8 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - APP_ENV
+    secrets:
+      - key
     depends_on:
       - db
   db:
@@ -39,3 +41,7 @@ services:
 
 volumes:
   db:
+
+secrets:
+  key:
+    file: ./.key

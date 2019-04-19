@@ -42,6 +42,7 @@ state.register('login', local);
 state.register('current', backend);
 
 // Make the template helpers available to all templates.
+Template.add('checkbox', Helper.checkbox);
 Template.add('filter', Helper.filter);
 Template.add('ids', Helper.ids);
 Template.add('mark', Helper.mark);
@@ -85,6 +86,13 @@ pages.passwords.part('categories', wrapper);
 // The data from this scope will be directly forwarded to the same named part.
 state.register('categories', pages.passwords);
 state.register('categories', pages.password_edit);
+
+// Register the share templates to the password edit page.
+let share = new Part.Basic(templates.get('password_share'));
+share.part('groups', new Part.List(templates.get('password_groups')));
+share.part('users', new Part.List(templates.get('password_users')));
+pages.password_edit.part('share', share);
+state.register('share', pages.password_edit);
 
 // Add the role selection to the user edit page.
 pages.user.part('roles', new Part.Select(templates.get('user_select'), 'role'));
@@ -140,9 +148,9 @@ loading('groups', new Action.Load(pages.groups, 'groups', backend));
 actions.add('init', new Action.Init(pages.login));
 loading('login', new Action.Login(backend, actions));
 loading('password', new Action.PasswordDetail(pages.password, backend));
-actions.add('password_add', new Action.PasswordAdd(pages.password_edit));
+loading('password_add', new Action.PasswordAdd(pages.password_edit, backend));
 loading('password_delete', new Action.Delete('passwords', backend, 'password', confirmDelete));
-actions.add('password_edit', new Action.PasswordEdit(pages.password_edit));
+loading('password_edit', new Action.PasswordEdit(pages.password_edit, backend));
 loading('password_save', new Action.PasswordSave(navigation, backend));
 loading('password_search', new Action.Search('passwords', backend));
 // The passwords action is triggered from the menu and after successful login.

@@ -23,9 +23,13 @@ class CategoryStorage extends Storage
      */
     public function fetchCategory(int $user, int $id): array
     {
-        $sql = 'SELECT `id`, `name` FROM `categories` WHERE `user_id` = ? AND `id` = ?;';
+        $sql = '
+            SELECT `id`, `name`
+            FROM `categories` 
+            WHERE (`user_id` = ? OR `id` IN (%s)) AND `id` = ?;
+        ';
         // Return first result or empty array which is falsify.
-        return $this->fetch($sql, [$user, $id])->current() ?: [];
+        return $this->fetch(sprintf($sql, $this->getSubSelect()), [$user, $user, $user, $id])->current() ?: [];
     }
 
     /**
@@ -38,8 +42,13 @@ class CategoryStorage extends Storage
      */
     public function fetchCategories(int $user): \Generator
     {
-        $sql = 'SELECT `id`, `name` FROM `categories` WHERE `user_id` = ? ORDER BY `name`;';
-        yield from $this->fetch($sql, [$user]);
+        $sql = '
+            SELECT `id`, `name`, `user_id` = ? AS own 
+            FROM `categories` 
+            WHERE `user_id` = ? OR `id` IN (%s)
+            ORDER BY `name`;
+        ';
+        yield from $this->fetch(sprintf($sql, $this->getSubSelect()), [$user, $user, $user, $user]);
     }
 
     /**
@@ -85,5 +94,38 @@ class CategoryStorage extends Storage
     {
         $sql = 'DELETE FROM `categories` WHERE `user_id` = ? AND `id` = ?;';
         return $this->execute($sql, [$user, $id]);
+    }
+
+    /**
+     * Updates the user ID for the given category.
+     *
+     * @param int $id
+     * @param int $user
+     * @param int $newUser
+     *
+     * @throws BackendException
+     */
+    public function updateUserForCategory(int $id, int $user, int $newUser): void
+    {
+        $sql = 'UPDATE `categories` SET `user_id` = ? WHERE `user_id` = ? AND `id` = ?;';
+        $this->execute($sql, [$newUser, $user, $id]);
+    }
+
+    /**
+     * Returns the sub select to query for categories of shared passwords.
+     * To use it, the users ID must be bound twice as a parameter.
+     *
+     * @return string
+     */
+    private function getSubSelect(): string
+    {
+        return '
+            SELECT `category_id` 
+            FROM `passwords` p
+            LEFT JOIN `passwords_x_users` u ON p.`id` = u.`password_id`
+            LEFT JOIN `passwords_x_groups` g ON p.`id` = g.`password_id`
+            LEFT JOIN `groups_x_users` x ON g.`group_id` = x.`group_id` 
+            WHERE x.`user_id` = ? OR u.`user_id` = ?
+        ';
     }
 }

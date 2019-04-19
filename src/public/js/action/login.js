@@ -81,6 +81,7 @@ class Login extends Action {
             category: {},
             generate: {},
             profile: {},
+            share: {},
             users: emptyList,
             // Add the data for the role selection of users.
             user: {

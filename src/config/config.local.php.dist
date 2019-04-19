@@ -12,4 +12,6 @@ return [
         'password' => getenv('MYSQL_PASSWORD'),
         'database' => getenv('MYSQL_DATABASE'),
     ],
+    // The key to use for encryption of shared passwords. It should be transferred by using docker secrets.
+    'key' => trim(file_get_contents('/run/secrets/key')),
 ];
