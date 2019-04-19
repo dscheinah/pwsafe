@@ -2,15 +2,18 @@
     Benutzer
     <template data-tag="span">${id ? 'bearbeiten' : 'hinzufügen'}</template>
 </h1>
-<template data-tag="p" data-condition="${id}">
-    Das Passwort kann nicht geändert werden, da es für die Verschlüsselung benötigt wird.
-    Ebenso ist die E-Mail Adresse nicht veränderbar, da sie verschlüsselt gespeichert ist.
-</template>
-<template data-tag="p" data-condition="${!id}">
-    Zum Anlegen eines neuen Benutzers wird einmalig ein Passwort benötigt.
-    Optional kann auch die E-Mail Adresse angegeben werden.
-    Diese dient aber nur als Vorlage für neue Passwörter des Benutzers.
-</template>
+<details>
+    <summary>Bearbeite hier den Benutzer.</summary>
+    <template data-tag="p" data-condition="${id}">
+        Das Passwort kann nicht geändert werden, da es für die Verschlüsselung benötigt wird.
+        Ebenso ist die E-Mail Adresse nicht veränderbar, da sie verschlüsselt gespeichert ist.
+    </template>
+    <template data-tag="p" data-condition="${!id}">
+        Zum Anlegen eines neuen Benutzers wird einmalig ein Passwort benötigt.
+        Optional kann auch die E-Mail Adresse angegeben werden.
+        Diese dient aber nur als Vorlage für neue Passwörter des Benutzers.
+    </template>
+</details>
 <form data-action="user_save" action="/user" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}
@@ -34,20 +37,24 @@
             </label>
         </div>
         <div>
-            <button type="button" data-action="profile_generate" accesskey="g">⚙ generieren</button>
+            <button type="button" data-action="profile_generate" accesskey="g">
+                <span class="icon">⚙</span> generieren
+            </button>
         </div>
     </template>
     <template class="input" data-condition="${!id}">
         <input type="email" id="${ids('email')}" name="email"/>
         <label for="${ids('email')}">
-            <span>E-Mail</span>
+            <span class="nowrap">E-Mail</span>
             <small>(wird als Vorgabe für neue Daten verwendet)</small>
         </label>
     </template>
     <div class="control">
         <template data-part="groups"></template>
         <div>
-            <button type="button" data-action="group_add" accesskey="a">＋ neue Gruppe</button>
+            <button type="button" data-action="group_add" accesskey="a">
+                <span class="icon">＋</span> neue Gruppe
+            </button>
         </div>
     </div>
     <div class="actions">

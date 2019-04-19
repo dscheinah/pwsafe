@@ -1,8 +1,12 @@
 <h1>Passwort generieren</h1>
-<p>
-    Es wird ein kryptografisch sicheres Passwort entsprechend der gewählten Einstellungen generiert.
-    Das Passwort wird anschließend im Klartext angezeigt und kann angepasst werden.
-</p>
+<details>
+    <summary>Generiere hier ein sicheres Passwort.</summary>
+    <p>
+        Es wird ein kryptografisch sicheres Passwort entsprechend der gewählten Einstellungen generiert.
+        Das Passwort wird anschließend im Klartext angezeigt und kann vor Übernahme in das Formular angepasst werden.
+        Der Modus Wörterbuch kann gewählt werden, wenn ein merkbares Passwort benötigt wird.
+    </p>
+</details>
 <template data-condition="${error}" data-tag="p" class="error">
     ${message}
 </template>
@@ -12,10 +16,7 @@
             <option value="random" selected>Zufall</option>
             <option value="dictionary">Wörterbuch</option>
         </select>
-        <label for="${ids('type')}">
-            <span>Modus</span>
-            <small>(Wörterbuch für merkbare Passwörter)</small>
-        </label>
+        <label for="${ids('type')}">Modus</label>
     </template>
     <template data-condition="${type === 'random'}">
         <div class="input">

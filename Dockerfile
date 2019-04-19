@@ -5,7 +5,7 @@ WORKDIR /build
 RUN npm install --no-save webpack clean-css \
     # The following are required to make the app work with Sailfish.
     babel-loader @babel/core @babel/preset-env \
-    @babel/polyfill whatwg-fetch
+    core-js regenerator-runtime whatwg-fetch details-polyfill
 ADD ./build.js /build/build.js
 ADD ./src/public/ /build/src
 # Build JavaScript, CSS and templates cache with the build.js script.

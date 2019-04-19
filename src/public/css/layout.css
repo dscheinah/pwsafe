@@ -7,6 +7,8 @@ body {
     /* To not have the content flicker on page change. */
     overflow-y: scroll;
     min-width: 320px;
+    /* Give a hint for the font and force a difference to inputs. */
+    font-family: serif;
 }
 
 h1 {
@@ -22,7 +24,6 @@ nav {
     /* The main navigation is always visible at the top of the page. */
     position: sticky;
     top: 0;
-    height: 60px;
     /* To ensure it is on top of all elements. */
     z-index: 10000;
     background: white;

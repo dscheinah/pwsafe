@@ -27,7 +27,7 @@ thead {
 }
 
 /* There needs to be extra space below the shadow. This styles the next available element to produce it. */
-thead + tbody tr:first-child td {
+thead ~ tbody tr:first-child td {
     padding-top: .8em;
 }
 

@@ -17,6 +17,12 @@ import Templates from './lib/templates.js';
 if (window.NodeList && !NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach;
 }
+// Use feature detection to hide copy button if not supported.
+try {
+    document.execCommand('copy');
+} catch {
+    document.body.classList.add('no-copy');
+}
 
 // This represents the global application state.
 const state = new State();
@@ -47,6 +53,7 @@ Template.add('filter', Helper.filter);
 Template.add('ids', Helper.ids);
 Template.add('mark', Helper.mark);
 Template.add('mask', Helper.mask);
+Template.add('wbr', Helper.wbr);
 
 // Create all pages with the corresponding templates.
 // This represents the list of available pages.

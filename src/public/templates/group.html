@@ -2,9 +2,12 @@
     Gruppe
     <template data-tag="span">${id ? 'bearbeiten' : 'hinzufügen'}</template>
 </h1>
-<p>
-    Gruppen werden zur Sichtbarkeit der Benutzer untereinander verwendet. Dazu ist immer ein Name erforderlich.
-</p>
+<details>
+    <summary>Bearbeite hier die Gruppe.</summary>
+    <p>
+        Gruppen werden zur Sichtbarkeit der Benutzer untereinander verwendet. Dazu ist immer ein Name erforderlich.
+    </p>
+</details>
 <form data-action="group_save" action="/group" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}

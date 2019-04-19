@@ -2,9 +2,12 @@
     Kategorie
     <template data-tag="span">${id ? 'bearbeiten' : 'hinzufügen'}</template>
 </h1>
-<p>
-    Kategorien werden zur Gruppierung der Passwörter verwendet. Dazu ist immer ein Name erforderlich.
-</p>
+<details>
+    <summary>Bearbeite hier die Kategorie.</summary>
+    <p>
+        Kategorien werden zur Gruppierung der Passwörter verwendet. Dazu ist immer ein Name erforderlich.
+    </p>
+</details>
 <form data-action="category_save" action="/category" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}

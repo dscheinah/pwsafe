@@ -6,6 +6,11 @@
     line-height: 1.2;
 }
 
+/* Prevent tables overflowing the body due to password length. */
+.overflow .hidden-password {
+    width: auto !important;
+}
+
 /* Clear the filter float. */
 .part.categories:after {
     content: "";
@@ -13,7 +18,30 @@
     clear: both;
 }
 
-/* Keep the copy and hide/ show buttons on one line. */
+/* Keep the copy and hide/ show buttons on one line. Also do not wrap the "E-Mail" label */
 .nowrap {
     white-space: nowrap;
+}
+
+/* Class set by feature detection in JS if no copy available. */
+.no-copy .copy {
+    display: none;
+}
+
+/* The filters overlap with the details if not corrected. */
+.category_filter {
+    padding-top: .5em;
+}
+
+/* Since the search does not have a label. */
+.search .input {
+    margin-bottom: 1em;
+}
+
+/* To not require a fixed menu height the login page must have some content inside the menu. */
+.filler {
+    display: inline-block;
+    padding: .6em 0;
+    /* For some reason there is an offset. */
+    margin-bottom: 1px;
 }

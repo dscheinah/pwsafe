@@ -1,9 +1,12 @@
 <h1>Profil</h1>
-<p>
-    Um Änderungen vornehmen zu können, wird immer das aktuelle Passwort benötigt.
-    Das Passwort sollte möglichst stark gewählt werden, da damit die Verschlüsselung der Daten erfolgt.
-    Das Passwort wird nicht im Klartext gespeichert.
-</p>
+<details>
+    <summary>Ändere hier dein Profil.</summary>
+    <p>
+        Um Änderungen vornehmen zu können, wird immer das aktuelle Passwort benötigt.
+        Das Passwort sollte möglichst stark gewählt werden, da damit die Verschlüsselung der Daten erfolgt.
+        Das Passwort wird nicht im Klartext gespeichert.
+    </p>
+</details>
 <form data-action="profile_save" action="/profile" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}
@@ -28,7 +31,9 @@
             </label>
         </template>
         <div>
-            <button type="button" data-action="profile_generate" accesskey="g">⚙ generieren</button>
+            <button type="button" data-action="profile_generate" accesskey="g">
+                <span class="icon">⚙</span> generieren
+            </button>
         </div>
     </div>
     <template class="input">
@@ -38,7 +43,7 @@
     <template class="input">
         <input type="email" id="${ids('email')}" name="email" value="${email}"/>
         <label for="${ids('email')}">
-            <span>E-Mail</span>
+            <span class="nowrap">E-Mail</span>
             <small>(wird als Vorgabe für neue Daten verwendet)</small>
         </label>
     </template>

@@ -1,7 +1,13 @@
 button {
+    font-family: sans-serif;
     padding: .6em;
     /* To not let the browser split the icon and label. */
     white-space: nowrap;
+}
+
+/* The hidden (keyboard only) back button inside the menu. */
+button:empty {
+    padding: 0;
 }
 
 .menu button {
@@ -62,8 +68,8 @@ button {
 }
 
 /* Space between the elements but not on the edges. */
-.actions > *:not(:first-child) {
-    margin-left: 20px;
+.actions > *:not(:last-child) {
+    margin-right: 20px;
 }
 
 /* A special input container inside the action will always fill the remaining space. */

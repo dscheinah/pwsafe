@@ -28,6 +28,19 @@ class Detail extends Load {
         data.password.visible = false;
         return data;
     }
+
+    /**
+     * Checks if the rendered password overflows the available content to remove the inline width by CSS.
+     *
+     * @param {Object} payload
+     */
+    run(payload) {
+        super.run(payload);
+        let table = this.page.template.container.querySelector('table');
+        if (table && table.getBoundingClientRect().right > window.innerWidth) {
+            table.classList.add('overflow');
+        }
+    }
 }
 
 export default Detail;

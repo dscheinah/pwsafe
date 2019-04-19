@@ -3,6 +3,7 @@
 body {
     margin: 0;
     background: white;
+    font-size: 14px;
 }
 
 button, input, textarea, select, label {
@@ -10,9 +11,11 @@ button, input, textarea, select, label {
     /* Resets for Sailfish browser. */
     border-radius: 0;
     background: none;
+    /* Remove on mobile search field. */
+    box-shadow: none;
 }
 
-button, select, label, [type=checkbox], [type=radio] {
+button, select, label, [type=checkbox], [type=radio], summary {
     cursor: pointer;
 }
 
@@ -32,4 +35,25 @@ button::-moz-focus-inner {
 
 th, td {
     text-align: left;
+}
+
+::placeholder {
+    color: black;
+    opacity: .2;
+}
+
+summary {
+    /* To keep it on one line no p is used but the margin should be available. */
+    margin-bottom: 1em;
+    /* If used with the polyfill. */
+    display: block;
+}
+
+/* Just for the polyfill. */
+summary:before {
+    vertical-align: top;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
 }

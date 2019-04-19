@@ -9,11 +9,14 @@ const error = function (msg) {
 
 let index = fs.readFileSync('/build/src/index.html').toString();
 
-// Build JavaScript with webpack and babel. Use polyfills and babel to support Sailfish Browser.
+// Build JavaScript with webpack and babel. Use some polyfills and babel to support Sailfish Browser.
+let jsPolyfill = [
+    '/build/node_modules/core-js/es/object/values.js', 'regenerator-runtime', 'whatwg-fetch', 'details-polyfill',
+];
 webpack(
     {
         mode: 'production',
-        entry: ['@babel/polyfill', 'whatwg-fetch', '/build/src/js/app.js'],
+        entry: jsPolyfill.concat(['/build/src/js/app.js']),
         output: {
             path: '/build/dist/js/',
             filename: 'app.js',

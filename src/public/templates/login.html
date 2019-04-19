@@ -1,9 +1,13 @@
 <h1>Login</h1>
-<p>
-    Zum Laden der Passwörter muss eine Anmeldung durchgeführt werden.
-    Nach 10 min Inaktivität erfolgt eine automatische Abmeldung.
-    Der zu letzt verwendete Benutzer wird für die nächste Anmeldung vorgeschlagen.
-</p>
+<details>
+    <summary>Bitte melde dich zuerst an.</summary>
+    <p>
+        Dies ist notwendig, damit die Passwörter geladen und entschlüsselt werden können.
+        Um der versehentlichen Nutzung fremder Accounts vorzubeugen, muss dies bei jedem Aufruf der Seite erfolgen.
+        Außerdem erfolgt nach 10 min Inaktivität eine automatische Abmeldung.
+        Der zuletzt verwendete Benutzer wird für die nächste Anmeldung vorgeschlagen.
+    </p>
+</details>
 <form data-action="login" action="/login" method="post">
     <template data-condition="${error}" data-tag="p" class="error">
         ${message}

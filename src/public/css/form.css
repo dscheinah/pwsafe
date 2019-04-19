@@ -6,11 +6,14 @@ input, textarea, select {
     border: none;
     border-bottom: 1px solid lightgray;
     box-shadow: 0 -1px 0 lightgray inset;
+    /* To have a visual difference to the other text. */
+    font-family: sans-serif;
+    background: rgba(0, 0, 0, .025);
 }
 
 input, textarea {
     /* Partially match the padding with the buttons. */
-    padding: .6em .3em;
+    padding: .55em .3em;
 }
 
 input {
@@ -34,7 +37,9 @@ select {
 .input {
     position: relative;
     /* Extra space to not have the labels overlap with the next content. */
-    margin-bottom: 2.5em;
+    margin-bottom: 3em;
+    /* If used in the actions bar. */
+    background: white;
 }
 
 .input label {
@@ -65,6 +70,10 @@ select {
 /* Do not use the input type to be flexible with e.g. radio. */
 .checkbox {
     margin-bottom: 1em;
+    /* Do never wrap the label and keep it on the same line as the checkbox. */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .checkbox input {

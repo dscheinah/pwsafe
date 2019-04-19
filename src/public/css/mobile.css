@@ -1,19 +1,48 @@
 @media only screen and (max-width: 480px) {
-    /* Very simple method to get everything on screen. */
-    body {
-        font-size: .8em;
-    }
+    /* Reduce padding as not needed for mobile devices. */
     .container {
         padding: 20px;
     }
     .menu {
         padding: 5px 10px;
     }
-    nav {
-        height: 40px;
+    /* Set the navigation font to fit in the smallest space. */
+    nav, .loading-animation {
+        font-size: 3vw;
     }
-    /* Do not display as table to allow wrapping of buttons. */
-    .no-mobile-table, .no-mobile-table th, .no-mobile-table td {
-        display: inline-block;
+    /* Align the buttons on detail pages sticky to the right. */
+    table {
+        width: 100%;
+    }
+    /* Allow breaking of long words. */
+    td {
+        hyphens: auto;
+        word-break: break-all;
+    }
+    /* Only use icons to reduce the needed size. */
+    table button, .control button {
+        font-size: 0;
+        border-radius: 100%;
+        width: 2rem;
+        height: 2rem;
+    }
+    .icon {
+        font-size: 1rem;
+        /* Optimize alignment. */
+        line-height: 1;
+    }
+    /* The calculated inline width will not work for small devices. */
+    .hidden-password {
+        width: auto !important;
+    }
+    /* Show the button and search field on separate lines. */
+    .actions {
+        flex-wrap: wrap;
+    }
+    /* The search is more important, so order it on top. */
+    .search {
+        order: -1;
+        /* Needed for Firefox to get it visible. */
+        z-index: 1;
     }
 }

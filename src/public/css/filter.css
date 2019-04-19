@@ -6,6 +6,7 @@
 }
 
 .filter label {
+    font-family: sans-serif;
     /* To position the input inside the label. */
     position: relative;
     padding: .5em;

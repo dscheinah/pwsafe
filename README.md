@@ -6,8 +6,6 @@ It is implemented using modern PHP, MySQL and JavaScript. Of course some HTML an
 The application currently is and will stay in beta. 
 This means all parts are working, but need to be tested.
 
-Some mobile optimizations are still missing.
-
 This readme gives information about 
 [Requirements](#requirements), 
 [Deployment](#deployment) and 
