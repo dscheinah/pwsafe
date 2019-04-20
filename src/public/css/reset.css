@@ -45,8 +45,9 @@ th, td {
 summary {
     /* To keep it on one line no p is used but the margin should be available. */
     margin-bottom: 1em;
-    /* If used with the polyfill. */
-    display: block;
+    /* If used with the polyfill, but still render the native indicator. */
+    display: list-item;
+    overflow: hidden;
 }
 
 /* Just for the polyfill. */

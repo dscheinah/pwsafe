@@ -19,7 +19,8 @@ const request = async function (path, query, headers, method, body) {
         let response = await fetch(`/${path}${query}`, {
             method: method,
             body: body,
-            headers: headers
+            headers: headers,
+            credentials: 'same-origin',
         });
         if (!response.ok) {
             this.status = response.status;
