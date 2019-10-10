@@ -1,7 +1,6 @@
 {
   "name": "dscheinah/pwsafe",
   "description": "Password Safe",
-  "minimum-stability": "dev",
   "authors": [
     {
       "name": "Johannes Bachmann"
@@ -22,5 +21,8 @@
     "psr/http-factory": "~1.0",
     "psr/http-server-handler": "~1.0",
     "psr/container": "~1.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
   }
 }
